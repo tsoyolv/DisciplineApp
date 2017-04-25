@@ -3,14 +3,13 @@ package com.olts.discipline.api.dao.impl;
 import com.olts.discipline.api.dao.HabitDao;
 import com.olts.discipline.model.Habit;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaQuery;
+import javax.annotation.Resource;
 import java.util.Collection;
 
 /**
@@ -21,8 +20,7 @@ import java.util.Collection;
 @EnableTransactionManagement
 public class HabitDaoImpl implements HabitDao {
 
-    @Autowired
-    @Qualifier("sessionFactory")
+    @Resource(name="sessionFactory")
     private SessionFactory sessionFactory;
 
     @Override
@@ -31,16 +29,16 @@ public class HabitDaoImpl implements HabitDao {
     }
 
     @Override
-    @Transactional(transactionManager = "hibernateTransactionManager", propagation = Propagation.REQUIRES_NEW)
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public Habit get(long id) {
         return sessionFactory.getCurrentSession().get(Habit.class, id);
     }
 
     @Override
-    @Transactional(transactionManager = "hibernateTransactionManager", propagation = Propagation.REQUIRES_NEW)
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public Collection<Habit> get() {
-        final CriteriaQuery<Habit> query = sessionFactory.getCurrentSession().getCriteriaBuilder().createQuery(Habit.class);
-        return sessionFactory.getCurrentSession().createQuery(query).list();
+        final Query query = sessionFactory.getCurrentSession().createQuery("FROM Habit");
+        return query.list();
     }
 
     @Override

@@ -21,17 +21,9 @@
 
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="mappingResources">
-            <list>
-                <value>/dev/db/hibernate/Discipline.hbm.xml</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="dialect">org.hibernate.dialect.MySQLDialect</prop>
-            </props>
-        </property>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:dev/db/hibernate/Hibernate.cfg.xml"/>
+        <property name="packagesToScan" value="com.olts.discipline.model"/>
     </bean>
 
     <!-- for @Transactional -->
