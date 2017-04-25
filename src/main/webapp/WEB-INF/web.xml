@@ -15,6 +15,7 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
+      classpath:appContext.xml
       classpath:datasource.xml
     </param-value>
   </context-param>
