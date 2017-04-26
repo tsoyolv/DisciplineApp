@@ -1,0 +1,8 @@
+org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: com.olts.discipline.model.User.habits, could not initialize proxy - no Session
+Solution:
+
+
+14:05	Error running http://localhost:8080: Address localhost:1099 is already in use
+14:05	Error running http://localhost:8080: Unable to open debugger port (127.0.0.1:51538): java.net.SocketException "socket closed"
+netstat -a -n -o | find "1099"
+taskkill /pid <process>

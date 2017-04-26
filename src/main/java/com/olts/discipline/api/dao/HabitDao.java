@@ -18,5 +18,5 @@ public interface HabitDao {
 
     Habit update(Habit template);
 
-    Habit delete(long id);
+    void delete(long id);
 }

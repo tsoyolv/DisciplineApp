@@ -26,6 +26,29 @@ public class User implements Serializable {
     private Date createdWhen;
 
     private String login;
+
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setTaskScore(Integer taskScore) {
+        this.taskScore = taskScore;
+    }
+
+    public void setHabitScore(Integer habitScore) {
+        this.habitScore = habitScore;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -37,12 +60,33 @@ public class User implements Serializable {
 
     private String email;
 
+    @Column(name = "task_score")
     private Integer taskScore;
+
+    @Column(name = "habit_score")
     private Integer habitScore;
+
     private Integer score;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Habit> habits = new HashSet<>();
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", createdWhen=" + createdWhen +
+                ", login='" + login + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", taskScore=" + taskScore +
+                ", habitScore=" + habitScore +
+                ", score=" + score +
+                '}';
+    }
 
     public long getId() {
         return id;
