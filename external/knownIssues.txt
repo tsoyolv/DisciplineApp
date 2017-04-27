@@ -1,8 +1,21 @@
 org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: com.olts.discipline.model.User.habits, could not initialize proxy - no Session
-Solution:
+Solution: add @EnableTransactionManagement and @Transactional(transactionManager = "hibernateTransactionManager", propagation = Propagation.REQUIRED)
 
 
 14:05	Error running http://localhost:8080: Address localhost:1099 is already in use
 14:05	Error running http://localhost:8080: Unable to open debugger port (127.0.0.1:51538): java.net.SocketException "socket closed"
 netstat -a -n -o | find "1099"
 taskkill /pid <process>
+
+http://stackoverflow.com/questions/24922833/fontawesome-icons-not-showing-why
+
+Wrong encoding in <spring:message>
+Solution: that's because idea properties encoding is not right
+
+localeChangeInterceptor doesn't work
+solution: move it from appContext to webContext
+
+Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.olts.discipline.model.HistoryTask
+solution: @Inheritance(strategy=InheritanceType.JOINED)
+
+jakson not working without getters

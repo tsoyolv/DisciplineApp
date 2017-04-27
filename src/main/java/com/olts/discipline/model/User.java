@@ -1,5 +1,6 @@
 package com.olts.discipline.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -29,26 +30,6 @@ public class User implements Serializable {
 
     private String password;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setTaskScore(Integer taskScore) {
-        this.taskScore = taskScore;
-    }
-
-    public void setHabitScore(Integer habitScore) {
-        this.habitScore = habitScore;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
     @Column(name = "first_name")
     private String firstName;
 
@@ -68,9 +49,13 @@ public class User implements Serializable {
 
     private Integer score;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "habitUser", fetch = FetchType.LAZY)
     private Set<Habit> habits = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "taskUser", fetch = FetchType.LAZY)
+    private Set<Task> tasks = new HashSet<>();
 
     @Override
     public String toString() {
@@ -112,6 +97,14 @@ public class User implements Serializable {
         this.login = login;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -144,27 +137,27 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public int getTaskScore() {
+    public Integer getTaskScore() {
         return taskScore;
     }
 
-    public void setTaskScore(int taskScore) {
+    public void setTaskScore(Integer taskScore) {
         this.taskScore = taskScore;
     }
 
-    public int getHabitScore() {
+    public Integer getHabitScore() {
         return habitScore;
     }
 
-    public void setHabitScore(int habitScore) {
+    public void setHabitScore(Integer habitScore) {
         this.habitScore = habitScore;
     }
 
-    public int getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 
@@ -174,5 +167,13 @@ public class User implements Serializable {
 
     public void setHabits(Set<Habit> habits) {
         this.habits = habits;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 }

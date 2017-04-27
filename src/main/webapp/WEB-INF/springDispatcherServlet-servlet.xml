@@ -14,4 +14,6 @@
         <property name="suffix" value=".jsp"/>
         <property name="order" value="1"/>
     </bean>
+
+    <import resource="webContext.xml"/>
 </beans>

@@ -25,13 +25,26 @@ public class Habit implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User habitUser;
 
     @Column(name = "created_when")
     @Type(type="timestamp")
     private Date createdWhen;
 
     private String description;
+
+    @Override
+    public String toString() {
+        return "Habit{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", difficulty=" + difficulty +
+                ", userId=" + habitUser +
+                ", createdWhen=" + createdWhen +
+                ", description='" + description + '\'' +
+                "," +
+                '}';
+    }
 
     public long getId() {
         return id;
@@ -57,12 +70,12 @@ public class Habit implements Serializable {
         this.difficulty = difficulty;
     }
 
-    public User getUser() {
-        return user;
+    public User getHabitUser() {
+        return habitUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setHabitUser(User habitUser) {
+        this.habitUser = habitUser;
     }
 
     public Date getCreatedWhen() {
@@ -79,19 +92,5 @@ public class Habit implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Habit{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", difficulty=" + difficulty +
-                ", userId=" + user +
-                ", createdWhen=" + createdWhen +
-                ", description='" + description + '\'' +
-                "," +
-                '}';
     }
 }

@@ -31,7 +31,8 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView executeLogin(@ModelAttribute("user") User user) {
         ModelAndView model;
-        if (userDao.get(user.getLogin()) != null) {
+        final User retrievedUser = userDao.get(user.getLogin());
+        if (retrievedUser != null && retrievedUser.getPassword().equals(user.getPassword())) {
             System.out.println("User Login Successful");
             //todo request.setAttribute("loggedInUser", loginBean.getUsername());
             model = new ModelAndView("index");

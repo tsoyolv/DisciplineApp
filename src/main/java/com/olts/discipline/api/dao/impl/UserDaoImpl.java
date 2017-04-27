@@ -26,8 +26,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public User get(long id) {
-        return null;
+        return sessionFactory.getCurrentSession().get(User.class, id);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class UserDaoImpl implements UserDao {
     @Transactional(transactionManager = "hibernateTransactionManager")
     public Collection<User> get() {
         final Query query = sessionFactory.getCurrentSession().createQuery("FROM User");
-        return query.list();
+        return query.<User>list();
     }
 
     @Override
