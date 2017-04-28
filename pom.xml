@@ -8,10 +8,48 @@
     <name>Discipline Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <database.driver>org.h2.Driver</database.driver>
+                <database.url>jdbc:h2:~/test</database.url>
+                <plugin.tomcat.url>http://localhost:8080/manager/text</plugin.tomcat.url>
+                <database.username>sa</database.username>
+                <database.password></database.password>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>1.4.193</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <activation><activeByDefault>true</activeByDefault></activation>
+            <properties>
+                <database.driver>com.mysql.jdbc.Driver</database.driver>
+                <database.url>jdbc:mysql://localhost:3306/disciplinedb?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</database.url>
+                <database.username>root</database.username>
+                <database.password>1234</database.password>
+                <plugin.tomcat.url>http://localhost:8080/manager/text</plugin.tomcat.url>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>6.0.5</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>4.3.8.RELEASE</org.springframework.version>
-        <plugin.tomcat.url>http://localhost:8082/manager/text</plugin.tomcat.url>
         <plugin.tomcat.server>TomcatServer</plugin.tomcat.server>
         <web.path>/</web.path>
         <org.hibernate.version>5.2.5.Final</org.hibernate.version>
@@ -25,6 +63,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
             </resource>
         </resources>
 
@@ -81,20 +120,13 @@
             <version>${org.hibernate.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.5</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <!-- not important -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.8.8</version>
         </dependency>
 
-
+        <!-- if you add new dependency - check maven diagram -->
     </dependencies>
 </project>
