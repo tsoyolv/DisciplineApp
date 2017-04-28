@@ -25,6 +25,9 @@ import java.util.Set;
  */
 @Controller
 @EnableTransactionManagement
+@Deprecated /**
+ @deprecated uses only for getting Entities
+ */
 public class HelloController {
 
     @Resource(name="habitDao")

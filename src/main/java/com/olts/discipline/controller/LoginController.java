@@ -15,6 +15,8 @@ import javax.annotation.Resource;
  * 26.04.2017
  */
 @Controller
+@Deprecated
+/** @deprecated move it to reactjs */
 public class LoginController {
 
     @Resource(name = "userDao")

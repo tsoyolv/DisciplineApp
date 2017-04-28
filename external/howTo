@@ -14,3 +14,7 @@ hibernate session is not thread safe
 transient - not allowed lazy init in hibernate
 
 http://blog.jhades.org/how-does-spring-transactional-really-work/
+
+http://www.apache-maven.ru/profiles.html
+
+To use profile: Maven projects tab -> choose profile -> plugins -> tomcat7:redeploy
