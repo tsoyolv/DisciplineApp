@@ -13,10 +13,10 @@
             <id>dev</id>
             <properties>
                 <database.driver>org.h2.Driver</database.driver>
-                <database.url>jdbc:h2:~/test</database.url>
-                <plugin.tomcat.url>http://localhost:8080/manager/text</plugin.tomcat.url>
+                <database.url>jdbc:h2:~/disciplinedb</database.url>
                 <database.username>sa</database.username>
                 <database.password></database.password>
+                <flyway.location>filesystem:src/main/resources/dev/db/flyway/migrations</flyway.location>
             </properties>
             <dependencies>
                 <dependency>
@@ -29,13 +29,15 @@
 
         <profile>
             <id>prod</id>
-            <activation><activeByDefault>true</activeByDefault></activation>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <database.driver>com.mysql.jdbc.Driver</database.driver>
                 <database.url>jdbc:mysql://localhost:3306/disciplinedb?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</database.url>
                 <database.username>root</database.username>
                 <database.password>1234</database.password>
-                <plugin.tomcat.url>http://localhost:8080/manager/text</plugin.tomcat.url>
+                <flyway.location>filesystem:src/main/resources/db/flyway/migrations</flyway.location>
             </properties>
             <dependencies>
                 <dependency>
@@ -50,9 +52,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>4.3.8.RELEASE</org.springframework.version>
-        <plugin.tomcat.server>TomcatServer</plugin.tomcat.server>
-        <web.path>/</web.path>
         <org.hibernate.version>5.2.5.Final</org.hibernate.version>
+        <flyway.version>4.0.3</flyway.version>
+        <plugin.tomcat.server>TomcatServer</plugin.tomcat.server>
+        <plugin.tomcat.url>http://localhost:8082/manager/text</plugin.tomcat.url>
+        <web.path>/</web.path>
     </properties>
 
     <build>
@@ -66,8 +70,36 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <testResources>
+            <testResource><directory>src/test/resources</directory></testResource>
+        </testResources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
+                <configuration>
+                    <sqlMigrationSeparator>__</sqlMigrationSeparator>
+                    <locations>
+                        <location>${flyway.location}</location>
+                    </locations>
+                    <url>${database.url}</url>
+                    <user>${database.username}</user>
+                    <password>${database.password}</password>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
@@ -76,15 +108,6 @@
                     <url>${plugin.tomcat.url}</url>
                     <server>${plugin.tomcat.server}</server>
                     <path>${web.path}</path>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -120,13 +143,17 @@
             <version>${org.hibernate.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
         <!-- not important -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.8.8</version>
         </dependency>
-
         <!-- if you add new dependency - check maven diagram -->
     </dependencies>
 </project>

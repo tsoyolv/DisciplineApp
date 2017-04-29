@@ -18,3 +18,7 @@ http://blog.jhades.org/how-does-spring-transactional-really-work/
 http://www.apache-maven.ru/profiles.html
 
 To use profile: Maven projects tab -> choose profile -> plugins -> tomcat7:redeploy
+
+flyway migration
+https://blog.codecentric.de/en/2017/01/flyway-tutorial-execute-migrations-using-maven/
+plugins -> flyway -> flyway:migrate

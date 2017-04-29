@@ -26,7 +26,7 @@ import java.util.Set;
 @Controller
 @EnableTransactionManagement
 @Deprecated /**
- @deprecated uses only for getting Entities
+ @deprecated it used only for getting Entities
  */
 public class HelloController {
 
