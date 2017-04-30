@@ -22,3 +22,6 @@ To use profile: Maven projects tab -> choose profile -> plugins -> tomcat7:redep
 flyway migration
 https://blog.codecentric.de/en/2017/01/flyway-tutorial-execute-migrations-using-maven/
 plugins -> flyway -> flyway:migrate
+
+maven executions, phase, goal. maven lifecycle
+https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html

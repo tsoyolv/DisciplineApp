@@ -98,6 +98,12 @@
                     <user>${database.username}</user>
                     <password>${database.password}</password>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals><goal>migrate</goal></goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -109,6 +115,14 @@
                     <server>${plugin.tomcat.server}</server>
                     <path>${web.path}</path>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>redeploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

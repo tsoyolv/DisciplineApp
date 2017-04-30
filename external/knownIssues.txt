@@ -19,3 +19,9 @@ Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.olts.discip
 solution: @Inheritance(strategy=InheritanceType.JOINED)
 
 jakson not working without getters
+
+app Could not be completely deleted. The presence of the remaining files may cause problems
+solution: One best way is to clean up the application's root directory in webapps manually.
+
+Server is not connected. Deploy is not available
+solution
