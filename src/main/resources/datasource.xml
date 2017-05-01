@@ -24,6 +24,11 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:db/hibernate/Hibernate.cfg.xml"/>
         <property name="packagesToScan" value="com.olts.discipline.model"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+            </props>
+        </property>
     </bean>
 
     <!-- for @Transactional -->

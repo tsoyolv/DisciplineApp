@@ -16,6 +16,7 @@
                 <database.url>jdbc:h2:~/disciplinedb</database.url>
                 <database.username>sa</database.username>
                 <database.password></database.password>
+                <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
                 <flyway.location>filesystem:src/main/resources/dev/db/flyway/migrations</flyway.location>
             </properties>
             <dependencies>
@@ -37,6 +38,7 @@
                 <database.url>jdbc:mysql://localhost:3306/disciplinedb?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</database.url>
                 <database.username>root</database.username>
                 <database.password>1234</database.password>
+                <hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
                 <flyway.location>filesystem:src/main/resources/db/flyway/migrations</flyway.location>
             </properties>
             <dependencies>
@@ -133,6 +135,12 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework</groupId>

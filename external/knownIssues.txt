@@ -25,3 +25,8 @@ solution: One best way is to clean up the application's root directory in webapp
 
 Server is not connected. Deploy is not available
 solution
+
+taskkill /f /im java.exe
+
+database may be already in use
+solution: clear catalina webapps ROOT

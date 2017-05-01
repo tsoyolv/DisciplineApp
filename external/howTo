@@ -25,3 +25,5 @@ plugins -> flyway -> flyway:migrate
 
 maven executions, phase, goal. maven lifecycle
 https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+
+flyway scripts has checksum. if script is changed you need to use flyway: clean

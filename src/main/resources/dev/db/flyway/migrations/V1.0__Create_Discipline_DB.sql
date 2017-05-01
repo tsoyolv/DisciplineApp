@@ -1,7 +1,10 @@
 CREATE schema if not exists disciplinedb;
 
+DROP TABLE `disciplinedb`.`user`;
+DROP TABLE `disciplinedb`.`habit`;
+
 CREATE TABLE IF NOT EXISTS `disciplinedb`.`user` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT NOT NULL,
   `create_when` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `login` VARCHAR(45) NULL,
   `password` VARCHAR(45) NULL,
@@ -15,10 +18,10 @@ CREATE TABLE IF NOT EXISTS `disciplinedb`.`user` (
   PRIMARY KEY (`id`));
 
 CREATE TABLE IF NOT EXISTS `disciplinedb`.`habit` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT NOT NULL,
   `name` VARCHAR(45) NULL,
   `difficulty` INT NULL,
-  `user_id` BIGINT(20) NOT NULL,
+  `user_id` BIGINT NOT NULL,
   `create_when` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `description` LONGTEXT NULL,
   PRIMARY KEY (`id`),

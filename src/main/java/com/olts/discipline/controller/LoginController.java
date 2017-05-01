@@ -2,6 +2,7 @@ package com.olts.discipline.controller;
 
 import com.olts.discipline.api.dao.UserDao;
 import com.olts.discipline.model.User;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
 @Deprecated
 /** @deprecated move it to reactjs */
 public class LoginController {
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class);
 
     @Resource(name = "userDao")
     private UserDao userDao;
@@ -34,6 +36,7 @@ public class LoginController {
     public ModelAndView executeLogin(@ModelAttribute("user") User user) {
         ModelAndView model;
         final User retrievedUser = userDao.get(user.getLogin());
+        LOGGER.debug(retrievedUser.toString());
         if (retrievedUser != null && retrievedUser.getPassword().equals(user.getPassword())) {
             System.out.println("User Login Successful");
             //todo request.setAttribute("loggedInUser", loginBean.getUsername());
