@@ -9,3 +9,8 @@ habit and tasks VS create common history table.
 What the reason to add local bootstrap.js if it can be downloaded through href?
 How to create in-memory db with create and insert to that db without spring config only in maven. DONE flyway
 How to enable server debug mode at another profile.
+Spring boot. (Time for moving this app to spring boot - about 2 hours)
+    Advantages: doesn't need tomcat or another servlet container
+                has integration with many frameworks
+    Disadvantages: pulls for itself many unused dependencies
+Spring boot has another way to work with maven properties and has own profiling.
