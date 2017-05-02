@@ -29,3 +29,5 @@ https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 flyway scripts has checksum. if script is changed you need to use flyway: clean
 
 http://www.mkyong.com/tutorials/spring-boot-tutorials/
+
+https://github.com/winterbe/spring-react-example
