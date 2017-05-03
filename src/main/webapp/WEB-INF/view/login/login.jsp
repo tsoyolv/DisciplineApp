@@ -2,15 +2,15 @@
 <%@ taglib prefix="spring_form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login/form-elements.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login/style.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css"/>
+<link rel="stylesheet" href="css/login/form-elements.css">
+<link rel="stylesheet" href="css/login/style.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
 
-<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.11.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.backstretch.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/jquery.backstretch.min.js"></script>
 
 <head>
 

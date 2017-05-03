@@ -1,4 +1,4 @@
-package com.olts.react;
+package com.olts.discipline;
 
 /**
  * @author Benjamin Winterberg

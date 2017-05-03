@@ -1,8 +1,6 @@
-package com.olts.discipline.controller;
+package com.olts.discipline;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.olts.react.Comment;
-import com.olts.react.React;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +27,7 @@ public class ReactMainController {
         this.mapper = new ObjectMapper();
     }
 
-    @RequestMapping("/react")
+    @RequestMapping("/")
     public String index(Map<String, Object> model) throws Exception {
         List<Comment> comments = service.getComments();
         String commentBox = react.renderCommentBox(comments);

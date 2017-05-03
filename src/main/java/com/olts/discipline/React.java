@@ -1,4 +1,4 @@
-package com.olts.react;
+package com.olts.discipline;
 
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 

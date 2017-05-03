@@ -1,6 +1,5 @@
-package com.olts.discipline.controller;
+package com.olts.discipline;
 
-import com.olts.react.Comment;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

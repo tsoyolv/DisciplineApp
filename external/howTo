@@ -31,3 +31,5 @@ flyway scripts has checksum. if script is changed you need to use flyway: clean
 http://www.mkyong.com/tutorials/spring-boot-tutorials/
 
 https://github.com/winterbe/spring-react-example
+
+https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
