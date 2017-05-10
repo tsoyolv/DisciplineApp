@@ -15,20 +15,13 @@
     </parent>
 
     <properties>
-        <database.driver>com.mysql.jdbc.Driver</database.driver>
-        <database.url>jdbc:mysql://localhost:3306/disciplinedb?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</database.url>
-        <database.username>root</database.username>
-        <database.password>1234</database.password>
         <hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
-        <flyway.location>filesystem:src/main/resources/db/flyway/migrations</flyway.location>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.springframework.version>4.3.8.RELEASE</org.springframework.version>
         <org.hibernate.version>5.2.5.Final</org.hibernate.version>
         <flyway.version>4.0.3</flyway.version>
-        <plugin.tomcat.server>TomcatServer</plugin.tomcat.server>
-        <plugin.tomcat.url>http://localhost:8082/manager/text</plugin.tomcat.url>
-        <web.path>/</web.path>
         <java.version>1.8</java.version>
+        <main.basedir>${basedir}/../..</main.basedir>
     </properties>
 
     <build>
@@ -47,27 +40,6 @@
         </testResources>
 
         <plugins>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>${flyway.version}</version>
-                <configuration>
-                    <sqlMigrationSeparator>__</sqlMigrationSeparator>
-                    <locations>
-                        <location>${flyway.location}</location>
-                    </locations>
-                    <url>${database.url}</url>
-                    <user>${database.username}</user>
-                    <password>${database.password}</password>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals><goal>migrate</goal></goals>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -89,17 +61,10 @@
 
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${org.hibernate.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
@@ -126,10 +91,8 @@
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.7.3</version>
-            <scope>test</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
         <!-- if you add new dependency - check maven diagram -->
     </dependencies>
