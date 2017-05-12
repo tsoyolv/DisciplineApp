@@ -18,8 +18,17 @@ import java.util.Set;
 public class User implements Serializable {
     private static final long serialVersionUID = 2082395294433209579L;
 
+    public User(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User() {
+    }
+
     @Column
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 
     @Column(name = "created_when")

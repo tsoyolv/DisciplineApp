@@ -14,3 +14,5 @@ Spring boot. (Time for moving this app to spring boot - about 2 hours)
                 has integration with many frameworks
     Disadvantages: pulls for itself many unused dependencies
 Spring boot has another way to work with maven properties and has own profiling.
+Spring boot uses org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration for flyway and similar frameworks.
+This is a java spring configuration. For getting bean you can inject it. Also you can overwrite it.
