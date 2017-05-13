@@ -18,14 +18,6 @@ import java.util.Set;
 public class User implements Serializable {
     private static final long serialVersionUID = 2082395294433209579L;
 
-    public User(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public User() {
-    }
-
     @Column
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -35,7 +27,7 @@ public class User implements Serializable {
     @Type(type = "timestamp")
     private Date createdWhen;
 
-    private String login;
+    private String username;
 
     private String password;
 
@@ -66,12 +58,18 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "taskUser", fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+    private String passwordConfirm;
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", createdWhen=" + createdWhen +
-                ", login='" + login + '\'' +
+                ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -98,12 +96,12 @@ public class User implements Serializable {
         this.createdWhen = createdWhen;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -184,5 +182,22 @@ public class User implements Serializable {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Transient
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 }

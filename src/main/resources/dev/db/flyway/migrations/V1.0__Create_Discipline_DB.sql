@@ -6,7 +6,7 @@ DROP TABLE `disciplinedb`.`habit`;
 CREATE TABLE IF NOT EXISTS `disciplinedb`.`user` (
   `id` BIGINT NOT NULL,
   `create_when` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `login` VARCHAR(45) NULL,
+  `username` VARCHAR(45) NULL,
   `password` VARCHAR(45) NULL,
   `first_name` VARCHAR(45) NULL,
   `second_name` VARCHAR(45) NULL,

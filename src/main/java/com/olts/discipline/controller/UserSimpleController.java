@@ -20,7 +20,7 @@ public class UserSimpleController {
     @ResponseBody
     public String allUsers() {
         final String[] s = {""};
-        repository.findAll().forEach(e -> s[0] += e + "\n");
+        repository.findAll().forEach(e -> s[0] += e + "\r\n");
         return s[0];
     }
 }

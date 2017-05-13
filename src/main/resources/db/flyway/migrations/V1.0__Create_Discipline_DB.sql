@@ -20,7 +20,7 @@ USE `disciplinedb` ;
 CREATE TABLE IF NOT EXISTS `disciplinedb`.`user` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `created_when` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `login` VARCHAR(45) NULL,
+  `username` VARCHAR(45) NULL,
   `password` VARCHAR(45) NULL,
   `first_name` VARCHAR(45) NULL,
   `second_name` VARCHAR(45) NULL,
