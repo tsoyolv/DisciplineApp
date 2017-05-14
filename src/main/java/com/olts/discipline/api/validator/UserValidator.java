@@ -3,15 +3,16 @@ package com.olts.discipline.api.validator;
 
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import javax.annotation.Resource;
+
 @Component
 public class UserValidator implements Validator {
-    @Autowired
+    @Resource
     private UserService userService;
 
     @Override

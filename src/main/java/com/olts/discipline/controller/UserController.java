@@ -29,6 +29,7 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
+        // todo check for logged user
         model.addAttribute("userForm", new User());
 
         return "registration";
@@ -51,13 +52,25 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
+        // todo check for logged user
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
 
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
-
+        model.addAttribute("userForm", new User());
         return "login";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(@ModelAttribute("userForm") User userForm) {
+        User findByUsername = userService.findByUsername(userForm.getUsername());
+        if (!findByUsername.equals(userForm)) {
+            return "login";
+        } else {
+            securityService.autologin(userForm.getUsername(), userForm.getPassword());
+            return "redirect:/welcome";
+        }
     }
 
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)

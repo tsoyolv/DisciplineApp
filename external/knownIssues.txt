@@ -30,3 +30,6 @@ taskkill /f /im java.exe
 
 database may be already in use
 solution: clear catalina webapps ROOT
+
+UsernamePasswordAuthenticationFilter : An internal error occurred while trying to authenticate the user.
+sol: see org.springframework.security.core.userdetails.UserDetailsService implementation
