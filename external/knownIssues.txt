@@ -33,3 +33,9 @@ solution: clear catalina webapps ROOT
 
 UsernamePasswordAuthenticationFilter : An internal error occurred while trying to authenticate the user.
 sol: see org.springframework.security.core.userdetails.UserDetailsService implementation
+
+when spring security enabled, resouces(css or js) can't be loaded
+sol: The static content in classpath:/static is served at the root of the application (i.e. /*), whether or not the
+application is secure, so you need to match on specific paths underneath the root. Spring Boot permits all access by
+default to /js/**, /css/**, /images/** (see SpringBootWebSecurityConfiguration for details), but you may have switched
+that off (can't see the rest of your code).
