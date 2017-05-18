@@ -39,3 +39,8 @@ sol: The static content in classpath:/static is served at the root of the applic
 application is secure, so you need to match on specific paths underneath the root. Spring Boot permits all access by
 default to /js/**, /css/**, /images/** (see SpringBootWebSecurityConfiguration for details), but you may have switched
 that off (can't see the rest of your code).
+
+Spring Boot autoconfigured webapp: resolve model variables
+sol: Workaround You can use Alt+Enter shortcut to invoke intention "Declare external variable in comment annotation" in order to
+get rid of "unresolved model attribute" in your views.
+https://youtrack.jetbrains.com/issue/IDEA-132738#u=1437590406765

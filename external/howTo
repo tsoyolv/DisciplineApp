@@ -62,3 +62,8 @@ https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#a
 ========================================================================================================================
 ============================================== SPRING SECURITY END =====================================================
 ========================================================================================================================
+
+Thymleaf
+th:field  for POJO fields.
+http://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html#validation-and-error-messages
+8 Validation and Error Messages
