@@ -28,11 +28,11 @@
 <div class="container">
     <!--/*@thymesVar id="userForm" type="com.olts.discipline.model.User"*/-->
     <form method="POST" action="#" class="form-signin" th:object="${userForm}" th:action="@{/login}">
-        <h2 class="form-heading">Log in thym</h2>
-        <div th:class="${error != null} ? 'form-group has-error' : 'form-group' ">
+        <h2 class="form-heading">Log in</h2>
+        <div class="form-group has-error">
             <span th:text="${message}"></span>
-            <input th:field="${userForm.username}" name="username" type="text" class="form-control" placeholder="Username" autofocus="autofocus"/>
-            <input th:field="${userForm.password}" name="password" type="password" class="form-control" placeholder="Password"/>
+            <input name="username" type="text" class="form-control" placeholder="Username" autofocus="autofocus" th:field="${userForm.username}"/>
+            <input name="password" type="password" class="form-control" placeholder="Password" th:field="${userForm.password}"/>
             <span th:text="${error}"> </span>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>

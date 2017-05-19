@@ -30,38 +30,22 @@
     <!--/*@thymesVar id="userForm" type="com.olts.discipline.model.User"*/-->
     <form method="POST" class="form-signin" th:object="${userForm}">
         <h2 class="form-signin-heading">Create your account</h2>
-        <!--<spring:bind path="username">-->
-
-
-            <div class="form-group ${status.error ? 'has-error' : ''}">
-                <input type="text" th:field="${userForm.username}" class="form-control" placeholder="Username" autofocus="autofocus"/>
-            <!--    <form:errors path="username"></form:errors>-->
-            </div>
-
-
-        <!--</spring:bind>-->
-
-     <!--   <spring:bind path="password">-->
-            <div class="form-group ${status.error ? 'has-error' : ''}">
-                <input type="password" th:field="${userForm.password}" class="form-control" placeholder="Password"/>
-                <!--<form:errors path="password"></form:errors>-->
-            </div>
-       <!-- </spring:bind>-->
-
-        <!--<spring:bind path="passwordConfirm">-->
-            <div class="form-group ${status.error ? 'has-error' : ''}">
-
-
-                <input type="password" th:field="${userForm.passwordConfirm}" class="form-control" placeholder="Confirm your password"/>
-
-
-                <!--<form:errors path="passwordConfirm"></form:errors>-->
-            </div>
-        <!--</spring:bind>-->
+        <div class="form-group has-error">
+            <input type="text" class="form-control" placeholder="Username" autofocus="autofocus" th:field="${userForm.username}"/>
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+        </div>
+        <div class="form-group has-error">
+            <input type="password" class="form-control" placeholder="Password" th:field="${userForm.password}"/>
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+        </div>
+        <!--<div th:class="${#fields.hasErrors('passwordConfirm')} ? 'form-group has-error' : 'form-group'">-->
+        <div class="form-group has-error">
+            <input type="password" class="form-control" placeholder="Confirm your password" th:field="${userForm.passwordConfirm}"/>
+            <p th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></p>
+        </div>
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form>
-
 </div>
 </body>
 </html>
