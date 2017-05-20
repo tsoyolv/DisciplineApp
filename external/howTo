@@ -68,3 +68,5 @@ th:field  for POJO fields.
 http://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html#validation-and-error-messages
 8 Validation and Error Messages
 http://blog.codeleak.pl/2016/12/thymeleaf-reload-templates-and-static-resources.html - fast reload static files
+thymleaf binded fields validation: <p th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></p>
+onclick="document.forms['logoutForm'] - html uses its forms
