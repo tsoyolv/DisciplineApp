@@ -12,7 +12,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-
+        registry.addViewController("/react").setViewName("react_example");
     }
 
 }
