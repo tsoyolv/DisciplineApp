@@ -8,7 +8,6 @@
 - Hibernate
 
 To start application locally you need to install:
-1. Java 8 
-2. Maven
-
-Start SpringBootWebApplication
+1. Start maven install - it creates react js files.
+2. Start SpringBootWebApplication
+Maybe you will have some issues - see it in knownIssues first.

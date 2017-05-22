@@ -29,6 +29,15 @@ public class DatabaseLoader implements CommandLineRunner {
         newUser.setSecondName("Tsoi");
         newUser.setLastName("Vyacheslavovich");
         newUser.setUsername("OLTS");
+
         this.repository.save(newUser);
+
+        User defaultUser = new User();
+        defaultUser.setCreatedWhen(new Date());
+        defaultUser.setFirstName("Ivan");
+        defaultUser.setSecondName("Ivanov");
+        defaultUser.setLastName("Ivanovich");
+
+        this.repository.save(defaultUser);
     }
 }

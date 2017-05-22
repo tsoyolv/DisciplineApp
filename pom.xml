@@ -90,8 +90,12 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>static/node_modules/**/*.*</exclude>
+                </excludes>
             </resource>
         </resources>
+
         <testResources>
             <testResource><directory>src/test/resources</directory></testResource>
         </testResources>
@@ -116,8 +120,8 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v4.4.5</nodeVersion>
-                            <npmVersion>3.9.2</npmVersion>
+                            <nodeVersion>v6.9.4</nodeVersion>
+                            <npmVersion>4.1.1</npmVersion>
                         </configuration>
                     </execution>
                     <execution>

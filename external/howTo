@@ -73,3 +73,6 @@ onclick="document.forms['logoutForm'] - html uses its forms
 
 Lombok
 Use idea plugin for lombok: https://plugins.jetbrains.com/plugin/6317-lombok-plugin
+
+React + spring boot: https://spring.io/guides/tutorials/react-and-spring-data-rest/
+https://habrahabr.ru/post/321552/

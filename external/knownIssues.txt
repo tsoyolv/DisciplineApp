@@ -44,3 +44,10 @@ Spring Boot autoconfigured webapp: resolve model variables
 sol: Workaround You can use Alt+Enter shortcut to invoke intention "Declare external variable in comment annotation" in order to
 get rid of "unresolved model attribute" in your views.
 https://youtrack.jetbrains.com/issue/IDEA-132738#u=1437590406765
+
+Cannot compile User or another POJO
+sol: add lombok plugin.
+
+The plugin com.github.eirslett:frontend-maven-plugin:1.4 requires Maven version 3.1.0
+idea uses maven 3 by default
+sol: change it in settings

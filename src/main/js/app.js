@@ -31,7 +31,7 @@ class UserList extends React.Component {
             <User key={user._links.self.href} user={user}/>
         );
         return (
-            <table>
+            <table class="table">
                 <tbody>
                 <tr>
                     <th>First Name</th>
