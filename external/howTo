@@ -76,3 +76,7 @@ Use idea plugin for lombok: https://plugins.jetbrains.com/plugin/6317-lombok-plu
 
 React + spring boot: https://spring.io/guides/tutorials/react-and-spring-data-rest/
 https://habrahabr.ru/post/321552/
+
+For init package.json file (config file)
+download nodejs: https://nodejs.org/en/download/
+run npm init in project folder
