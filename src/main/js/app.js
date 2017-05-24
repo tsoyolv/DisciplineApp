@@ -1,15 +1,23 @@
 /**
- * Created by tsoyo on 21.05.2017.
+ * TcoiOleg on 21.05.2017.
  */
 const React = require('react');
 const ReactDOM = require('react-dom')
 const client = require('./client');
 
+const follow = require('./follow');
+
+const root = '/api';
+
 class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {users: []};
+        this.state = {users: [], attributes: [], pageSize: 2, links: {}};
+        this.updatePageSize = this.updatePageSize.bind(this);
+        this.onCreate = this.onCreate.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.onNavigate = this.onNavigate.bind(this);
     }
 
     componentDidMount() {
@@ -68,8 +76,8 @@ class App extends React.Component {
         });
     }
 
-    onDelete(employee) {
-        client({method: 'DELETE', path: employee._links.self.href}).done(response => {
+    onDelete(user) {
+        client({method: 'DELETE', path: user._links.self.href}).done(response => {
             this.loadFromServer(this.state.pageSize);
         });
     }
@@ -82,15 +90,33 @@ class App extends React.Component {
 
     render() {
         return (
-            <UserList users={this.state.users}/>
+            <div>
+                <CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
+                <UserList users={this.state.users}
+                          links={this.state.links}
+                          pageSize={this.state.pageSize}
+                          onNavigate={this.onNavigate}
+                          onDelete={this.onDelete}
+                          updatePageSize={this.updatePageSize}/>
+            </div>
         )
     }
 }
 
 class UserList extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleNavFirst = this.handleNavFirst.bind(this);
+        this.handleNavPrev = this.handleNavPrev.bind(this);
+        this.handleNavNext = this.handleNavNext.bind(this);
+        this.handleNavLast = this.handleNavLast.bind(this);
+        this.handleInput = this.handleInput.bind(this);
+    }
+
     render() {
         var users = this.props.users.map(user =>
-            <User key={user._links.self.href} employee={user} onDelete={this.props.onDelete}/>
+            <User key={user._links.self.href} user={user} onDelete={this.props.onDelete}/>
         );
 
         var navLinks = [];

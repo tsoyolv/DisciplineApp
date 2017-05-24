@@ -80,3 +80,7 @@ https://habrahabr.ru/post/321552/
 For init package.json file (config file)
 download nodejs: https://nodejs.org/en/download/
 run npm init in project folder
+
+Quick rebuild for frontend:
+1. run maven plugin: frontend:webpack
+2. Quick rebuild for static files (spring boot dev plugin)
