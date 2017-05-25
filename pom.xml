@@ -94,6 +94,9 @@
                     <exclude>static/node_modules/**/*.*</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <directory>src/main/frontend/web_resources</directory>
+            </resource>
         </resources>
 
         <testResources>
