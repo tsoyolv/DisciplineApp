@@ -1,3 +1,4 @@
+/* DANGER! There are some limits for config. You should add all outputs in built folder */
 var path = require('path');
 
 module.exports = {
