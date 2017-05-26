@@ -83,19 +83,19 @@
 
     <build>
         <finalName>disciplineWebApp</finalName>
-        <sourceDirectory>src/main/java</sourceDirectory>
+        <sourceDirectory>src/main/backend/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
 
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/backend/resources</directory>
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>static/node_modules/**/*.*</exclude>
                 </excludes>
             </resource>
             <resource>
-                <directory>src/main/frontend/web_resources</directory>
+                <directory>src/main/frontend/webresources</directory>
             </resource>
         </resources>
 
