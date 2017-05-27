@@ -1,6 +1,8 @@
 /**
  * TcoiOleg on 21.05.2017.
  */
+'use strict';
+
 const React = require('react');
 const ReactDOM = require('react-dom')
 const client = require('./client');
@@ -13,7 +15,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {users: [], attributes: [], pageSize: 2, links: {}};
+        this.state = {habits: [], attributes: [], pageSize: 2, links: {}};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onDelete = this.onDelete.bind(this);
@@ -26,36 +28,36 @@ class App extends React.Component {
 
     loadFromServer(pageSize) {
         follow(client, root, [
-            {rel: 'users', params: {size: pageSize}}]
-        ).then(userCollection => {
+            {rel: 'habits', params: {size: pageSize}}]
+        ).then(habitCollection => {
             return client({
                 method: 'GET',
-                path: userCollection.entity._links.profile.href,
+                path: habitCollection.entity._links.profile.href,
                 headers: {'Accept': 'application/schema+json'}
             }).then(schema => {
                 this.schema = schema.entity;
-                return userCollection;
+                return habitCollection;
             });
-        }).done(userCollection => {
+        }).done(habitCollection => {
             this.setState({
-                users: userCollection.entity._embedded.users,
+                habits: habitCollection.entity._embedded.habits,
                 attributes: Object.keys(this.schema.properties),
                 pageSize: pageSize,
-                links: userCollection.entity._links});
+                links: habitCollection.entity._links});
         });
     }
 
-    onCreate(newUser) {
-        follow(client, root, ['users']).then(userCollection => {
+    onCreate(newHabit) {
+        follow(client, root, ['habits']).then(habitCollection => {
             return client({
                 method: 'POST',
-                path: userCollection.entity._links.self.href,
-                entity: newUser,
+                path: habitCollection.entity._links.self.href,
+                entity: newHabit,
                 headers: {'Content-Type': 'application/json'}
             })
         }).then(response => {
             return follow(client, root, [
-                {rel: 'users', params: {'size': this.state.pageSize}}]);
+                {rel: 'habits', params: {'size': this.state.pageSize}}]);
         }).done(response => {
             if (typeof response.entity._links.last != "undefined") {
                 this.onNavigate(response.entity._links.last.href);
@@ -66,18 +68,18 @@ class App extends React.Component {
     }
 
     onNavigate(navUri) {
-        client({method: 'GET', path: navUri}).done(userCollection => {
+        client({method: 'GET', path: navUri}).done(habitCollection => {
             this.setState({
-                users: userCollection.entity._embedded.users,
+                habits: habitCollection.entity._embedded.habits,
                 attributes: this.state.attributes,
                 pageSize: this.state.pageSize,
-                links: userCollection.entity._links
+                links: habitCollection.entity._links
             });
         });
     }
 
-    onDelete(user) {
-        client({method: 'DELETE', path: user._links.self.href}).done(response => {
+    onDelete(habit) {
+        client({method: 'DELETE', path: habit._links.self.href}).done(response => {
             this.loadFromServer(this.state.pageSize);
         });
     }
@@ -92,18 +94,18 @@ class App extends React.Component {
         return (
             <div>
                 <CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
-                <UserList users={this.state.users}
-                          links={this.state.links}
-                          pageSize={this.state.pageSize}
-                          onNavigate={this.onNavigate}
-                          onDelete={this.onDelete}
-                          updatePageSize={this.updatePageSize}/>
+                <HabitList habits={this.state.habits}
+                           links={this.state.links}
+                           pageSize={this.state.pageSize}
+                           onNavigate={this.onNavigate}
+                           onDelete={this.onDelete}
+                           updatePageSize={this.updatePageSize}/>
             </div>
         )
     }
 }
 
-class UserList extends React.Component {
+class HabitList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -115,8 +117,8 @@ class UserList extends React.Component {
     }
 
     render() {
-        var users = this.props.users.map(user =>
-            <User key={user._links.self.href} user={user} onDelete={this.props.onDelete}/>
+        var habits = this.props.habits.map(habit =>
+            <Habit key={habit._links.self.href} habit={habit} onDelete={this.props.onDelete}/>
         );
 
         var navLinks = [];
@@ -135,16 +137,16 @@ class UserList extends React.Component {
 
         return (
             <div>
-                <input ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
+                <input placeholder="page size" ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
                 <table>
                     <tbody>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Second Name</th>
+                        <th>Name</th>
+                        <th>Difficulty</th>
+                        <th>Description</th>
                         <th></th>
                     </tr>
-                    {users}
+                    {habits}
                     </tbody>
                 </table>
                 <div>
@@ -186,22 +188,22 @@ class UserList extends React.Component {
     }
 }
 
-class User extends React.Component {
+class Habit extends React.Component {
     constructor(props) {
         super(props);
         this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleDelete() {
-        this.props.onDelete(this.props.user);
+        this.props.onDelete(this.props.habit);
     }
 
     render() {
         return (
             <tr>
-                <td>{this.props.user.firstName}</td>
-                <td>{this.props.user.lastName}</td>
-                <td>{this.props.user.secondName}</td>
+                <td>{this.props.habit.name}</td>
+                <td>{this.props.habit.difficulty}</td>
+                <td>{this.props.habit.description}</td>
                 <td>
                     <button onClick={this.handleDelete}>Delete</button>
                 </td>
@@ -219,11 +221,11 @@ class CreateDialog extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        var newUser = {};
+        var newHabit = {};
         this.props.attributes.forEach(attribute => {
-            newUser[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
+            newHabit[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
         });
-        this.props.onCreate(newUser);
+        this.props.onCreate(newHabit);
 
         // clear out the dialog's inputs
         this.props.attributes.forEach(attribute => {
@@ -243,13 +245,13 @@ class CreateDialog extends React.Component {
 
         return (
             <div>
-                <a href="#createUser">Create</a>
+                <a href="#createHabit">Create</a>
 
-                <div id="createUser" className="modalDialog">
+                <div id="createHabit" className="modalDialog">
                     <div>
                         <a href="#" title="Close" className="close">X</a>
 
-                        <h2>Create new user</h2>
+                        <h2>Create new habit</h2>
 
                         <form>
                             {inputs}
