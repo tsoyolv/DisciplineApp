@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="css/main.css"/>
 <head lang="en">
     <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
     <title>ReactJS + Spring Data REST</title>
 </head>
 <body>
@@ -22,13 +23,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" th:href="@{/}"> NEW Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#">Registration</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/react}">React example</a>
+                <a class="nav-link" th:href="@{/habit}">Habits</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">

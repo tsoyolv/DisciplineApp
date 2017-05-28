@@ -17,11 +17,12 @@ Backend:
   - Spring security
   - Spring data
   - Spring rest
-- Thymeleaf
 
 Frontend:
+- Thymeleaf
 - React
 - Webpack
+- NPM
 
 Start
 -
