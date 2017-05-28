@@ -19,6 +19,7 @@ public class Habit implements Serializable {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 
     private String name;

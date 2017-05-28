@@ -53,7 +53,8 @@ class App extends React.Component {
                 method: 'POST',
                 path: habitCollection.entity._links.self.href,
                 entity: newHabit,
-                headers: {'Content-Type': 'application/json'}
+                headers: {'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN' : $("meta[name='_csrf']").attr("content")}
             })
         }).then(response => {
             return follow(client, root, [
@@ -79,7 +80,9 @@ class App extends React.Component {
     }
 
     onDelete(habit) {
-        client({method: 'DELETE', path: habit._links.self.href}).done(response => {
+        client({method: 'DELETE', path: habit._links.self.href,
+            headers: {'Content-Type': 'application/json',
+            'X-CSRF-TOKEN' : $("meta[name='_csrf']").attr("content")} }).done(response => {
             this.loadFromServer(this.state.pageSize);
         });
     }
