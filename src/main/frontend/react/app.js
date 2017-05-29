@@ -7,6 +7,8 @@ const React = require('react');
 const ReactDOM = require('react-dom')
 const client = require('./client');
 
+const when = require('when');
+
 const follow = require('./follow');
 
 const root = '/api';
@@ -18,6 +20,7 @@ class App extends React.Component {
         this.state = {habits: [], attributes: [], pageSize: 2, links: {}};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
+        this.onUpdate = this.onUpdate.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onNavigate = this.onNavigate.bind(this);
     }
@@ -33,28 +36,48 @@ class App extends React.Component {
             return client({
                 method: 'GET',
                 path: habitCollection.entity._links.profile.href,
-                headers: {'Accept': 'application/schema+json'}
+                headers: {
+                    'Accept': 'application/schema+json',
+                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                }
             }).then(schema => {
                 this.schema = schema.entity;
+                this.links = habitCollection.entity._links;
                 return habitCollection;
             });
-        }).done(habitCollection => {
+        }).then(habitCollection => {
+            return habitCollection.entity._embedded.habits.map(habit =>
+                client({
+                    method: 'GET',
+                    path: habit._links.self.href,
+                    headers: {
+                        'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                    }
+                })
+            );
+        }).then(habitPromises => {
+            return when.all(habitPromises);
+        }).done(habits => {
             this.setState({
-                habits: habitCollection.entity._embedded.habits,
+                habits: habits,
                 attributes: Object.keys(this.schema.properties),
                 pageSize: pageSize,
-                links: habitCollection.entity._links});
+                links: this.links
+            });
         });
     }
 
     onCreate(newHabit) {
+        var self = this;
         follow(client, root, ['habits']).then(habitCollection => {
             return client({
                 method: 'POST',
                 path: habitCollection.entity._links.self.href,
                 entity: newHabit,
-                headers: {'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN' : $("meta[name='_csrf']").attr("content")}
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                }
             })
         }).then(response => {
             return follow(client, root, [
@@ -68,21 +91,67 @@ class App extends React.Component {
         });
     }
 
+    onUpdate(habit, updatedHabit) {
+        client({
+            method: 'PUT',
+            path: habit.entity._links.self.href,
+            entity: updatedHabit,
+            headers: {
+                'Content-Type': 'application/json',
+                'If-Match': habit.headers.Etag,
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {
+            this.loadFromServer(this.state.pageSize);
+        }, response => {
+            if (response.status.code === 412) {
+                alert('DENIED: Unable to update ' +
+                    habit.entity._links.self.href + '. Your copy is stale.');
+            }
+        });
+    }
+
     onNavigate(navUri) {
-        client({method: 'GET', path: navUri}).done(habitCollection => {
+        client({
+            method: 'GET',
+            path: navUri,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).then(habitCollection => {
+            this.links = habitCollection.entity._links;
+
+            return habitCollection.entity._embedded.habits.map(habit =>
+                client({
+                    method: 'GET',
+                    path: habit._links.self.href,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                    }
+                })
+            );
+        }).then(habitPromises => {
+            return when.all(habitPromises);
+        }).done(habits => {
             this.setState({
-                habits: habitCollection.entity._embedded.habits,
-                attributes: this.state.attributes,
+                habits: habits,
+                attributes: Object.keys(this.schema.properties),
                 pageSize: this.state.pageSize,
-                links: habitCollection.entity._links
+                links: this.links
             });
         });
     }
 
     onDelete(habit) {
-        client({method: 'DELETE', path: habit._links.self.href,
-            headers: {'Content-Type': 'application/json',
-            'X-CSRF-TOKEN' : $("meta[name='_csrf']").attr("content")} }).done(response => {
+        client({
+            method: 'DELETE', path: habit._links.self.href,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {
             this.loadFromServer(this.state.pageSize);
         });
     }
@@ -100,7 +169,9 @@ class App extends React.Component {
                 <HabitList habits={this.state.habits}
                            links={this.state.links}
                            pageSize={this.state.pageSize}
+                           attributes={this.state.attributes}
                            onNavigate={this.onNavigate}
+                           onUpdate={this.onUpdate}
                            onDelete={this.onDelete}
                            updatePageSize={this.updatePageSize}/>
             </div>
@@ -121,7 +192,11 @@ class HabitList extends React.Component {
 
     render() {
         var habits = this.props.habits.map(habit =>
-            <Habit key={habit._links.self.href} habit={habit} onDelete={this.props.onDelete}/>
+            <Habit key={habit._links.self.href}
+                   habit={habit}
+                   attributes={this.props.attributes}
+                   onUpdate={this.props.onUpdate}
+                   onDelete={this.props.onDelete}/>
         );
 
         var navLinks = [];
@@ -140,13 +215,15 @@ class HabitList extends React.Component {
 
         return (
             <div>
-                <input placeholder="page size" ref="pageSize" defaultValue={this.props.pageSize} onInput={this.handleInput}/>
+                <input placeholder="page size" ref="pageSize" defaultValue={this.props.pageSize}
+                       onInput={this.handleInput}/>
                 <table>
                     <tbody>
                     <tr>
                         <th>Name</th>
                         <th>Difficulty</th>
                         <th>Description</th>
+                        <th></th>
                         <th></th>
                     </tr>
                     {habits}
@@ -170,7 +247,7 @@ class HabitList extends React.Component {
         }
     }
 
-    handleNavFirst(e){
+    handleNavFirst(e) {
         e.preventDefault();
         this.props.onNavigate(this.props.links.first.href);
     }
@@ -208,6 +285,11 @@ class Habit extends React.Component {
                 <td>{this.props.habit.difficulty}</td>
                 <td>{this.props.habit.description}</td>
                 <td>
+                    <UpdateDialog habit={this.props.habit}
+                                  attributes={this.props.attributes}
+                                  onUpdate={this.props.onUpdate}/>
+                </td>
+                <td>
                     <button onClick={this.handleDelete}>Delete</button>
                 </td>
             </tr>
@@ -242,7 +324,7 @@ class CreateDialog extends React.Component {
     render() {
         var inputs = this.props.attributes.map(attribute =>
             <p key={attribute}>
-                <input type="text" placeholder={attribute} ref={attribute} className="field" />
+                <input type="text" placeholder={attribute} ref={attribute} className="field"/>
             </p>
         );
 
@@ -266,6 +348,55 @@ class CreateDialog extends React.Component {
         )
     }
 }
+
+class UpdateDialog extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        var updatedHabit = {};
+        this.props.attributes.forEach(attribute => {
+            updatedHabit[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
+        });
+        this.props.onUpdate(this.props.habit, updatedHabit);
+        window.location = "#";
+    }
+
+    render() {
+        var inputs = this.props.attributes.map(attribute =>
+            <p key={this.props.habit.entity[attribute]}>
+                <input type="text" placeholder={attribute}
+                       defaultValue={this.props.habit.entity[attribute]}
+                       ref={attribute} className="field"/>
+            </p>
+        );
+
+        var dialogId = "updateHabit-" + this.props.habit.entity._links.self.href;
+
+        return (
+            <div key={this.props.habit.entity._links.self.href}>
+                <a href={"#" + dialogId}>Update</a>
+                <div id={dialogId} className="modalDialog">
+                    <div>
+                        <a href="#" title="Close" className="close">X</a>
+
+                        <h2>Update an habit</h2>
+
+                        <form>
+                            {inputs}
+                            <button onClick={this.handleSubmit}>Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+};
 
 ReactDOM.render(
     <App />,
