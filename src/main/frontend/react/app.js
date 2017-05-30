@@ -51,6 +51,7 @@ class App extends React.Component {
                     method: 'GET',
                     path: habit._links.self.href,
                     headers: {
+                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
                     }
                 })
@@ -69,10 +70,10 @@ class App extends React.Component {
 
     onCreate(newHabit) {
         var self = this;
-        follow(client, root, ['habits']).then(habitCollection => {
+        follow(client, root, ['habits']).then(response => {
             return client({
                 method: 'POST',
-                path: habitCollection.entity._links.self.href,
+                path: response.entity._links.self.href,
                 entity: newHabit,
                 headers: {
                     'Content-Type': 'application/json',
@@ -146,7 +147,7 @@ class App extends React.Component {
 
     onDelete(habit) {
         client({
-            method: 'DELETE', path: habit._links.self.href,
+            method: 'DELETE', path: habit.entity._links.self.href,
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
@@ -192,7 +193,7 @@ class HabitList extends React.Component {
 
     render() {
         var habits = this.props.habits.map(habit =>
-            <Habit key={habit._links.self.href}
+            <Habit key={habit.entity._links.self.href}
                    habit={habit}
                    attributes={this.props.attributes}
                    onUpdate={this.props.onUpdate}
@@ -281,9 +282,9 @@ class Habit extends React.Component {
     render() {
         return (
             <tr>
-                <td>{this.props.habit.name}</td>
-                <td>{this.props.habit.difficulty}</td>
-                <td>{this.props.habit.description}</td>
+                <td>{this.props.habit.entity.name}</td>
+                <td>{this.props.habit.entity.difficulty}</td>
+                <td>{this.props.habit.entity.description}</td>
                 <td>
                     <UpdateDialog habit={this.props.habit}
                                   attributes={this.props.attributes}
