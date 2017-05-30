@@ -111,3 +111,5 @@ ANS: Configured by NPM "package.json" - configuration for libraries and what fra
 Quick rebuild for frontend:
 1. run maven plugin: frontend:webpack
 2. Quick rebuild for static files (spring boot dev plugin)
+
+What the reason to add local bootstrap.js if it can be downloaded through href?
