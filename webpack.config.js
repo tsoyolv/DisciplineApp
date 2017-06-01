@@ -1,11 +1,18 @@
 /* DANGER! There are some limits for config. You should add all outputs in built folder */
 var path = require('path');
 
+var node_dir = __dirname + '/node_modules';
+
 module.exports = {
     entry: './src/main/frontend/react/app.js',
     devtool: 'sourcemaps',
     cache: true,
     debug: true,
+    resolve: {
+        alias: {
+            'stompjs': node_dir + '/stompjs/lib/stomp.js',
+        }
+    },
     output: {
         path: __dirname,
         filename: './src/main/frontend/webresources/templates/built/bundle.js'

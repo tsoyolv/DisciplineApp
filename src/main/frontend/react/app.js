@@ -11,22 +11,31 @@ const when = require('when');
 
 const follow = require('./follow');
 
+const stompClient = require('./websocket-listener');
+
 const root = '/api';
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {habits: [], attributes: [], pageSize: 2, links: {}};
+        this.state = {habits: [], attributes: [],  page: 1, pageSize: 2, links: {}};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onNavigate = this.onNavigate.bind(this);
+        this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
+        this.refreshAndGoToLastPage = this.refreshAndGoToLastPage.bind(this);
     }
 
     componentDidMount() {
         this.loadFromServer(this.state.pageSize);
+        stompClient.register([
+            {route: '/topic/newHabit', callback: this.refreshAndGoToLastPage},
+            {route: '/topic/updateHabit', callback: this.refreshCurrentPage},
+            {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}
+        ]);
     }
 
     loadFromServer(pageSize) {
@@ -80,16 +89,7 @@ class App extends React.Component {
                     'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
                 }
             })
-        }).then(response => {
-            return follow(client, root, [
-                {rel: 'habits', params: {'size': this.state.pageSize}}]);
-        }).done(response => {
-            if (typeof response.entity._links.last != "undefined") {
-                this.onNavigate(response.entity._links.last.href);
-            } else {
-                this.onNavigate(response.entity._links.self.href);
-            }
-        });
+        })
     }
 
     onUpdate(habit, updatedHabit) {
@@ -103,7 +103,7 @@ class App extends React.Component {
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
         }).done(response => {
-            this.loadFromServer(this.state.pageSize);
+            /* Let the websocket handler update the state */
         }, response => {
             if (response.status.code === 412) {
                 alert('DENIED: Unable to update ' +
@@ -152,8 +152,6 @@ class App extends React.Component {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
-        }).done(response => {
-            this.loadFromServer(this.state.pageSize);
         });
     }
 
@@ -161,6 +159,49 @@ class App extends React.Component {
         if (pageSize !== this.state.pageSize) {
             this.loadFromServer(pageSize);
         }
+    }
+
+    refreshAndGoToLastPage(message) {
+        follow(client, root, [{
+            rel: 'habits',
+            params: {size: this.state.pageSize}
+        }]).done(response => {
+            if (response.entity._links.last !== undefined) {
+                this.onNavigate(response.entity._links.last.href);
+            } else {
+                this.onNavigate(response.entity._links.self.href);
+            }
+        })
+    }
+
+    refreshCurrentPage(message) {
+        follow(client, root, [{
+            rel: 'habits',
+            params: {
+                size: this.state.pageSize,
+                page: this.state.page.number
+            }
+        }]).then(habitCollection => {
+            this.links = habitCollection.entity._links;
+            this.page = habitCollection.entity.page;
+
+            return habitCollection.entity._embedded.habits.map(habit => {
+                return client({
+                    method: 'GET',
+                    path: habit._links.self.href
+                })
+            });
+        }).then(habitPromises => {
+            return when.all(habitPromises);
+        }).then(habits => {
+            this.setState({
+                page: this.page,
+                habits: habits,
+                attributes: Object.keys(this.schema.properties),
+                pageSize: this.state.pageSize,
+                links: this.links
+            });
+        });
     }
 
     render() {
