@@ -17,14 +17,14 @@ import static com.olts.discipline.configuration.WebSocketConfiguration.MESSAGE_P
  */
 @Component
 @RepositoryEventHandler(Habit.class)
-public class EventHandler {
+public class HabitEventHandler {
 
     private final SimpMessagingTemplate websocket;
 
     private final EntityLinks entityLinks;
 
     @Autowired
-    public EventHandler(SimpMessagingTemplate websocket, EntityLinks entityLinks) {
+    public HabitEventHandler(SimpMessagingTemplate websocket, EntityLinks entityLinks) {
         this.websocket = websocket;
         this.entityLinks = entityLinks;
     }

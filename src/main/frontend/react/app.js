@@ -78,9 +78,8 @@ class App extends React.Component {
     }
 
     onCreate(newHabit) {
-        var self = this;
-        follow(client, root, ['habits']).then(response => {
-            return client({
+        follow(client, root, ['habits']).done(response => {
+            client({
                 method: 'POST',
                 path: response.entity._links.self.href,
                 entity: newHabit,

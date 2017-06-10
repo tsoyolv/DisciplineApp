@@ -5,6 +5,10 @@ import com.olts.discipline.api.repository.UserRepository;
 import com.olts.discipline.model.Habit;
 import com.olts.discipline.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.data.rest.core.event.AfterCreateEvent;
+import org.springframework.data.rest.core.event.BeforeCreateEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,9 +25,10 @@ import java.net.URI;
  * OLTS on 28.05.2017.
  */
 @RepositoryRestController
-public class RestHabitController {
+public class RestHabitController implements ApplicationEventPublisherAware {
 
     private final HabitRepository repository;
+    private ApplicationEventPublisher publisher;
 
     @Autowired
     public RestHabitController(HabitRepository repo) {
@@ -40,7 +45,9 @@ public class RestHabitController {
         User byUsername = userRepository.findByUsername(principal.getUsername());
         Habit retrievedHabit = input.getContent();
         retrievedHabit.setHabitUser(byUsername);
+        publisher.publishEvent(new BeforeCreateEvent(retrievedHabit));
         Habit result = repository.save(retrievedHabit);
+        publisher.publishEvent(new AfterCreateEvent(result));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(result.getId()).toUri();
@@ -49,4 +56,8 @@ public class RestHabitController {
         //return ResponseEntity.noContent().build();
     }
 
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.publisher = applicationEventPublisher;
+    }
 }
