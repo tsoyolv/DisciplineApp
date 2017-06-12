@@ -45,6 +45,7 @@ public class UserController {
 
         userService.save(userForm);
 
+        /* security use passwordConfirm because password already encoded */
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
 
         return "redirect:/welcome";
@@ -62,6 +63,8 @@ public class UserController {
         return "login";
     }
 
+
+    // doesn't work
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@ModelAttribute("userForm") User userForm) {
         User findByUsername = userService.findByUsername(userForm.getUsername());

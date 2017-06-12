@@ -68,6 +68,11 @@ For adding csrf token to ajax you need to:
 18.4.3 Include the CSRF Token: http://docs.spring.io/spring-security/site/docs/current/reference/html/csrf.html#csrf-using/
 
 Get current logged in User: User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+Spring security uses default post method for login that override mvc POST /login
+
+@PreAuthorize
+https://docs.spring.io/spring-security/site/docs/current/reference/html/el-access.html
 ========================================================================================================================
 ============================================== SPRING SECURITY END =====================================================
 ========================================================================================================================
