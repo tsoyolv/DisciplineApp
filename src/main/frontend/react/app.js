@@ -264,6 +264,7 @@ class HabitList extends React.Component {
                         <th>Name</th>
                         <th>Difficulty</th>
                         <th>Description</th>
+                        <th>User</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -325,6 +326,7 @@ class Habit extends React.Component {
                 <td>{this.props.habit.entity.name}</td>
                 <td>{this.props.habit.entity.difficulty}</td>
                 <td>{this.props.habit.entity.description}</td>
+                <td>{this.props.habit.entity.habitUser.username}</td>
                 <td>
                     <UpdateDialog habit={this.props.habit}
                                   attributes={this.props.attributes}

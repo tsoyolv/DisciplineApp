@@ -27,7 +27,7 @@ public class Habit implements Serializable {
 
     private int difficulty;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User habitUser;
 
