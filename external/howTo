@@ -68,6 +68,12 @@ For adding csrf token to ajax you need to:
 18.4.3 Include the CSRF Token: http://docs.spring.io/spring-security/site/docs/current/reference/html/csrf.html#csrf-using/
 
 Get current logged in User: User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+Spring security uses default post method for login that override mvc POST /login
+
+@PreAuthorize
+https://docs.spring.io/spring-security/site/docs/current/reference/html/el-access.html
+For using PreAuthorize add @EnableGlobalMethodSecurity(prePostEnabled = true) to securutyConfig
 ========================================================================================================================
 ============================================== SPRING SECURITY END =====================================================
 ========================================================================================================================
@@ -78,6 +84,9 @@ Get current logged in User: User user = (User)SecurityContextHolder.getContext()
 To customize standard spring data rest api:
 add controller: @RepositoryRestController
 16.2.1. Handling rels: http://docs.spring.io/spring-data/rest/docs/current/reference/html/#customizing-sdr
+
+For getting related POJOs as objects add annotation @RepositoryRestResource(exported = false) to reposirory
+or use GET method
 ========================================================================================================================
 ================================================ SPRING DATA END =======================================================
 ========================================================================================================================
@@ -111,3 +120,5 @@ ANS: Configured by NPM "package.json" - configuration for libraries and what fra
 Quick rebuild for frontend:
 1. run maven plugin: frontend:webpack
 2. Quick rebuild for static files (spring boot dev plugin)
+
+What the reason to add local bootstrap.js if it can be downloaded through href?

@@ -1,14 +1,18 @@
 package com.olts.discipline;
 
 import com.olts.discipline.api.repository.HabitRepository;
-import com.olts.discipline.api.repository.UserRepository;
+import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.model.Habit;
 import com.olts.discipline.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -17,26 +21,20 @@ import java.util.Date;
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 
-    private final UserRepository repository;
+    @Resource
+    private UserService userService;
 
     @Resource
     private HabitRepository habitRepository;
 
-    @Autowired
-    public DatabaseLoader(UserRepository repository) {
-        this.repository = repository;
-    }
+    @Resource
+    private UserDetailsService userDetailsService;
 
     @Override
     public void run(String... strings) throws Exception {
-        User defaultUser = new User();
-        defaultUser.setId(1);
-        defaultUser.setCreatedWhen(new Date());
-        defaultUser.setFirstName("Ivan");
-        defaultUser.setSecondName("Ivanov");
-        defaultUser.setLastName("Ivanovich");
-
-        this.repository.save(defaultUser);
+        User defaultUser = createDefaultUser("olts", "1");
+        User defaultUser2 = createDefaultUser("user2", "2");
+        authorizeUsers(defaultUser, defaultUser2);
 
         Habit defaultHabit = new Habit();
         defaultHabit.setName("Get up at 7 o'clock");
@@ -51,9 +49,34 @@ public class DatabaseLoader implements CommandLineRunner {
         habit.setName("Workout");
         habit.setDifficulty(5);
         habit.setDescription("Stronger");
-        habit.setHabitUser(defaultUser);
+        habit.setHabitUser(defaultUser2);
         habit.setId(2);
 
         habitRepository.save(habit);
+        SecurityContextHolder.clearContext();
+    }
+
+    private User createDefaultUser(String userName, String password) {
+        User defaultUser = new User();
+        defaultUser.setCreatedWhen(new Date());
+        defaultUser.setFirstName("Oleg");
+        defaultUser.setSecondName("Tsoi");
+        defaultUser.setLastName("Viacheslavovich");
+        defaultUser.setUsername(userName);
+        defaultUser.setPassword(password);
+        defaultUser.setPasswordConfirm(password);
+        userService.save(defaultUser);
+        return defaultUser;
+    }
+
+    private void authorizeUsers(User... users) {
+        Arrays.asList(users).forEach(this::authorizeUser);
+    }
+
+    private void authorizeUser(User defaultUser) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(defaultUser.getUsername());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(userDetails, defaultUser.getPasswordConfirm(), userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
     }
 }

@@ -7,18 +7,18 @@ module.exports = function follow(api, rootPath, relArray) {
         path: rootPath
     });
 
-    return relArray.reduce(function(root, arrayItem) {
+    return relArray.reduce(function (root, arrayItem) {
         var rel = typeof arrayItem === 'string' ? arrayItem : arrayItem.rel;
         return traverseNext(root, rel, arrayItem);
     }, root);
 
-    function traverseNext (root, rel, arrayItem) {
+    function traverseNext(root, rel, arrayItem) {
         return root.then(function (response) {
             if (hasEmbeddedRel(response.entity, rel)) {
                 return response.entity._embedded[rel];
             }
 
-            if(!response.entity._links) {
+            if (!response.entity._links) {
                 return [];
             }
 
@@ -37,7 +37,7 @@ module.exports = function follow(api, rootPath, relArray) {
         });
     }
 
-    function hasEmbeddedRel (entity, rel) {
+    function hasEmbeddedRel(entity, rel) {
         return entity._embedded && entity._embedded.hasOwnProperty(rel);
     }
 };

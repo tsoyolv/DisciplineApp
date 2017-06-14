@@ -1,5 +1,6 @@
 package com.olts.discipline.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
@@ -19,22 +20,24 @@ public class Habit implements Serializable {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String name;
 
     private int difficulty;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User habitUser;
 
     @Column(name = "created_when")
-    @Type(type="timestamp")
+    @Type(type = "timestamp")
     private Date createdWhen;
 
     private String description;
+
+    private @Version @JsonIgnore Long version;
 
     @Override
     public String toString() {
@@ -47,4 +50,5 @@ public class Habit implements Serializable {
                 ", description='" + description + '\'' +
                 "," +
                 '}';
-    }}
+    }
+}

@@ -54,3 +54,7 @@ sol: change it in settings
 
 Can not construct instance of no String-argument constructor/factory method to deserialize from String value
 sol: In the @RepositoryRestController, change the type of the @RequestBody argument from Entity to Resource<Entity>: org.springframework.hateoas.Resource
+
+@RepositoryEventHandler events stop with @RepositoryRestController
+sol: The methods defined in a @RepositoryRestController implementation replace the methods in the default RepositoryEntityController which publish @RepositoryEventHandler events.
+publisher.publishEvent(new BeforeCreateEvent(account));
