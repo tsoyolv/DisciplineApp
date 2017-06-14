@@ -53,9 +53,10 @@ public class User implements Serializable {
 
     private Integer score;
 
+    // transient for GET REST
     @JsonIgnore
     @OneToMany(mappedBy = "habitUser", fetch = FetchType.LAZY)
-    private Set<Habit> habits = new HashSet<>();
+    private transient Set<Habit> habits = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "taskUser", fetch = FetchType.LAZY)

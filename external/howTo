@@ -73,6 +73,7 @@ Spring security uses default post method for login that override mvc POST /login
 
 @PreAuthorize
 https://docs.spring.io/spring-security/site/docs/current/reference/html/el-access.html
+For using PreAuthorize add @EnableGlobalMethodSecurity(prePostEnabled = true) to securutyConfig
 ========================================================================================================================
 ============================================== SPRING SECURITY END =====================================================
 ========================================================================================================================
@@ -83,6 +84,9 @@ https://docs.spring.io/spring-security/site/docs/current/reference/html/el-acces
 To customize standard spring data rest api:
 add controller: @RepositoryRestController
 16.2.1. Handling rels: http://docs.spring.io/spring-data/rest/docs/current/reference/html/#customizing-sdr
+
+For getting related POJOs as objects add annotation @RepositoryRestResource(exported = false) to reposirory
+or use GET method
 ========================================================================================================================
 ================================================ SPRING DATA END =======================================================
 ========================================================================================================================

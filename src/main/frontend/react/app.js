@@ -50,6 +50,20 @@ class App extends React.Component {
                     'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
                 }
             }).then(schema => {
+                /**
+                 * Filter unneeded JSON Schema properties, like uri references and
+                 * subtypes ($ref).
+                 */
+                Object.keys(schema.entity.properties).forEach(function (property) {
+                    if (schema.entity.properties[property].hasOwnProperty('format') &&
+                        schema.entity.properties[property].format === 'uri') {
+                        delete schema.entity.properties[property];
+                    }
+                    else if (schema.entity.properties[property].hasOwnProperty('$ref')) {
+                        delete schema.entity.properties[property];
+                    }
+                });
+
                 this.schema = schema.entity;
                 this.links = habitCollection.entity._links;
                 return habitCollection;
@@ -151,7 +165,13 @@ class App extends React.Component {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
-        });
+        }).done(response => {/* let the websocket handle updating the UI */},
+            response => {
+                if (response.status.code === 403) {
+                    alert('ACCESS DENIED: You are not authorized to delete ' +
+                        habit.entity._links.self.href);
+                }
+            });
     }
 
     updatePageSize(pageSize) {
