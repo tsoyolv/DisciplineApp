@@ -19,7 +19,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {habits: [], attributes: [],  page: 1, pageSize: 2, links: {}};
+        this.state = {habits: [], attributes: [],  page: 1, pageSize: 10, links: {}};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
@@ -284,6 +284,8 @@ class HabitList extends React.Component {
                         <th>Name</th>
                         <th>Difficulty</th>
                         <th>Description</th>
+                        <th>Created when</th>
+                        <th>Updated when</th>
                         <th>User</th>
                         <th></th>
                         <th></th>
@@ -346,6 +348,8 @@ class Habit extends React.Component {
                 <td>{this.props.habit.entity.name}</td>
                 <td>{this.props.habit.entity.difficulty}</td>
                 <td>{this.props.habit.entity.description}</td>
+                <td>{this.props.habit.entity.createdWhen}</td>
+                <td>{this.props.habit.entity.updatedWhen}</td>
                 <td>{this.props.habit.entity.habitUser.username}</td>
                 <td>
                     <UpdateDialog habit={this.props.habit}
@@ -370,13 +374,14 @@ class CreateDialog extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         var newHabit = {};
-        this.props.attributes.forEach(attribute => {
+        var created_attributes = this.props.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen');
+        created_attributes.forEach(attribute => {
             newHabit[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
         });
         this.props.onCreate(newHabit);
 
         // clear out the dialog's inputs
-        this.props.attributes.forEach(attribute => {
+        created_attributes.forEach(attribute => {
             ReactDOM.findDOMNode(this.refs[attribute]).value = '';
         });
 
@@ -385,7 +390,8 @@ class CreateDialog extends React.Component {
     }
 
     render() {
-        var inputs = this.props.attributes.map(attribute =>
+        var inputs = this.props.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen')
+        .map(attribute =>
             <p key={attribute}>
                 <input type="text" placeholder={attribute} ref={attribute} className="field"/>
             </p>
@@ -417,12 +423,13 @@ class UpdateDialog extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.update_attributes = props.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen');
     }
 
     handleSubmit(e) {
         e.preventDefault();
         var updatedHabit = {};
-        this.props.attributes.forEach(attribute => {
+        this.update_attributes.forEach(attribute => {
             updatedHabit[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
         });
         this.props.onUpdate(this.props.habit, updatedHabit);
@@ -430,7 +437,7 @@ class UpdateDialog extends React.Component {
     }
 
     render() {
-        var inputs = this.props.attributes.map(attribute =>
+        var inputs = this.update_attributes.map(attribute =>
             <p key={this.props.habit.entity[attribute]}>
                 <input type="text" placeholder={attribute}
                        defaultValue={this.props.habit.entity[attribute]}
@@ -459,9 +466,8 @@ class UpdateDialog extends React.Component {
         )
     }
 
-};
-
+}
 ReactDOM.render(
     <App />,
     document.getElementById('react')
-)
+);

@@ -2,7 +2,8 @@ package com.olts.discipline.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,8 +33,14 @@ public class Habit implements Serializable {
     private User habitUser;
 
     @Column(name = "created_when")
-    @Type(type = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date createdWhen;
+
+    @Column(name = "updated_when")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date updatedWhen;
 
     private String description;
 
