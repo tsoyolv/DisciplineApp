@@ -118,7 +118,10 @@ class App extends React.Component {
         }).done(response => {
             /* Let the websocket handler update the state */
         }, response => {
-            if (response.status.code === 412) {
+            if (response.status.code === 403) {
+                alert('ACCESS DENIED: You are not authorized to update ' +
+                    habit.entity._links.self.href);
+            } else if (response.status.code === 412) {
                 alert('DENIED: Unable to update ' +
                     habit.entity._links.self.href + '. Your copy is stale.');
             }

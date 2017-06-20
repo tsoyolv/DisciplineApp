@@ -36,7 +36,8 @@ public class RestHabitController implements ApplicationEventPublisherAware {
     @Resource
     private UserRepository userRepository;
 
-    // just an example (default is equal)
+    // @PreAuthorize("#input?.content.habitUser?.username == authentication.name")
+    // todo update method for security
     @RequestMapping(method = RequestMethod.POST, value = "/habits")
     public @ResponseBody ResponseEntity<?> create(
             @RequestBody org.springframework.hateoas.Resource<Habit> input) {
