@@ -129,3 +129,5 @@ HIBERNATE
 @Temporal(TemporalType.TIMESTAMP)
 @UpdateTimestamp
 
+For validation use JSP 303 annotations: @NotNull and repository by default throws 500 internal server error
+

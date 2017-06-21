@@ -1,23 +1,22 @@
 package com.olts.discipline.rest.api;
 
 import com.olts.discipline.api.repository.HabitRepository;
-import com.olts.discipline.api.repository.UserRepository;
 import com.olts.discipline.model.Habit;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.data.rest.core.event.AfterCreateEvent;
-import org.springframework.data.rest.core.event.BeforeCreateEvent;
+import org.springframework.data.rest.core.event.AfterSaveEvent;
+import org.springframework.data.rest.core.event.BeforeSaveEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.Resource;
-import java.net.URI;
 
 /**
  * OLTS on 28.05.2017.
@@ -25,31 +24,37 @@ import java.net.URI;
 @RepositoryRestController
 public class RestHabitController implements ApplicationEventPublisherAware {
 
-    private final HabitRepository repository;
+    @Resource
+    private HabitRepository repository;
     private ApplicationEventPublisher publisher;
 
-    @Autowired
-    public RestHabitController(HabitRepository repo) {
-        repository = repo;
+
+    @PutMapping("/habits/{habitId}")
+    public @ResponseBody ResponseEntity<?> create(@PathVariable("habitId") String habitId, @RequestBody org.springframework.hateoas.Resource<Habit> input) {
+        org.springframework.security.core.userdetails.User principal = getPrincipal();
+        Habit retrievedHabit = repository.findOne(Long.parseLong(habitId));
+        if (!isValid(principal, retrievedHabit)) { return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); }
+        Habit habitForPut = input.getContent();
+        publisher.publishEvent(new BeforeSaveEvent(habitForPut));
+        propagateHabit(retrievedHabit, habitForPut);
+        publisher.publishEvent(new AfterSaveEvent(habitForPut));
+        return ResponseEntity.ok(habitForPut);
     }
 
-    @Resource
-    private UserRepository userRepository;
+    private User getPrincipal() {
+        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
-    // @PreAuthorize("#input?.content.habitUser?.username == authentication.name")
-    // todo update method for security
-    @RequestMapping(method = RequestMethod.POST, value = "/habits")
-    public @ResponseBody ResponseEntity<?> create(
-            @RequestBody org.springframework.hateoas.Resource<Habit> input) {
-        Habit retrievedHabit = input.getContent();
-        publisher.publishEvent(new BeforeCreateEvent(retrievedHabit));
-        Habit result = repository.save(retrievedHabit);
-        publisher.publishEvent(new AfterCreateEvent(result));
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(result.getId()).toUri();
-        return ResponseEntity.created(location).build();
-        //return ResponseEntity.noContent().build();
+    // todo refactor
+    private void propagateHabit(Habit retrievedHabit, Habit habitForPut) {
+        retrievedHabit.setDescription(habitForPut.getDescription());
+        retrievedHabit.setDifficulty(habitForPut.getDifficulty());
+        retrievedHabit.setName(habitForPut.getName());
+        repository.save(retrievedHabit);
+    }
+
+    protected boolean isValid(User principal, Habit one) {
+        return one.getHabitUser().getUsername().equals(principal.getUsername());
     }
 
     @Override

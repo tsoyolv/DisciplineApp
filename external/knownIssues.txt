@@ -58,3 +58,7 @@ sol: In the @RepositoryRestController, change the type of the @RequestBody argum
 @RepositoryEventHandler events stop with @RepositoryRestController
 sol: The methods defined in a @RepositoryRestController implementation replace the methods in the default RepositoryEntityController which publish @RepositoryEventHandler events.
 publisher.publishEvent(new BeforeCreateEvent(account));
+
+validator could be found for constraint 'javax.validation.constraints.Size'
+Sol: The validation annotations don't work well on fields of native types. Change the field from type "int" to "Integer" or "BigInteger" and the @NotNull annotation should work fine.
+http://forum.spring.io/forum/spring-projects/web/80192-validation-empty-int-field
