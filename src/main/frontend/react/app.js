@@ -101,7 +101,13 @@ class App extends React.Component {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
                 }
-            })
+            }).done(response => {
+                /* Let the websocket handler create the state */
+            }, response => {
+                if (response.status.code === 500) {
+                    alert('Required fields are not filled. Creation is failed.');
+                }
+            });
         })
     }
 
@@ -281,7 +287,7 @@ class HabitList extends React.Component {
             <div>
                 <input placeholder="page size" ref="pageSize" defaultValue={this.props.pageSize}
                        onInput={this.handleInput}/>
-                <table>
+                <table className="table table-striped">
                     <tbody>
                     <tr>
                         <th>Name</th>
@@ -360,7 +366,7 @@ class Habit extends React.Component {
                                   onUpdate={this.props.onUpdate}/>
                 </td>
                 <td>
-                    <button onClick={this.handleDelete}>Delete</button>
+                    <button className="btn btn-lg btn-primary btn-block" onClick={this.handleDelete}>Delete</button>
                 </td>
             </tr>
         )

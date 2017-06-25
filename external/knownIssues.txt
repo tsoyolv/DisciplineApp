@@ -62,3 +62,7 @@ publisher.publishEvent(new BeforeCreateEvent(account));
 validator could be found for constraint 'javax.validation.constraints.Size'
 Sol: The validation annotations don't work well on fields of native types. Change the field from type "int" to "Integer" or "BigInteger" and the @NotNull annotation should work fine.
 http://forum.spring.io/forum/spring-projects/web/80192-validation-empty-int-field
+
+Open quote is expected for attribute "employee" associated with an  element type  "Employee".
+Sol: move your script to js file
+https://stackoverflow.com/questions/43222544/fatal-error-during-parsing-and-org-xml-sax-saxparseexception

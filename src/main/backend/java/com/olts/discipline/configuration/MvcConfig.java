@@ -13,6 +13,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/habit").setViewName("habit");
+        registry.addViewController("/simpleReactExample").setViewName("simpleReactExample");
     }
 
 }
