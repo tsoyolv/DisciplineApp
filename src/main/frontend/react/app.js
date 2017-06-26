@@ -4,7 +4,7 @@
 'use strict';
 
 const React = require('react');
-const ReactDOM = require('react-dom')
+const ReactDOM = require('react-dom');
 const client = require('./client');
 
 const when = require('when');
@@ -478,5 +478,5 @@ class UpdateDialog extends React.Component {
 }
 ReactDOM.render(
     <App />,
-    document.getElementById('react')
+    document.getElementById('all_habits')
 );

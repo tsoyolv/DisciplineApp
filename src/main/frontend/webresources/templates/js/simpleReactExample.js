@@ -39,5 +39,5 @@ var EMPLOYEES = [
 ];
 
 ReactDOM.render(
-    <EmployeeTable employees={EMPLOYEES} />, document.getElementById('root')
+    <EmployeeTable employees={EMPLOYEES} />, document.getElementById('employee')
 );
