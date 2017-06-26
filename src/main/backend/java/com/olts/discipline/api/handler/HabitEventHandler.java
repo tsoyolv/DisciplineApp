@@ -35,6 +35,7 @@ public class HabitEventHandler {
     }
 
     @HandleBeforeCreate
+    @HandleBeforeSave
     public void applyUserInformationUsingSecurityContext(Habit habit) {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();

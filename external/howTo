@@ -87,8 +87,18 @@ add controller: @RepositoryRestController
 
 For getting related POJOs as objects add annotation @RepositoryRestResource(exported = false) to reposirory
 or use GET method
+
+@HandleBeforeCreate, @HandleBeforeSave - you can use multiple annotations on one method
 ========================================================================================================================
 ================================================ SPRING DATA END =======================================================
+========================================================================================================================
+
+========================================================================================================================
+==================================================== REACT START =======================================================
+========================================================================================================================
+
+========================================================================================================================
+==================================================== REACT END =========================================================
 ========================================================================================================================
 
 
@@ -122,3 +132,10 @@ Quick rebuild for frontend:
 2. Quick rebuild for static files (spring boot dev plugin)
 
 What the reason to add local bootstrap.js if it can be downloaded through href?
+
+HIBERNATE
+@Temporal(TemporalType.TIMESTAMP)
+@UpdateTimestamp
+
+For validation use JSP 303 annotations: @NotNull and repository by default throws 500 internal server error
+

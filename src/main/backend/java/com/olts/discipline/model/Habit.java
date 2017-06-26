@@ -2,9 +2,13 @@ package com.olts.discipline.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,17 +27,26 @@ public class Habit implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotEmpty(message = "Habit name must be not empty")
     private String name;
 
-    private int difficulty;
+    @NotNull(message = "Habit difficulty must be not empty")
+    @Range(min = 1)
+    private Integer difficulty;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User habitUser;
 
     @Column(name = "created_when")
-    @Type(type = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date createdWhen;
+
+    @Column(name = "updated_when")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date updatedWhen;
 
     private String description;
 

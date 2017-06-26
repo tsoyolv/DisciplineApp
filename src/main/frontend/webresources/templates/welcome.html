@@ -64,6 +64,14 @@
     <h2>Welcome <a th:text="${#httpServletRequest.userPrincipal.name}"></a> | <a href="#"
                                                                                  onclick="document.forms['logoutForm'].submit()">Logout</a>
     </h2>
+    <h2>This table is simple React Example without webpack. For react with webpack go to <a class="nav-link" th:href="@{/habit}">Habits</a> </h2>
+    <script src="https://fb.me/react-15.0.1.js"></script>
+    <script src="https://fb.me/react-dom-15.0.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+
+    <div id='employee'></div>
+    <h3>These files (Obama and etc.) doesn't exist on server. Just an example</h3>
+    <script type="text/babel" src="js/simpleReactExample.js"></script>
     <!--</c:if>-->
 </div>
 </body>
