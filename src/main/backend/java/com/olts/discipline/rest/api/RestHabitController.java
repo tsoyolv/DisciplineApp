@@ -30,7 +30,7 @@ public class RestHabitController implements ApplicationEventPublisherAware {
 
 
     @PutMapping("/habits/{habitId}")
-    public @ResponseBody ResponseEntity<?> create(@PathVariable("habitId") String habitId, @RequestBody org.springframework.hateoas.Resource<Habit> input) {
+    public @ResponseBody ResponseEntity<?> update(@PathVariable("habitId") String habitId, @RequestBody org.springframework.hateoas.Resource<Habit> input) {
         org.springframework.security.core.userdetails.User principal = getPrincipal();
         Habit retrievedHabit = repository.findOne(Long.parseLong(habitId));
         if (!isValid(principal, retrievedHabit)) { return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); }

@@ -168,19 +168,21 @@ class App extends React.Component {
     }
 
     onDelete(habit) {
-        client({
-            method: 'DELETE', path: habit.entity._links.self.href,
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-            }
-        }).done(response => {/* let the websocket handle updating the UI */},
-            response => {
-                if (response.status.code === 403) {
-                    alert('ACCESS DENIED: You are not authorized to delete ' +
-                        habit.entity._links.self.href);
+        if(confirm('Delete the habit?')) {
+            client({
+                method: 'DELETE', path: habit.entity._links.self.href,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
                 }
-            });
+            }).done(response => {/* let the websocket handle updating the UI */},
+                response => {
+                    if (response.status.code === 403) {
+                        alert('ACCESS DENIED: You are not authorized to delete ' +
+                            habit.entity._links.self.href);
+                    }
+                });
+        }
     }
 
     updatePageSize(pageSize) {
@@ -357,8 +359,8 @@ class Habit extends React.Component {
                 <td>{this.props.habit.entity.name}</td>
                 <td>{this.props.habit.entity.difficulty}</td>
                 <td>{this.props.habit.entity.description}</td>
-                <td>{this.props.habit.entity.createdWhen}</td>
-                <td>{this.props.habit.entity.updatedWhen}</td>
+                <td>{(new Date(this.props.habit.entity.createdWhen)).toUTCString()}</td>
+                <td>{(new Date(this.props.habit.entity.updatedWhen)).toUTCString()}</td>
                 <td>{this.props.habit.entity.habitUser.username}</td>
                 <td>
                     <UpdateDialog habit={this.props.habit}
