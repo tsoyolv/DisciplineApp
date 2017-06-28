@@ -478,7 +478,57 @@ class UpdateDialog extends React.Component {
     }
 
 }
-ReactDOM.render(
+/*ReactDOM.render(
     <App />,
     document.getElementById('all_habits')
+);*/
+
+/*-===================================================== EXAMPLE START ==============================================-*/
+class Example extends React.Component {
+    render() {
+        return (
+            <div>
+                <Clock />
+                <App />
+            </div>
+        )
+    }
+}
+
+class Clock extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {date: new Date()};
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(
+            () => this.tick(),
+            1000
+        );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        this.setState({
+            date: new Date()
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('all_habits')
 );
+/*-===================================================== EXAMPLE START ==============================================-*/

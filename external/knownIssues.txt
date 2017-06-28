@@ -66,3 +66,7 @@ http://forum.spring.io/forum/spring-projects/web/80192-validation-empty-int-fiel
 Open quote is expected for attribute "employee" associated with an  element type  "Employee".
 Sol: move your script to js file
 https://stackoverflow.com/questions/43222544/fatal-error-during-parsing-and-org-xml-sax-saxparseexception
+
+Is there a way to render multiple React components in the React.render() function?
+Sol: If you wish to render multiple components out you need to nest them within one another in order to maintain the Tree-Like structure.
+https://stackoverflow.com/questions/32577886/is-there-a-way-to-render-multiple-react-components-in-the-react-render-functio
