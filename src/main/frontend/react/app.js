@@ -484,23 +484,16 @@ class UpdateDialog extends React.Component {
 );*/
 
 /*-===================================================== EXAMPLE START ==============================================-*/
-class Example extends React.Component {
-    render() {
-        return (
-            <div>
-                <Clock />
-                <App />
-            </div>
-        )
-    }
-}
-
 class Clock extends React.Component {
+
+    /* component constructor. props are immutable, state can be changed */
     constructor(props) {
         super(props);
         this.state = {date: new Date()};
+        console.log('Clock is initialized');
     }
 
+    /* component function. The componentDidMount() hook runs after the component output has been rendered to the DOM */
     componentDidMount() {
         this.timerID = setInterval(
             () => this.tick(),
@@ -508,16 +501,20 @@ class Clock extends React.Component {
         );
     }
 
+    /* component function. If the Clock component is ever removed from the DOM, React calls the componentWillUnmount() */
     componentWillUnmount() {
         clearInterval(this.timerID);
     }
 
+    /* Thanks to the setState() call, React knows the state has changed, and calls render() method again to learn
+    what should be on the screen. */
     tick() {
         this.setState({
             date: new Date()
         });
     }
 
+    /* component function */
     render() {
         return (
             <div>
@@ -527,8 +524,46 @@ class Clock extends React.Component {
     }
 }
 
+class Toggle extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {isToggleOn: true};
+
+        /* This binding is necessary to make `this` work in the callback */
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        this.setState(prevState => ({
+            isToggleOn: !prevState.isToggleOn
+        }));
+    }
+
+    render() {
+        return (
+            <div>
+            <button onClick={this.handleClick}>
+                {this.state.isToggleOn ? 'Show clock' : 'Hide clock'}
+            </button>
+            {this.state.isToggleOn ? null : <Clock/>}
+            </div>
+        );
+    }
+}
+
+class Example extends React.Component {
+    render() {
+        return (
+            <div>
+                <Toggle />
+                <App />
+            </div>
+        )
+    }
+}
+
 ReactDOM.render(
     <Example />,
     document.getElementById('all_habits')
 );
-/*-===================================================== EXAMPLE START ==============================================-*/
+/*-===================================================== EXAMPLE END ================================================-*/
