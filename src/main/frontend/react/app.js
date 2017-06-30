@@ -539,6 +539,8 @@ class Toggle extends React.Component {
         }));
     }
 
+    /* In rare cases you might want a component to hide itself even though it was rendered by another component.
+       To do this return null instead of its render output. */
     render() {
         return (
             <div>
@@ -551,11 +553,136 @@ class Toggle extends React.Component {
     }
 }
 
+function ListItem(props) {
+    // Correct! There is no need to specify the key here:
+    return <li>{props.value}</li>;
+}
+
+function NumberList(props) {
+    const numbers = props.numbers;
+    const listItems = numbers.map((number) =>
+        // Correct! Key should be specified inside the array.
+        <ListItem key={number.toString()}
+                  value={number} />
+        /* Keys serve as a hint to React but they don't get passed to your components.
+           If you need the same value in your component, pass it explicitly as a prop with a different name */
+        /* Keys used within arrays should be unique among their siblings. However they don't need to be globally unique.
+           We can use the same keys when we produce two different arrays */
+    );
+
+    /* simple list example */
+    /*const listItems = numbers.map((numbers) =>
+        <li>{numbers}</li>
+    );*/
+
+    return (
+        <ul>
+            {listItems}
+        </ul>
+    );
+}
+
+/* JSX allows embedding any expressions in curly braces so we could inline the map() result: */
+/*function NumberList(props) {
+    const numbers = props.numbers;
+    return (
+        <ul>
+            {numbers.map((number) =>
+                <ListItem key={number.toString()}
+                          value={number} />
+            )}
+        </ul>
+    );
+}*/
+
+class NameForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: ''};
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    /* you cannot return false to prevent default behavior in React. You must call preventDefault explicitly. */
+    handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value);
+        event.preventDefault();
+    }
+    /* For example, with plain HTML, to prevent the default link behavior of opening a new page, you can write:
+     <a href="#" onclick="console.log('The link was clicked.'); return false">
+     Click me
+     </a> */
+
+    /* In React, a <textarea> uses a 'value' attribute. (not tag's child like in HTML)*/
+    /* Overall, this makes it so that <input type="text">, <textarea>, and <select> all work very similarly -
+       they all accept a value attribute that you can use to implement a controlled component. */
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Name:
+                    <input type="text" value={this.state.value} onChange={this.handleChange} />
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        );
+    }
+}
+
+class FlavorForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {value: 'coconut'};
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('Your favorite flavor is: ' + this.state.value);
+        event.preventDefault();
+    }
+
+    /* React, instead of using this selected attribute, uses a value attribute on the root select tag.
+       This is more convenient in a controlled component because you only need to update it in one place. */
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Pick your favorite La Croix flavor:
+                    <select value={this.state.value} onChange={this.handleChange}>
+                        <option value="grapefruit">Grapefruit</option>
+                        <option value="lime">Lime</option>
+                        <option value="coconut">Coconut</option>
+                        <option value="mango">Mango</option>
+                    </select>
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        );
+    }
+}
+
+const numbers = [1, 2, 3];
+
 class Example extends React.Component {
     render() {
         return (
             <div>
                 <Toggle />
+                <NumberList numbers={numbers} />
+                <NameForm/>
+                <FlavorForm/>
                 <App />
             </div>
         )
