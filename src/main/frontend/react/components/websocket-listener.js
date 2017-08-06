@@ -1,5 +1,5 @@
 /**
- * Created by tsoyo on 01.06.2017.
+ * OLTS on 01.06.2017.
  */
 'use strict';
 
