@@ -3,17 +3,14 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-const client = require('./client');
-
 const when = require('when');
 
-const follow = require('./follow');
-
-const stompClient = require('./websocket-listener');
-
+const client = require('./modules/client');
+const follow = require('./modules/follow');
+const stompClient = require('./modules/websocket-listener');
 const root = '/api';
 
-import HabitList from './habit-list-component'
+import HabitList from './components/habit-list-component'
 
 class AllHabitsApp extends React.Component {
 

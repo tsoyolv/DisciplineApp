@@ -3,12 +3,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-const client = require('./client');
-
-const when = require('when');
-
-const follow = require('./follow');
-
 import Habit from './habit-component'
 
 class HabitList extends React.Component {
