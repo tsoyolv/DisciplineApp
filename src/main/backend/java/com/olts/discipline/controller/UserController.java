@@ -48,7 +48,7 @@ public class UserController {
         /* security use passwordConfirm because password already encoded */
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "redirect:/welcome";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -72,11 +72,11 @@ public class UserController {
             return "login";
         } else {
             securityService.autologin(userForm.getUsername(), userForm.getPassword());
-            return "redirect:/welcome";
+            return "redirect:/";
         }
     }
 
-    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model) {
         return "welcome";
     }

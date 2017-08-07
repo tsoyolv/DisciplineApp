@@ -11,6 +11,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class MvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("user");
+        registry.addViewController("/user").setViewName("user");
         registry.addViewController("/habit").setViewName("all-habits");
      }
 }
