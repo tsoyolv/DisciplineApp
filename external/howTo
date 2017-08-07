@@ -89,6 +89,9 @@ For getting related POJOs as objects add annotation @RepositoryRestResource(expo
 or use GET method
 
 @HandleBeforeCreate, @HandleBeforeSave - you can use multiple annotations on one method
+Spring data supports query creation from method names. For example:
+public interface HabitRepository extends PagingAndSortingRepository<Habit, Long> {
+    List<Habit> findByHabitUserId(Long userId); ... }
 ========================================================================================================================
 ================================================ SPRING DATA END =======================================================
 ========================================================================================================================

@@ -1,5 +1,5 @@
 /**
- * Created by tsoyo on 23.05.2017.
+ * OLTS on 23.05.2017.
  */
 module.exports = function follow(api, rootPath, relArray) {
     var root = api({

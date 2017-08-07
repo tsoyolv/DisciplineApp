@@ -67,7 +67,7 @@ public class UserController {
     // doesn't work
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@ModelAttribute("userForm") User userForm) {
-        User findByUsername = userService.findByUsername(userForm.getUsername());
+        User findByUsername = userService.getByUsername(userForm.getUsername());
         if (!findByUsername.equals(userForm)) {
             return "login";
         } else {

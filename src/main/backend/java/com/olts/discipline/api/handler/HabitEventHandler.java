@@ -1,6 +1,7 @@
 package com.olts.discipline.api.handler;
 
 import com.olts.discipline.api.repository.UserRepository;
+import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.model.Habit;
 import com.olts.discipline.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class HabitEventHandler {
     private final EntityLinks entityLinks;
 
     @Resource
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     public HabitEventHandler(SimpMessagingTemplate websocket, EntityLinks entityLinks) {
@@ -37,10 +38,7 @@ public class HabitEventHandler {
     @HandleBeforeCreate
     @HandleBeforeSave
     public void applyUserInformationUsingSecurityContext(Habit habit) {
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User byUsername = userRepository.findByUsername(principal.getUsername());
-        habit.setHabitUser(byUsername);
+        habit.setHabitUser(userService.getCurrent());
     }
 
     @HandleAfterCreate
