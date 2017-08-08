@@ -51,17 +51,13 @@
         </form>
     </div>
 </nav>
-
-<div class="container">
-    <!--<c:if test="${pageContext.request.userPrincipal.name != null}">-->
-    <form id="logoutForm" method="POST" th:action="@{/logout}">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    </form>
-    <h2>Hello, user: <a th:text="${#httpServletRequest.userPrincipal.name}"></a> | <a href="#"
-                                                                                 onclick="document.forms['logoutForm'].submit()">Logout</a>
-    </h2>
-    <h2>Go to <a class="nav-link" th:href="@{/habit}">Habits</a> </h2>
-    <!--</c:if>-->
-</div>
+<h3><a th:text="${#httpServletRequest.userPrincipal.name}"></a></h3>
+<form id="logoutForm" method="POST" th:action="@{/logout}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+</form>
+<h5><a href="#" onclick="document.forms['logoutForm'].submit()">Logout</a>
+</h5>
+<div class="container" id="user"></div>
+<script src="built/bundle.js"></script>
 </body>
 </html>

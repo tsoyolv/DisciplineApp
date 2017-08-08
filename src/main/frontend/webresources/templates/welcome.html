@@ -60,7 +60,10 @@
     <h2>Welcome <a th:text="${#httpServletRequest.userPrincipal.name}"></a> | <a href="#"
                                                                                  onclick="document.forms['logoutForm'].submit()">Logout</a>
     </h2>
-    <h2>Go to <a class="nav-link" th:href="@{/habit}">Habits</a> </h2>
+    <h2>
+        Go to <a class="nav-link" th:href="@{/habit}">Habits page</a>
+        Go to <a class="nav-link" th:href="@{/user}">User page</a>
+    </h2>
     <!--</c:if>-->
 </div>
 </body>

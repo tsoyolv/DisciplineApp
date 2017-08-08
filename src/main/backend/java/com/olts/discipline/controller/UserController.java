@@ -48,7 +48,7 @@ public class UserController {
         /* security use passwordConfirm because password already encoded */
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "redirect:/";
+        return "redirect:/welcome";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
