@@ -4,12 +4,14 @@ package com.olts.discipline.api.service.impl;
 import com.olts.discipline.api.repository.RoleRepository;
 import com.olts.discipline.api.repository.UserRepository;
 import com.olts.discipline.api.service.UserService;
+import com.olts.discipline.model.Habit;
 import com.olts.discipline.model.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.HashSet;
 
 @Service
@@ -38,5 +40,10 @@ public class UserServiceImpl implements UserService {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.findByUsername(principal.getUsername());
+    }
+
+    @Override
+    public Collection<Habit> getUserHabits(Long userId) {
+        return userRepository.findOne(userId).getHabits();
     }
 }

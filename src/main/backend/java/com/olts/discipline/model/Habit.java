@@ -2,6 +2,8 @@ package com.olts.discipline.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -17,6 +19,8 @@ import java.util.Date;
  * 25.04.2017
  */
 @Data
+@EqualsAndHashCode(exclude = {"habitUser"})
+@ToString(exclude={"id", "habitUser"})
 @Entity
 @Table(name = "habit")
 public class Habit implements Serializable {
@@ -51,17 +55,4 @@ public class Habit implements Serializable {
     private String description;
 
     private @Version @JsonIgnore Long version;
-
-    @Override
-    public String toString() {
-        return "Habit{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", difficulty=" + difficulty +
-                ", userId=" + habitUser +
-                ", createdWhen=" + createdWhen +
-                ", description='" + description + '\'' +
-                "," +
-                '}';
-    }
 }
