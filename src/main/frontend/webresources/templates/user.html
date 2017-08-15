@@ -1,7 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
-<link rel="stylesheet" type="text/css" href="libraries/bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="libraries/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="css/scroll.css"/>
+<link rel="stylesheet" type="text/css" href="css/dashboard.css"/>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
 <head lang="en">
     <meta charset="UTF-8"/>
@@ -24,13 +26,13 @@
 </form>
 
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Discipline</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#" onClick="alert('Not implemented')">Notifications (replace to icon)</a></li>
+                <li><a href="#" onClick="alert('Not implemented')"><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -51,7 +53,7 @@
 <div class="row">
     <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            <li class="active"><a href="#">Summary <span class="sr-only">(current)</span></a></li>
             <li><a href="/habit">Habits</a></li>
             <li><a href="#" onClick="alert('Not implemented')">Tasks</a></li>
             <li><a href="#" onClick="alert('Not implemented')">Challenges</a></li>
@@ -217,10 +219,9 @@
 
 </body>
 <div class='scrolltop'>
-    <div class='scroll icon'><a>Up</a><i class="fa fa-4x fa-angle-up"></i></div>
+    <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
 </div>
-<script src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="js/tether.min.js"></script>
-<script type="text/javascript" src="libraries/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="libraries/jquery.min.js"></script>
+<script type="text/javascript" src="libraries/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/scroll.js"></script>
 </html>
