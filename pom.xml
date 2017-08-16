@@ -158,10 +158,18 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/bootstrap</outputDirectory>
+                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>node_modules/bootstrap/dist</directory>
+                                    <directory>node_modules/bootstrap/dist/css</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>node_modules/bootstrap/dist/js</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>node_modules/jquery/dist</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>

@@ -148,3 +148,5 @@ HIBERNATE
 
 For validation use JSP 303 annotations: @NotNull and repository by default throws 500 internal server error
 
+Maven plugins
+Maven resources plugin There is can't be more than one configuration in execution
