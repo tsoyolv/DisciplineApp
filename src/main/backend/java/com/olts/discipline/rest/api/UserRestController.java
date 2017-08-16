@@ -23,8 +23,14 @@ class UserRestController {
 
     @GetMapping("/{userId}")
     User get(@PathVariable Long userId) {
-        return userService.getByUsername("olts");
+        return userService.get(userId);
     }
+
+    @GetMapping("")
+    User getCurrent() {
+        return userService.getCurrent();
+    }
+
 
     @GetMapping("/habits/{userId}")
     Collection<Habit> getUserHabits(@PathVariable Long userId) {

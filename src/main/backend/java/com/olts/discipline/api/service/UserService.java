@@ -9,6 +9,8 @@ import java.util.Collection;
 public interface UserService {
     void save(User user);
 
+    User get(long userId);
+
     User getByUsername(String username);
 
     User getCurrent();
