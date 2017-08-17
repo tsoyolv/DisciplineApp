@@ -70,3 +70,10 @@ https://stackoverflow.com/questions/43222544/fatal-error-during-parsing-and-org-
 Is there a way to render multiple React components in the React.render() function?
 Sol: If you wish to render multiple components out you need to nest them within one another in order to maintain the Tree-Like structure.
 https://stackoverflow.com/questions/32577886/is-there-a-way-to-render-multiple-react-components-in-the-react-render-functio
+
+JQuery - $ is not defined
+Sol
+1. Your JavaScript file is not being properly loaded into your page
+2. You have a botched version of jQuery. This could happen because someone edited the core file, or a plugin may have overwritten the $ variable.
+3. You have JavaScript running before the page is fully loaded, and as such, before jQuery is fully loaded.
+https://stackoverflow.com/questions/2194992/jquery-is-not-defined
