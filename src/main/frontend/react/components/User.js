@@ -10,7 +10,7 @@ export default class User extends React.Component {
     render() {
         return (
             <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 className="page-header">{this.props.username}</h1>
+            <h1 className="page-header">{this.props.user.firstName}</h1>
 
             <div className="row placeholders">
                 <div className="col-xs-6 col-sm-3 placeholder">
