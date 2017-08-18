@@ -19,21 +19,20 @@ import java.util.Collection;
 class UserRestController {
 
     @Resource
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/{userId}")
-    User get(@PathVariable Long userId) {
+    private User get(@PathVariable Long userId) {
         return userService.get(userId);
     }
 
-    @GetMapping("")
-    User getCurrent() {
+    @GetMapping
+    private User getCurrent() {
         return userService.getCurrent();
     }
 
-
     @GetMapping("/habits/{userId}")
-    Collection<Habit> getUserHabits(@PathVariable Long userId) {
+    private Collection<Habit> getUserHabits(@PathVariable Long userId) {
         return userService.getUserHabits(userId);
     }
 }
