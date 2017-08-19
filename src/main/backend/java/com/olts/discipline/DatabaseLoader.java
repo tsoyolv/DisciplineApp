@@ -65,6 +65,10 @@ public class DatabaseLoader implements CommandLineRunner {
         defaultUser.setUsername(userName);
         defaultUser.setPassword(password);
         defaultUser.setPasswordConfirm(password);
+        defaultUser.setEmail("tsoyolv@gmail.com");
+        defaultUser.setScore(9999);
+        defaultUser.setHabitScore(9999);
+        defaultUser.setTaskScore(9999);
         userService.save(defaultUser);
         return defaultUser;
     }
