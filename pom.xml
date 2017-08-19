@@ -152,25 +152,61 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy-resources</id>
+                        <id>copy-css</id>
                         <phase>process-classes</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries</outputDirectory>
+                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/css</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>node_modules/bootstrap/dist/css</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                 </resource>
                                 <resource>
+                                    <directory>node_modules/font-awesome/css</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-js</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/js</outputDirectory>
+                            <resources>
+                                <resource>
                                     <directory>node_modules/bootstrap/dist/js</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
                                 </resource>
                                 <resource>
                                     <directory>node_modules/jquery/dist</directory>
-                                    <filtering>true</filtering>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-fonts</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/fonts</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>node_modules/bootstrap/dist/fonts</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>node_modules/font-awesome/fonts</directory>
+                                    <filtering>false</filtering>
                                 </resource>
                             </resources>
                         </configuration>
