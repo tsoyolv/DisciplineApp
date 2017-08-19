@@ -77,3 +77,8 @@ Sol
 2. You have a botched version of jQuery. This could happen because someone edited the core file, or a plugin may have overwritten the $ variable.
 3. You have JavaScript running before the page is fully loaded, and as such, before jQuery is fully loaded.
 https://stackoverflow.com/questions/2194992/jquery-is-not-defined
+
+Failed to decode downloaded font:
+file:////path/to/fonts/fontawesome-webfont.ttf?v=4.4.0
+Sol: maven resource <filtering>false</filtering>
+https://stackoverflow.com/questions/32475982/fontawesome-fails-to-load-fonts-locally-and-in-electron-app
