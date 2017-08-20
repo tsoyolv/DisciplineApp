@@ -9,8 +9,12 @@ export default class User extends React.Component {
 
     render() {
         return (
-            <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div>
                 <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName}</h1>
+                <div className="progress">
+                    <div className="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{width: '70%'}}></div>
+                </div>
+                <span className="text-muted">Level </span>
                 <div className="row placeholders">
                     <div className="col-xs-6 col-sm-3 placeholder">
                         <img src="images/image.jpg" width="200" height="200" className="img-responsive"
