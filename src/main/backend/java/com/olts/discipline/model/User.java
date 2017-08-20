@@ -57,6 +57,16 @@ public class User implements Serializable {
 
     private Integer score;
 
+    private Boolean isHidden;
+
+    private Integer level;
+
+    @Column(name = "level_percentage")
+    private Integer levelPercentage;
+
+    @Column(name = "progress_per_day")
+    private Integer progressPerDay;
+
     @JsonIgnore
     @OneToMany(mappedBy = "habitUser")
     private Set<Habit> habits = new HashSet<>();

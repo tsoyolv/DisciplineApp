@@ -1,6 +1,7 @@
 package com.olts.discipline.api.service;
 
 
+import com.olts.discipline.model.Activity;
 import com.olts.discipline.model.Habit;
 import com.olts.discipline.model.User;
 
@@ -15,5 +16,7 @@ public interface UserService {
 
     User getCurrent();
 
-    Collection<Habit> getUserHabits(Long userId);
+    Collection<Habit> getUserHabits(long userId);
+
+    void recalculateScores(long userId, Activity activity);
 }

@@ -40,6 +40,7 @@ class HabitRestController implements ApplicationEventPublisherAware {
         return getHabitsByUser(userService.getCurrent().getId());
     }
 
+    /* todo maybe move it to user? */
     @GetMapping("/habits/user/{userId}")
     @ResponseBody
     private ResponseEntity<List<Habit>> getHabitsByUser(@PathVariable Long userId) {

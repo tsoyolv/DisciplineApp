@@ -11,8 +11,9 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * o.tsoy
@@ -23,7 +24,7 @@ import java.util.Date;
 @ToString(exclude={"id", "habitUser"})
 @Entity
 @Table(name = "habit")
-public class Habit implements Serializable {
+public class Habit extends Activity {
     private static final long serialVersionUID = 1033348678616001496L;
 
     @Id
@@ -52,7 +53,11 @@ public class Habit implements Serializable {
     @UpdateTimestamp
     private Date updatedWhen;
 
-    private String description;
+    private int count;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "original_habit")
+    private Set<HabitHistory> histories = new HashSet<>();
 
     private @Version @JsonIgnore Long version;
 }
