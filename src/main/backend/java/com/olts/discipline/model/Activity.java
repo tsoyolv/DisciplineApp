@@ -1,5 +1,6 @@
 package com.olts.discipline.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,12 +11,13 @@ import java.io.Serializable;
  */
 @Data
 @Entity
-public class Activity implements Serializable {
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+public abstract class Activity implements Serializable {
     private static final long serialVersionUID = 4706389047942641345L;
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
 
     private String name;
@@ -25,4 +27,7 @@ public class Activity implements Serializable {
     private boolean isCompleted;
 
     private String description;
+
+    private @Version @JsonIgnore
+    Long version;
 }

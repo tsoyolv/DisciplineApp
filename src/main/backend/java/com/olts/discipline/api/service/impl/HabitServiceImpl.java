@@ -37,7 +37,7 @@ public class HabitServiceImpl implements HabitService {
         Habit completed = repository.findOne(id);
         userService.recalculateScores(completed.getHabitUser().getId(), completed);
         completed.setCompleted(true);
-        completed.setCount(completed.getCount() + 1);
+        completed.setCompletedCount(completed.getCompletedCount() + 1);
         repository.save(completed);
         historyRepository.create(completed);
     }

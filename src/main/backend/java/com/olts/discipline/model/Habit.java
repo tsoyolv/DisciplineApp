@@ -37,7 +37,7 @@ public class Habit extends Activity {
 
     @NotNull(message = "Habit difficulty must be not empty")
     @Range(min = 1)
-    private Integer difficulty;
+    private int difficulty;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -53,11 +53,10 @@ public class Habit extends Activity {
     @UpdateTimestamp
     private Date updatedWhen;
 
-    private int count;
+    @Column(name = "completed_count")
+    private int completedCount;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "original_habit")
+    @OneToMany(mappedBy = "originalHabit")
     private Set<HabitHistory> histories = new HashSet<>();
-
-    private @Version @JsonIgnore Long version;
 }

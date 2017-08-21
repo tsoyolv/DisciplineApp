@@ -1,6 +1,5 @@
 package com.olts.discipline.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -13,8 +12,8 @@ import java.util.Date;
  * OLTS on 20.08.2017.
  */
 @Data
-@EqualsAndHashCode(exclude = {"habitUser"})
-@ToString(exclude={"id", "habitUser"})
+@EqualsAndHashCode()
+@ToString(exclude={"id"})
 @Entity
 @Table(name = "habit_history")
 public class HabitHistory extends Activity {
@@ -34,8 +33,6 @@ public class HabitHistory extends Activity {
     @CreationTimestamp
     private Date wasCompleted;
 
-    private int count;
-
-    private @Version @JsonIgnore
-    Long version;
+    @Column(name = "completed_count")
+    private int completedCount;
 }

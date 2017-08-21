@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
     private void recalculateHabit(User user, Activity activity) {
         Habit habit = (Habit) activity;
-        if (habit.getCount() >= Constants.HABIT_BORDER_COUNT) {
+        if (habit.getCompletedCount() >= Constants.HABIT_BORDER_COUNT) {
             increaseUserLevel(user);
             int newScore = habit.getDifficulty() + user.getHabitScore();
         }

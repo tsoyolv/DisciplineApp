@@ -82,3 +82,6 @@ Failed to decode downloaded font:
 file:////path/to/fonts/fontawesome-webfont.ttf?v=4.4.0
 Sol: maven resource <filtering>false</filtering>
 https://stackoverflow.com/questions/32475982/fontawesome-fails-to-load-fonts-locally-and-in-electron-app
+
+user lacks privilege or object not found
+look at LOG. Hibernate: create table habit

@@ -17,15 +17,11 @@ import java.util.Set;
  */
 @Data
 @EqualsAndHashCode(exclude = {"taskUser"})
-@ToString(exclude={"id", "taskUser"})
+@ToString(exclude={"taskUser"})
 @Entity
 @Table(name = "task")
-@Inheritance(strategy=InheritanceType.JOINED)
 public class Task extends Activity {
     private static final long serialVersionUID = -7737323288628958939L;
-
-    @Id
-    private String id;
 
     private String name;
 
@@ -34,8 +30,6 @@ public class Task extends Activity {
     @Column(name = "created_when")
     @Type(type = "timestamp")
     private Date createdWhen;
-
-    private String description;
 
     @Column(name = "remind_date")
     private Date remindDate;

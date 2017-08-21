@@ -2,6 +2,7 @@ package com.olts.discipline.api.repository;
 
 import com.olts.discipline.model.Habit;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -10,6 +11,8 @@ import java.util.List;
 /**
  * OLTS on 27.05.2017.
  */
+@RepositoryRestResource(path = "habits")
+// todo self href generation for habitRepository doesn't work
 public interface HabitRepository extends PagingAndSortingRepository<Habit, Long> {
 
     List<Habit> findByHabitUserId(Long userId);
