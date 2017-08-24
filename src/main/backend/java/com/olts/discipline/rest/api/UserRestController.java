@@ -33,6 +33,6 @@ class UserRestController {
 
     @GetMapping("/habits/{userId}")
     private Collection<Habit> getUserHabits(@PathVariable Long userId) {
-        return userService.getUserHabits(userId);
+        return userService.getNotCompletedUserHabits(userId);
     }
 }

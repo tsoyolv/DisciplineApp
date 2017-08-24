@@ -1,13 +1,10 @@
 package com.olts.discipline.api.service.impl;
 
 
-import com.olts.discipline.Constants;
 import com.olts.discipline.api.repository.RoleRepository;
 import com.olts.discipline.api.repository.UserRepository;
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.model.Activity;
 import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.Task;
 import com.olts.discipline.model.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,9 +25,14 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void save(User user) {
+    public void create(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles(new HashSet<>(roleRepository.findAll()));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void update(User user) {
         userRepository.save(user);
     }
 
@@ -53,41 +55,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Collection<Habit> getUserHabits(long userId) {
+        return userRepository.findOne(userId).getHabits();
+    }
+
+    @Override
+    public Collection<Habit> getNotCompletedUserHabits(long userId) {
         return userRepository.findOne(userId).getHabits().stream().
                 filter(h -> !h.isCompleted()).collect(Collectors.toList());
     }
 
-    @Override // todo not ended
-    public void recalculateScores(long userId, Activity activity) {
-        User user = userRepository.findOne(userId);
-        if (activity instanceof Habit) {
-            recalculateHabit(user, activity);
-        } else if (activity instanceof Task) {
-            recalculateTask(user, activity);
-        } else {
-            recalculateChallenge(user, activity);
-        }
-        userRepository.save(user);
-    }
-
-    private void recalculateChallenge(User user, Activity activity) {
-
-    }
-
-    private void recalculateTask(User user, Activity activity) {
-
-    }
-
-    private void recalculateHabit(User user, Activity activity) {
-        Habit habit = (Habit) activity;
-        if (habit.getCompletedCount() >= Constants.HABIT_BORDER_COUNT) {
-            increaseUserLevel(user);
-            int newScore = habit.getDifficulty() + user.getHabitScore();
-        }
-    }
-
-    private void increaseUserLevel(User user) {
-
-        user.setLevel(user.getLevel() + 1);
+    @Override
+    public Collection<Habit> getCompletedUserHabits(long userId) {
+        return userRepository.findOne(userId).getHabits().stream().
+                filter(Habit::isCompleted).collect(Collectors.toList());
     }
 }

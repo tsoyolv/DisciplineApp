@@ -1,14 +1,15 @@
 package com.olts.discipline.api.service;
 
 
-import com.olts.discipline.model.Activity;
 import com.olts.discipline.model.Habit;
 import com.olts.discipline.model.User;
 
 import java.util.Collection;
 
 public interface UserService {
-    void save(User user);
+    void create(User user);
+
+    void update(User user);
 
     User get(long userId);
 
@@ -18,5 +19,7 @@ public interface UserService {
 
     Collection<Habit> getUserHabits(long userId);
 
-    void recalculateScores(long userId, Activity activity);
+    Collection<Habit> getNotCompletedUserHabits(long userId);
+
+    Collection<Habit> getCompletedUserHabits(long userId);
 }

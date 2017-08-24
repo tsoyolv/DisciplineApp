@@ -69,7 +69,10 @@ public class DatabaseLoader implements CommandLineRunner {
         defaultUser.setScore(9999);
         defaultUser.setHabitScore(9999);
         defaultUser.setTaskScore(9999);
-        userService.save(defaultUser);
+        defaultUser.setLevel(99);
+        defaultUser.setIsHidden(false);
+        defaultUser.setLevelPercentage(85);
+        userService.create(defaultUser);
         return defaultUser;
     }
 

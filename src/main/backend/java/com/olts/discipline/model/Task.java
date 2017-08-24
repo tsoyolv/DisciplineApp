@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,12 +21,21 @@ import java.util.Set;
 @ToString(exclude={"taskUser"})
 @Entity
 @Table(name = "task")
-public class Task extends Activity {
+public class Task implements Serializable /* extends Activity doesn't work - can't generate self link HAL */ {
     private static final long serialVersionUID = -7737323288628958939L;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private long id;
 
     private String name;
 
     private int difficulty;
+
+    private boolean isCompleted;
+
+    private String description;
 
     @Column(name = "created_when")
     @Type(type = "timestamp")
@@ -45,4 +55,7 @@ public class Task extends Activity {
     @JsonIgnore
     @OneToMany(mappedBy = "taskForHistoryTask", fetch = FetchType.LAZY)
     private Set<HistoryTask> historyTasks = new HashSet<>();
+
+    private @Version @JsonIgnore
+    Long version;
 }

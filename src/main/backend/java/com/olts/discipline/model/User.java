@@ -59,10 +59,10 @@ public class User implements Serializable {
 
     private Boolean isHidden;
 
-    private Integer level;
+    private Integer level; // todo can't be changed by rest POST, only GET
 
     @Column(name = "level_percentage")
-    private Integer levelPercentage;
+    private Integer levelPercentage; // can't be changed by rest POST, only GET
 
     @Column(name = "progress_per_day")
     private Integer progressPerDay;
