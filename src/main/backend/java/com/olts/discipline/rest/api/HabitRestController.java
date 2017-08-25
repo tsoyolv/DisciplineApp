@@ -2,8 +2,8 @@ package com.olts.discipline.rest.api;
 
 import com.olts.discipline.api.repository.HabitRepository;
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.User;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.data.rest.core.event.AfterSaveEvent;

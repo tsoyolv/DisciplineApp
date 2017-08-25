@@ -1,6 +1,6 @@
 package com.olts.discipline.api.repository;
 
-import com.olts.discipline.model.HabitHistory;
+import com.olts.discipline.entity.HabitHistory;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 

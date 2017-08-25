@@ -1,8 +1,8 @@
 package com.olts.discipline.api.service;
 
 
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.User;
 
 import java.util.Collection;
 

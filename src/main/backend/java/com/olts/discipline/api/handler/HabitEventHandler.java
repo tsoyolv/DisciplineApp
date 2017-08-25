@@ -1,14 +1,11 @@
 package com.olts.discipline.api.handler;
 
-import com.olts.discipline.api.repository.UserRepository;
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Habit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.*;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

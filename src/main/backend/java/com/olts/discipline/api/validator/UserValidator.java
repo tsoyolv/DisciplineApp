@@ -2,7 +2,7 @@ package com.olts.discipline.api.validator;
 
 
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.User;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

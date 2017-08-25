@@ -3,7 +3,7 @@ package com.olts.discipline.controller;
 import com.olts.discipline.api.service.SecurityService;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.api.validator.UserValidator;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

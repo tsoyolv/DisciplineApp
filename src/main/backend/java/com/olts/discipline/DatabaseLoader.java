@@ -2,8 +2,8 @@ package com.olts.discipline;
 
 import com.olts.discipline.api.repository.HabitRepository;
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

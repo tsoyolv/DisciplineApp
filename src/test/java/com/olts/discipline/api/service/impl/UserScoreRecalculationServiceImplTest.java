@@ -1,6 +1,6 @@
 package com.olts.discipline.api.service.impl;
 
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.User;
 import org.junit.Test;
 
 /**

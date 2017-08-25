@@ -1,9 +1,9 @@
 package com.olts.discipline.api.service;
 
-import com.olts.discipline.model.Challenge;
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.Task;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Challenge;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.Task;
+import com.olts.discipline.entity.User;
 
 /**
  * OLTS on 24.08.2017.

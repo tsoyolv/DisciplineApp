@@ -1,8 +1,8 @@
 package com.olts.discipline.rest.api;
 
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

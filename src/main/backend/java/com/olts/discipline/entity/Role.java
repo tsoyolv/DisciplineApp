@@ -1,4 +1,4 @@
-package com.olts.discipline.model;
+package com.olts.discipline.entity;
 
 import javax.persistence.*;
 import java.util.Set;

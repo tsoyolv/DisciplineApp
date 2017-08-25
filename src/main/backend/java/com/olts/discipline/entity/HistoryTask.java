@@ -1,4 +1,4 @@
-package com.olts.discipline.model;
+package com.olts.discipline.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -7,13 +7,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * OLTS on 20.08.2017.
+ * o.tsoy
+ * 27.04.2017
  */
 @Data
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public abstract class Activity implements Serializable {
-    private static final long serialVersionUID = 4706389047942641345L;
+@Table(name = "history_task")
+public class HistoryTask implements Serializable /*extends Task*/ {
+    private static final long serialVersionUID = -3355341692863625753L;
 
     @Id
     @Column(name = "id")
@@ -30,4 +31,8 @@ public abstract class Activity implements Serializable {
 
     private @Version @JsonIgnore
     Long version;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task taskForHistoryTask;
 }

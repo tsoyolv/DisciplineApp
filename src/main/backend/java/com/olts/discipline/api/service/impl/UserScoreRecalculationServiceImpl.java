@@ -3,10 +3,10 @@ package com.olts.discipline.api.service.impl;
 import com.olts.discipline.Constants;
 import com.olts.discipline.api.service.UserScoreRecalculationService;
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.model.Challenge;
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.Task;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Challenge;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.Task;
+import com.olts.discipline.entity.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

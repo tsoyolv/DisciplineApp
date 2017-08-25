@@ -4,7 +4,7 @@ import com.olts.discipline.api.repository.HabitRepository;
 import com.olts.discipline.api.service.HabitHistoryService;
 import com.olts.discipline.api.service.HabitService;
 import com.olts.discipline.api.service.UserScoreRecalculationService;
-import com.olts.discipline.model.Habit;
+import com.olts.discipline.entity.Habit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

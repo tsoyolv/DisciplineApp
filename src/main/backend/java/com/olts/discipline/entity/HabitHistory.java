@@ -1,4 +1,4 @@
-package com.olts.discipline.model;
+package com.olts.discipline.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

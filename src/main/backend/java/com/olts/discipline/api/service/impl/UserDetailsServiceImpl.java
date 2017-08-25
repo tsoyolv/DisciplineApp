@@ -2,8 +2,8 @@ package com.olts.discipline.api.service.impl;
 
 
 import com.olts.discipline.api.repository.UserRepository;
-import com.olts.discipline.model.Role;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Role;
+import com.olts.discipline.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

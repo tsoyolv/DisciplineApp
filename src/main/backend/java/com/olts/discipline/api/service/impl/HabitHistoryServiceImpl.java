@@ -2,8 +2,8 @@ package com.olts.discipline.api.service.impl;
 
 import com.olts.discipline.api.repository.HabitHistoryRepository;
 import com.olts.discipline.api.service.HabitHistoryService;
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.HabitHistory;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.HabitHistory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

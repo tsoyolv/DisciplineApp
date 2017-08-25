@@ -1,7 +1,7 @@
 package com.olts.discipline.api.service;
 
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.HabitHistory;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.HabitHistory;
 
 /**
  * OLTS on 20.08.2017.
