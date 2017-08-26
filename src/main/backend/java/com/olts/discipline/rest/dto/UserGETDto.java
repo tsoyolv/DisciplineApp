@@ -37,4 +37,6 @@ public class UserGETDto {
     private Integer levelPercentage;
 
     private Integer progressPerDay;
+
+    private Integer rank;
 }

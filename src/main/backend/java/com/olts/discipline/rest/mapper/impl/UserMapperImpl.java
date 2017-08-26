@@ -30,6 +30,7 @@ public class UserMapperImpl implements UserMapper {
         userGETDto.setHabitScore(user.getHabitScore());
         userGETDto.setTaskScore(user.getTaskScore());
         userGETDto.setCreatedWhen(user.getCreatedWhen());
+        userGETDto.setRank(user.getRank());
         return userGETDto;
     }
 

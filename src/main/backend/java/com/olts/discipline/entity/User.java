@@ -67,6 +67,8 @@ public class User implements Serializable {
     @Column(name = "progress_per_day")
     private Integer progressPerDay;
 
+    private Integer rank;
+
     @JsonIgnore
     @OneToMany(mappedBy = "habitUser")
     private Set<Habit> habits = new HashSet<>();

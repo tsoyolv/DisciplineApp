@@ -72,6 +72,7 @@ public class DatabaseLoader implements CommandLineRunner {
         defaultUser.setLevel(99);
         defaultUser.setIsHidden(false);
         defaultUser.setLevelPercentage(85);
+        defaultUser.setRank(1);
         userService.create(defaultUser);
         return defaultUser;
     }
