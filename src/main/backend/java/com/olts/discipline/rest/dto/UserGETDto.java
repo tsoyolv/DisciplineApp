@@ -3,6 +3,7 @@ package com.olts.discipline.rest.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * OLTS on 25.08.2017.
@@ -39,4 +40,12 @@ public class UserGETDto {
     private Integer progressPerDay;
 
     private Integer rank;
+
+    private Date birthDate;
+
+    private String city;
+
+    private String country;
+
+    private List<LinkDto> groups;
 }

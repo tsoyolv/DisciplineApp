@@ -69,6 +69,17 @@ public class User implements Serializable {
 
     private Integer rank;
 
+    @Column(name = "birth_date")
+    private Date birthDate;
+
+    private String city;
+
+    private String country;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "users")
+    private Set<Group> groups = new HashSet<>();
+
     @JsonIgnore
     @OneToMany(mappedBy = "habitUser")
     private Set<Habit> habits = new HashSet<>();
@@ -76,6 +87,10 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "taskUser")
     private Set<Task> tasks = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "challengeUser")
+    private Set<Challenge> challenges = new HashSet<>();
 
     @JsonIgnore
     @ManyToMany

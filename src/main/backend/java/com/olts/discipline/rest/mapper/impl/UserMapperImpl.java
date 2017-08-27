@@ -31,6 +31,9 @@ public class UserMapperImpl implements UserMapper {
         userGETDto.setTaskScore(user.getTaskScore());
         userGETDto.setCreatedWhen(user.getCreatedWhen());
         userGETDto.setRank(user.getRank());
+        userGETDto.setBirthDate(user.getBirthDate());
+        userGETDto.setCity(user.getCity());
+        userGETDto.setCountry(user.getCountry());
         return userGETDto;
     }
 

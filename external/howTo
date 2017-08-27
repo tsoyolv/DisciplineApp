@@ -153,3 +153,6 @@ For validation use JSP 303 annotations: @NotNull and repository by default throw
 
 Maven plugins
 Maven resources plugin There is can't be more than one configuration in execution
+
+org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter doesn't respect urls 'user/edit' it can't
+download css and js resources (maybe its because of different resource level)

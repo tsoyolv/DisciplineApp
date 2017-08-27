@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -73,6 +75,14 @@ public class DatabaseLoader implements CommandLineRunner {
         defaultUser.setIsHidden(false);
         defaultUser.setLevelPercentage(85);
         defaultUser.setRank(1);
+        defaultUser.setProgressPerDay(33);
+        String dateInString = "8/12/1993";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            defaultUser.setBirthDate(formatter.parse(dateInString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         userService.create(defaultUser);
         return defaultUser;
     }
