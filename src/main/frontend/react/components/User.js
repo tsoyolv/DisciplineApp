@@ -10,13 +10,11 @@ export default class User extends React.Component {
     render() {
         return (
             <div>
-                <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName} <a  className="text-muted" href="/user/edit">Edit</a></h1>
+                <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName} <a  className="text-muted" href="/edit">Edit</a></h1>
                 <div className="progress">
                     <div className="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{width: this.props.user.levelPercentage + '%'}}></div>
                 </div>
                 <span className="text-muted">Level {this.props.user.level}</span>
-                <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName}</h1>
-                <span className="text-muted">Dayly rate</span>
                 <div className="row placeholders">
                     <div className="col-xs-6 col-sm-3 placeholder">
                         <img src="images/image.jpg" width="200" height="200" className="img-responsive"
@@ -46,6 +44,14 @@ export default class User extends React.Component {
                             <span className="text-muted">Habit score</span>
                             <h4>{this.props.user.taskScore}</h4>
                             <span className="text-muted">Task score</span>
+                            <h4> {(new Date(this.props.user.birthDate)).toUTCString()}</h4>
+                            <span className="text-muted">Birth date</span>
+                            <h4>{this.props.user.city}</h4>
+                            <span className="text-muted">City</span>
+                            <h4>{this.props.user.country}</h4>
+                            <span className="text-muted">Country</span>
+                            <h4>None</h4>
+                            <span className="text-muted">Groups</span>
                         </div>
                     </div>
                 </div>
