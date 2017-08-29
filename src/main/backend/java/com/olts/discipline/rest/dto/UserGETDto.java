@@ -1,6 +1,7 @@
 package com.olts.discipline.rest.dto;
 
 import lombok.Data;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.util.Date;
 import java.util.List;
@@ -9,9 +10,7 @@ import java.util.List;
  * OLTS on 25.08.2017.
  */
 @Data
-public class UserGETDto {
-
-    private long id;
+public class UserGETDto extends ResourceSupport {
 
     private Date createdWhen;
 
