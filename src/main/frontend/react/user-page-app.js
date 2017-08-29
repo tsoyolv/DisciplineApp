@@ -4,7 +4,7 @@ const React = require('react');
 const client = require('./modules/client');
 const when = require('when');
 
-const GET_USER_PATH = '/api/users';
+const GET_USER_PATH = '/api/users/current';
 
 import User from './components/User'
 
