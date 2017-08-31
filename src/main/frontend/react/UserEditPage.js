@@ -1,10 +1,12 @@
 'use strict';
 
 const React = require('react');
+const ReactDOM = require('react-dom');
 const client = require('./modules/client');
 const when = require('when');
+const stompClient = require('./modules/websocket-listener');
 
-const GET_USER_PROFILE_PATH = '/api/profile/users';
+const GET_USER_PATH = '/api/users/current';
 
 export default class UserEditApp extends React.Component {
 
@@ -22,33 +24,32 @@ export default class UserEditApp extends React.Component {
         super(props);
         this.state = {user: {}, attributes: []};
         this.onUpdate = this.onUpdate.bind(this);
+        this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
     }
 
     componentDidMount() {
-        UserEditApp.httpGET(GET_USER_PROFILE_PATH).done(response => { this.setState({attributes:response.entity}); });
-        var user = this.state.attributes;
-        user.toString();
+        this.updatePageState();
+        stompClient.register([
+            {route: '/topic/updateUser', callback: this.refreshCurrentPage}
+        ]);
+    }
 
-        UserEditApp.httpGET(GET_USER_PATH).done(response => { this.setState({user:response.entity}); });
-        /*.then(schema => {
-                /!**
-                 * Filter unneeded JSON Schema properties, like uri references and
-                 * subtypes ($ref).
-                 *!/
-                Object.keys(schema.entity.properties).forEach(function (property) {
-                    if (schema.entity.properties[property].hasOwnProperty('format') &&
-                        schema.entity.properties[property].format === 'uri') {
-                        delete schema.entity.properties[property];
-                    }
-                    else if (schema.entity.properties[property].hasOwnProperty('$ref')) {
-                        delete schema.entity.properties[property];
-                    }
-                });
+    updatePageState() {
+        UserEditApp.httpGET(GET_USER_PATH).done(
+            response => {
+                var prop;
+                var propArr = [];
 
-                this.schema = schema.entity;
-                this.links = habitCollection.entity._links;
-                return habitCollection;
-            });*/
+                var responseEntity = response.entity;
+                for (prop in responseEntity) {
+                    propArr.push(prop);
+                }
+                this.setState({user: responseEntity, attributes: propArr});
+            });
+    }
+
+    refreshCurrentPage(message) {
+        this.updatePageState();
     }
 
     onUpdate(user, updatedUser) {
@@ -58,7 +59,6 @@ export default class UserEditApp extends React.Component {
             entity: updatedUser,
             headers: {
                 'Content-Type': 'application/json',
-                'If-Match': user.headers.Etag,
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
         }).done(response => {
@@ -74,7 +74,6 @@ export default class UserEditApp extends React.Component {
         });
     }
 
-
     render() {
         return <UserUpdate user={this.state.user} attributes={this.state.attributes} onUpdate={this.onUpdate}  />;
     }
@@ -84,13 +83,12 @@ class UserUpdate extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.update_attributes = props.attributes;
     }
 
     handleSubmit(e) {
         e.preventDefault();
         var updatedUser = {};
-        this.update_attributes.forEach(attribute => {
+        this.props.attributes.forEach(attribute => {
             updatedUser[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
         });
         this.props.onUpdate(this.props.user, updatedUser);
@@ -98,8 +96,9 @@ class UserUpdate extends React.Component {
     }
 
     render() {
-        var inputs = this.update_attributes.map(attribute =>
-            <div key={this.props.user[attribute]} className="form-group">
+        var inputs = this.props.attributes.map(
+            attribute =>
+            <div key={attribute} className="form-group">
                 <label className="col-lg-3 control-label">{attribute}:</label>
                 <div className="col-lg-8">
                     <input className="form-control" type="text"
@@ -111,7 +110,7 @@ class UserUpdate extends React.Component {
 
 
         return <div>
-            <h1 className="page-header">Oleg Tsoi</h1>
+            <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName}</h1>
             <div className="row">
                 {/*left column*/}
                 <div className="col-md-3">
@@ -125,11 +124,7 @@ class UserUpdate extends React.Component {
 
                 {/* edit form column*/}
                 <div className="col-md-9 personal-info">
-                    <div className="alert alert-info alert-dismissable">
-                        <a className="panel-close close" data-dismiss="alert">×</a>
-                        <i className="fa fa-coffee"></i>
-                        This is an <strong>.alert</strong>. Use this to show important messages to the user.
-                    </div>
+                    <Alert/>
                     <h3>Personal info</h3>
                     <form className="form-horizontal" role="form">
                         {inputs}
@@ -155,6 +150,20 @@ class UserUpdate extends React.Component {
                     </form>
                 </div>
             </div>
+        </div>;
+    }
+}
+
+class Alert extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div className="alert alert-info alert-dismissable">
+            <a className="panel-close close" data-dismiss="alert">×</a>
+            <i className="fa fa-coffee"/>
+            This is an <strong>.alert</strong>. Use this to show important messages to the user.
         </div>;
     }
 }
