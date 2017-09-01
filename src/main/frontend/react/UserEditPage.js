@@ -24,17 +24,17 @@ export default class UserEditApp extends React.Component {
         super(props);
         this.state = {user: {}, attributes: []};
         this.onUpdate = this.onUpdate.bind(this);
-        this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
+        this.updateUserState = this.updateUserState.bind(this);
     }
 
     componentDidMount() {
-        this.updatePageState();
+        this.updateUserState();
         stompClient.register([
-            {route: '/topic/updateUser', callback: this.refreshCurrentPage}
+            {route: '/topic/updateUser', callback: this.updateUserState}
         ]);
     }
 
-    updatePageState() {
+    updateUserState() {
         UserEditApp.httpGET(GET_USER_PATH).done(
             response => {
                 var prop;
@@ -46,10 +46,6 @@ export default class UserEditApp extends React.Component {
                 }
                 this.setState({user: responseEntity, attributes: propArr});
             });
-    }
-
-    refreshCurrentPage(message) {
-        this.updatePageState();
     }
 
     onUpdate(user, updatedUser) {

@@ -11,20 +11,20 @@ export default class User extends React.Component {
         return (
             <div>
                 <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName} <a  className="text-muted" href="/edit">Edit</a></h1>
+                Progress <span className="text-muted">(Lvl {this.props.user.level})</span>
                 <div className="progress">
-                    <div className="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{width: this.props.user.levelPercentage + '%'}}></div>
+                    <div className="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{width: this.props.user.levelPercentage + '%'}}>{this.props.user.levelPercentage + '%'}</div>
                 </div>
-                <span className="text-muted">Level {this.props.user.level}</span>
-                <div className="row placeholders">
-                    <div className="col-xs-6 col-sm-3 placeholder">
+                <div className="row">
+                    <div className="col-md-3">
                         <img src="images/image.jpg" width="200" height="200" className="img-responsive"
                              alt="Generic placeholder thumbnail"/>
+                        Satiety
                         <div className="progress">
-                            <div className="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{width: this.props.user.progressPerDay + '%'}}></div>
+                            <div className="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{width: this.props.user.progressPerDay + '%'}}>{this.props.user.progressPerDay + '%'}</div>
                         </div>
-                        <span className="text-muted">Daily rate</span>
                     </div>
-                    <div className="col-xs-6 col-sm-3 placeholder">
+                    <div className="col-md-9 personal-info">
                         <div>
                             <h4>{this.props.user.username}</h4>
                             <span className="text-muted">User Name</span>
