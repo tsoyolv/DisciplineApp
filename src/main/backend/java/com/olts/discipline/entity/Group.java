@@ -14,7 +14,7 @@ import java.util.Set;
 //@EqualsAndHashCode(exclude = {"challengeUser", "challengeFrom"})
 @ToString(exclude={"id"})
 @Entity
-@Table(name = "group")
+@Table(name = "group_tab")
 public class Group implements Serializable {
     private static final long serialVersionUID = -3988269290702387143L;
 

@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.Session;
+import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.Type;
+import org.hibernate.tuple.ValueGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,6 +26,14 @@ import java.util.Set;
 @Table(name = "user")
 public class User implements Serializable {
     private static final long serialVersionUID = 2082395294433209579L;
+
+    public static final class RankValueGenerator implements
+            ValueGenerator<Integer> {
+        @Override
+        public Integer generateValue(Session session, Object owner) {
+            return 999; // todo
+        }
+    }
 
     @Column
     @Id
@@ -50,23 +61,24 @@ public class User implements Serializable {
     private String email;
 
     @Column(name = "task_score")
-    private Integer taskScore;
+    private Integer taskScore = 0;
 
     @Column(name = "habit_score")
-    private Integer habitScore;
+    private Integer habitScore = 0;
 
-    private Integer score;
+    private Integer score = 0; // todo default by DB
 
-    private Boolean isHidden;
+    private Boolean isHidden = false;
 
-    private Integer level; // todo can't be changed by rest POST, only GET
+    private Integer level = 0; // todo can't be changed by rest POST, only GET
 
     @Column(name = "level_percentage")
-    private Integer levelPercentage; // can't be changed by rest POST, only GET
+    private Integer levelPercentage = 0; // can't be changed by rest POST, only GET
 
     @Column(name = "progress_per_day")
-    private Integer progressPerDay;
+    private Integer progressPerDay = 0;
 
+    @GeneratorType(type = RankValueGenerator.class)
     private Integer rank;
 
     @Column(name = "birth_date")

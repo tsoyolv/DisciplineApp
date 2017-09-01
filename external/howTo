@@ -95,6 +95,12 @@ public interface HabitRepository extends PagingAndSortingRepository<Habit, Long>
 
 org.springframework.data.rest.core.support.DefaultSelfLinkProvider - creates HATEOAS self link
 RepositoryEntityLookupConfig - for custom self link
+
+// This will add a DDL default
+@ColumnDefault("'This is my default name'")
+// This will add a runtime default.
+@GeneratorType(type = MyValueGenerator.class)
+private String name;
 ========================================================================================================================
 ================================================ SPRING DATA END =======================================================
 ========================================================================================================================
