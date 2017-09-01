@@ -2,7 +2,7 @@ package com.olts.discipline.rest.mapper.impl;
 
 import com.olts.discipline.entity.User;
 import com.olts.discipline.rest.dto.UserGETDto;
-import com.olts.discipline.rest.dto.UserPOSTDto;
+import com.olts.discipline.rest.dto.UserPutDto;
 import com.olts.discipline.rest.mapper.UserMapper;
 import org.springframework.stereotype.Component;
 
@@ -42,12 +42,22 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public UserPOSTDto userToUserPostDto(User user) {
-        return null;
+    public UserPutDto userToUserPutDto(User user) {
+        UserPutDto userPutDto = new UserPutDto();
+        userPutDto.setFirstName(user.getFirstName());
+        userPutDto.setSecondName(user.getSecondName());
+        userPutDto.setLastName(user.getLastName());
+        userPutDto.setUsername(user.getUsername());
+        userPutDto.setEmail(user.getEmail());
+        userPutDto.setIsHidden(user.getIsHidden());
+        userPutDto.setBirthDate(user.getBirthDate());
+        userPutDto.setCity(user.getCity());
+        userPutDto.setCountry(user.getCountry());
+        return userPutDto;
     }
 
     @Override
-    public User userPostDtoToUser(UserPOSTDto userPOSTDto) {
+    public User userPutDtoToUser(UserPutDto userPutDto) {
         return null;
     }
 }

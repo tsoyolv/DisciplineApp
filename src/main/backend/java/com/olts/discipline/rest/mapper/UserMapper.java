@@ -2,7 +2,7 @@ package com.olts.discipline.rest.mapper;
 
 import com.olts.discipline.entity.User;
 import com.olts.discipline.rest.dto.UserGETDto;
-import com.olts.discipline.rest.dto.UserPOSTDto;
+import com.olts.discipline.rest.dto.UserPutDto;
 
 /**
  * OLTS on 25.08.2017.
@@ -12,7 +12,7 @@ public interface UserMapper {
 
     User userGETDtouser(UserGETDto userGETDto);
 
-    UserPOSTDto userToUserPostDto(User user);
+    UserPutDto userToUserPutDto(User user);
 
-    User userPostDtoToUser(UserPOSTDto userPOSTDto);
+    User userPutDtoToUser(UserPutDto userPutDto);
 }
