@@ -6,7 +6,7 @@ const client = require('./modules/client');
 const when = require('when');
 const stompClient = require('./modules/websocket-listener');
 
-const GET_USER_PATH = '/api/users/current';
+const GET_USER_PATH = '/api/users/current/edit';
 
 export default class UserEditApp extends React.Component {
 
@@ -75,17 +75,25 @@ export default class UserEditApp extends React.Component {
     }
 
     render() {
-        return <UserUpdate user={this.state.user} attributes={this.state.attributes} onUpdate={this.onUpdate}  />;
+        return (
+            <div>
+                <h1 className="page-header">{this.state.user.firstName} {this.state.user.secondName}</h1>
+                <div className="row">
+                    <UploadPhoto/>
+                    <PersonalInfo user={this.state.user} attributes={this.state.attributes} onUpdate={this.onUpdate} />
+                </div>
+            </div>
+        );
     }
 }
 
-class UserUpdate extends React.Component {
+class PersonalInfo extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onSave = this.onSave.bind(this);
     }
 
-    handleSubmit(e) {
+    onSave(e) {
         e.preventDefault();
         var updatedUser = {};
         this.props.attributes.forEach(attribute => {
@@ -96,61 +104,67 @@ class UserUpdate extends React.Component {
     }
 
     render() {
-        var inputs = this.props.attributes.map(
+        var inputs = this.props.attributes.filter(attribute => attribute != 'isHidden').map(
             attribute =>
-            <div key={attribute} className="form-group">
-                <label className="col-lg-3 control-label">{attribute}:</label>
-                <div className="col-lg-8">
-                    <input className="form-control" type="text"
-                           defaultValue={this.props.user[attribute]}
-                           ref={attribute}/>
-                </div>
-            </div>
-        );
-
-
-        return <div>
-            <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName}</h1>
-            <div className="row">
-                {/*left column*/}
-                <div className="col-md-3">
-                    <div className="text-center">
-                        <img src="//placehold.it/100" className="avatar img-circle" alt="avatar"/>
-                        <h6>Upload a photo...</h6>
-
-                        <input type="file" className="form-control"/>
+                <div key={attribute} className="form-group">
+                    <label className="col-lg-3 control-label">{attribute}:</label>
+                    <div className="col-lg-8">
+                        <input className="form-control" type="text"
+                               defaultValue={this.props.user[attribute]}
+                               ref={attribute}/>
                     </div>
                 </div>
+        );
 
-                {/* edit form column*/}
-                <div className="col-md-9 personal-info">
-                    <Alert/>
-                    <h3>Personal info</h3>
-                    <form className="form-horizontal" role="form">
-                        {inputs}
-                        <div className="form-group">
-                            <label className="col-lg-3 control-label">Drop down example:</label>
-                            <div className="col-lg-8">
-                                <div className="ui-select">
-                                    <select id="user_time_zone" className="form-control">
-                                        <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                                        <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                                    </select>
-                                </div>
+        return(
+            <div className="col-md-9 personal-info">
+                <Alert/>
+                <h3>Personal info</h3>
+                <form className="form-horizontal" role="form">
+                    {inputs}
+
+                    <div key="isHidden" className="form-group">
+                        <label className="col-lg-3 control-label">Competitive:</label>
+                        <div className="col-lg-8">
+                            <div className="ui-select">
+                                <select id="isHidden" className="form-control" ref="isHidden">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
                             </div>
                         </div>
-                        <div className="form-group">
-                            <label className="col-md-3 control-label"></label>
-                            <div className="col-md-8">
-                                <input type="button" className="btn btn-primary" value="Save Changes" onClick={this.handleSubmit}/>
-                                <span></span>
-                                <input type="reset" className="btn btn-default" value="Cancel"/>
-                            </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="col-md-3 control-label"></label>
+                        <div className="col-md-8">
+                            <input type="button" className="btn btn-primary" value="Save Changes" onClick={this.onSave}/>
+                            <span></span>
+                            <input type="reset" className="btn btn-default" value="Cancel"/>
                         </div>
-                    </form>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+}
+
+class UploadPhoto extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className="col-md-3">
+                <div className="text-center">
+                    <img src="//placehold.it/100" className="avatar img-circle" alt="avatar"/>
+                    <h6>Upload a photo...</h6>
+
+                    <input type="file" className="form-control"/>
                 </div>
             </div>
-        </div>;
+        )
     }
 }
 
