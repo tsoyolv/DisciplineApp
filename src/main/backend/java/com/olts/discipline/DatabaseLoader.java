@@ -2,8 +2,8 @@ package com.olts.discipline;
 
 import com.olts.discipline.api.repository.HabitRepository;
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.model.Habit;
-import com.olts.discipline.model.User;
+import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -65,7 +67,23 @@ public class DatabaseLoader implements CommandLineRunner {
         defaultUser.setUsername(userName);
         defaultUser.setPassword(password);
         defaultUser.setPasswordConfirm(password);
-        userService.save(defaultUser);
+        defaultUser.setEmail("tsoyolv@gmail.com");
+        defaultUser.setScore(9999);
+        defaultUser.setHabitScore(9999);
+        defaultUser.setTaskScore(9999);
+        defaultUser.setLevel(99);
+        defaultUser.setIsHidden(false);
+        defaultUser.setLevelPercentage(85);
+        defaultUser.setRank(1);
+        defaultUser.setProgressPerDay(33);
+        String dateInString = "8/12/1993";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            defaultUser.setBirthDate(formatter.parse(dateInString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        userService.create(defaultUser);
         return defaultUser;
     }
 

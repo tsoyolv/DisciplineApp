@@ -1,4 +1,4 @@
-package com.olts.discipline.model;
+package com.olts.discipline.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -13,6 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * o.tsoy
@@ -23,7 +25,7 @@ import java.util.Date;
 @ToString(exclude={"id", "habitUser"})
 @Entity
 @Table(name = "habit")
-public class Habit implements Serializable {
+public class Habit implements Serializable /* extends Activity doesn't work - can't generate self link HAL */ {
     private static final long serialVersionUID = 1033348678616001496L;
 
     @Id
@@ -36,7 +38,11 @@ public class Habit implements Serializable {
 
     @NotNull(message = "Habit difficulty must be not empty")
     @Range(min = 1)
-    private Integer difficulty;
+    private int difficulty;
+
+    private boolean isCompleted;
+
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -52,7 +58,13 @@ public class Habit implements Serializable {
     @UpdateTimestamp
     private Date updatedWhen;
 
-    private String description;
+    @Column(name = "completed_count")
+    private int completedCount;
 
-    private @Version @JsonIgnore Long version;
+    @JsonIgnore
+    @OneToMany(mappedBy = "originalHabit")
+    private Set<HabitHistory> histories = new HashSet<>();
+
+    private @Version @JsonIgnore
+    Long version;
 }

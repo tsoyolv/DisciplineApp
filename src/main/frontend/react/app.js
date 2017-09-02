@@ -4,10 +4,10 @@
 'use strict';
 const React = require('react');
 const ReactDOM = require('react-dom');
-const root = '/api';
 
 import UserApp from './user-page-app';
 import AllHabitsApp from './all-habits-page-app';
+import UserEditApp from './UserEditPage';
 
 if(document.getElementById('all_habits')) {
     ReactDOM.render(
@@ -20,5 +20,12 @@ if(document.getElementById('user')) {
     ReactDOM.render(
         <UserApp />,
         document.getElementById('user')
+    );
+}
+
+if(document.getElementById('user_edit')) {
+    ReactDOM.render(
+        <UserEditApp />,
+        document.getElementById('user_edit')
     );
 }
