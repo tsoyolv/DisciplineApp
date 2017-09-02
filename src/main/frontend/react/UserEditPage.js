@@ -22,7 +22,7 @@ export default class UserEditApp extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {user: {}, attributes: []};
+        this.state = {user: {}, attributes: [], updated: false};
         this.onUpdate = this.onUpdate.bind(this);
         this.updateUserState = this.updateUserState.bind(this);
     }
@@ -34,7 +34,7 @@ export default class UserEditApp extends React.Component {
         ]);
     }
 
-    updateUserState() {
+    updateUserState(stompMessage) {
         UserEditApp.httpGET(GET_USER_PATH).done(
             response => {
                 var prop;
@@ -44,7 +44,9 @@ export default class UserEditApp extends React.Component {
                 for (prop in responseEntity) {
                     propArr.push(prop);
                 }
-                this.setState({user: responseEntity, attributes: propArr});
+                var isUpdated = false;
+                if (stompMessage) {isUpdated = true;}
+                this.setState({user: responseEntity, attributes: propArr, updated:isUpdated});
             });
     }
 
@@ -76,7 +78,7 @@ export default class UserEditApp extends React.Component {
                 <h1 className="page-header">{this.state.user.firstName} {this.state.user.secondName}</h1>
                 <div className="row">
                     <UploadPhoto/>
-                    <PersonalInfo user={this.state.user} attributes={this.state.attributes} onUpdate={this.onUpdate} />
+                    <PersonalInfo user={this.state.user} attributes={this.state.attributes} onUpdate={this.onUpdate} updated={this.state.updated} />
                 </div>
             </div>
         );
@@ -99,6 +101,17 @@ class PersonalInfo extends React.Component {
         window.location = "#";
     }
 
+    showAlert() {
+        if (this.props.updated) {
+            return (
+                <div className="alert alert-info alert-dismissable">
+                    <i className="fa fa-coffee"/>
+                    <strong>Changes saved.</strong> The new data will be displayed on your page.
+                </div>
+            );
+        }
+    }
+
     render() {
         var inputs = this.props.attributes.filter(attribute => attribute != 'isHidden').map(
             attribute =>
@@ -114,7 +127,7 @@ class PersonalInfo extends React.Component {
 
         return(
             <div className="col-md-9 personal-info">
-                <Alert/>
+                {this.showAlert()}
                 <h3>Personal info</h3>
                 <form className="form-horizontal" role="form">
                     {inputs}
@@ -134,9 +147,7 @@ class PersonalInfo extends React.Component {
                     <div className="form-group">
                         <label className="col-md-3 control-label"></label>
                         <div className="col-md-8">
-                            <input type="button" className="btn btn-primary" value="Save Changes" onClick={this.onSave}/>
-                            <span></span>
-                            <input type="reset" className="btn btn-default" value="Cancel"/>
+                            <input type="button" className="btn btn-primary" value="Save" onClick={this.onSave}/>
                         </div>
                     </div>
                 </form>
@@ -161,19 +172,5 @@ class UploadPhoto extends React.Component {
                 </div>
             </div>
         )
-    }
-}
-
-class Alert extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return <div className="alert alert-info alert-dismissable">
-            <a className="panel-close close" data-dismiss="alert">×</a>
-            <i className="fa fa-coffee"/>
-            This is an <strong>.alert</strong>. Use this to show important messages to the user.
-        </div>;
     }
 }
