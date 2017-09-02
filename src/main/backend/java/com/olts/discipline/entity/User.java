@@ -73,10 +73,10 @@ public class User implements Serializable {
     private Integer level = 0; // todo can't be changed by rest POST, only GET
 
     @Column(name = "level_percentage")
-    private Integer levelPercentage = 0; // can't be changed by rest POST, only GET
+    private Integer levelPercentage = 1; // can't be changed by rest POST, only GET
 
     @Column(name = "progress_per_day")
-    private Integer progressPerDay = 0;
+    private Integer progressPerDay = 100;
 
     @GeneratorType(type = RankValueGenerator.class)
     private Integer rank;

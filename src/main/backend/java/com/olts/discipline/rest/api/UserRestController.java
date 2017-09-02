@@ -67,7 +67,6 @@ class UserRestController implements ApplicationEventPublisherAware {
         out.setFirstName(in.getFirstName());
         out.setSecondName(in.getSecondName());
         out.setLastName(in.getLastName());
-        out.setUsername(in.getUsername());
         out.setEmail(in.getEmail());
         out.setIsHidden(in.getIsHidden());
         out.setBirthDate(in.getBirthDate());

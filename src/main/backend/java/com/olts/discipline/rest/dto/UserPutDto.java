@@ -10,8 +10,6 @@ import java.util.Date;
  */
 @Data
 public class UserPutDto extends ResourceSupport {
-    private String username;
-
     private String firstName;
 
     private String secondName;
