@@ -91,6 +91,12 @@ class PersonalInfo extends React.Component {
         this.onSave = this.onSave.bind(this);
     }
 
+    static inputOnChange() {
+        window.onbeforeunload = function () {
+            return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
+        };
+    }
+
     onSave(e) {
         e.preventDefault();
         var updatedUser = {};
@@ -99,6 +105,7 @@ class PersonalInfo extends React.Component {
         });
         this.props.onUpdate(this.props.user, updatedUser);
         window.location = "#";
+        window.onbeforeunload = null;
     }
 
     showAlert() {
@@ -120,7 +127,7 @@ class PersonalInfo extends React.Component {
                     <div className="col-lg-8">
                         <input className="form-control" type="text"
                                defaultValue={this.props.user[attribute]}
-                               ref={attribute}/>
+                               ref={attribute} onChange={PersonalInfo.inputOnChange}/>
                     </div>
                 </div>
         );
@@ -128,7 +135,6 @@ class PersonalInfo extends React.Component {
         return(
             <div className="col-md-9 personal-info">
                 {this.showAlert()}
-                <h3>Personal info</h3>
                 <form className="form-horizontal" role="form">
                     {inputs}
 
