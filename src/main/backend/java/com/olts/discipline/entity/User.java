@@ -82,6 +82,7 @@ public class User implements Serializable {
     private Integer rank;
 
     @Column(name = "birth_date")
+    @Type(type = "date")
     private Date birthDate;
 
     private String city;
