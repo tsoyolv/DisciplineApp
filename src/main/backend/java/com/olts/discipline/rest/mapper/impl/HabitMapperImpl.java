@@ -5,6 +5,8 @@ import com.olts.discipline.entity.User;
 import com.olts.discipline.rest.dto.HabitDto;
 import com.olts.discipline.rest.mapper.HabitMapper;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.LinkBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -29,7 +31,10 @@ public class HabitMapperImpl implements HabitMapper {
         habitDto.setAchieved(habit.isAchieved());
         habitDto.setUpdatedWhen(habit.getUpdatedWhen());
         habitDto.setCreatedWhen(habit.getCreatedWhen());
-        habitDto.add(entityLinks.linkForSingleResource(User.class, habit.getHabitUser().getId()).withRel("habitUser"));
+        LinkBuilder linkBuilder = entityLinks.linkForSingleResource(User.class, habit.getHabitUser().getId());
+        habitDto.add(linkBuilder.withRel("habitUser"));
+        Link link = entityLinks.linkForSingleResource(Habit.class, habit.getId()).withSelfRel();
+        habitDto.add(link);
         return habitDto;
     }
 

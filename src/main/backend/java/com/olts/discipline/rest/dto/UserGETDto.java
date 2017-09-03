@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * OLTS on 25.08.2017.
@@ -45,6 +44,4 @@ public class UserGETDto extends ResourceSupport {
     private String city;
 
     private String country;
-
-    private List<LinkDto> groups;
 }

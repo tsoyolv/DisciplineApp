@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * OLTS on 20.08.2017.
@@ -31,8 +30,8 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public List<Habit> getByUserId(Long userId, Boolean achieved, Boolean completed, Integer page, Integer pageSize) {
-        return repository.findByHabitUserId(userId, achieved, completed, new PageRequest(page, pageSize)).getContent();
+    public Page<Habit> getByUserId(Long userId, Boolean achieved, Boolean completed, Integer page, Integer pageSize) {
+        return repository.findByHabitUserId(userId, achieved, completed, new PageRequest(page, pageSize));
     }
 
     @Override

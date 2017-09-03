@@ -4,23 +4,26 @@ import com.olts.discipline.api.service.HabitService;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Habit;
 import com.olts.discipline.entity.User;
-import com.olts.discipline.rest.dto.HabitDto;
-import com.olts.discipline.rest.dto.UserGETDto;
-import com.olts.discipline.rest.dto.UserPutDto;
+import com.olts.discipline.rest.dto.*;
 import com.olts.discipline.rest.mapper.HabitMapper;
 import com.olts.discipline.rest.mapper.UserMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.data.domain.Page;
 import org.springframework.data.rest.core.event.AfterSaveEvent;
 import org.springframework.data.rest.core.event.BeforeSaveEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * OLTS on 29.08.2017.
@@ -60,30 +63,18 @@ class UserRestController implements ApplicationEventPublisherAware {
     }
 
     @GetMapping("/users/{userId}/habits")
-    private @ResponseBody ResponseEntity<List<HabitDto>> getHabits(
+    private @ResponseBody ResponseEntity<PageableResource> getHabits(
             @PathVariable("userId") Long userId,
             @RequestParam(value="completed", defaultValue="false") Boolean completed,
             @RequestParam(value="achieved", defaultValue="false") Boolean achieved,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="5") Integer size) {
-        List<Habit> habits = habitService.getByUserId(userId, achieved, completed, page, size);
-        List<HabitDto> responseHabits = habits.stream().map(e -> habitMapper.habitToHabitDto(e)).collect(Collectors.toList());
-        int next = page + 1;
-        int nextSize = size;
-        return ResponseEntity.ok(responseHabits);
+        Page<Habit> habitPage = habitService.getByUserId(userId, achieved, completed, page, size);
+        List<HabitDto> responseHabits = habitPage.getContent().stream().map(e -> habitMapper.habitToHabitDto(e)).collect(Collectors.toList());
+        PageableResource habitsResponse = new PageableResource(new EmbeddedResource(responseHabits), new PageDto(page, size, habitPage.getTotalElements(), habitPage.getTotalPages()));
+        //habitsResponse.add(ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(UserRestController.class).getHabits(userId, completed, achieved, page + 1, size)).withRel("next"));
+        return new ResponseEntity<>(habitsResponse, HttpStatus.OK);
     }
-
-    /*@GetMapping("/users/{userId}/habits")
-    private @ResponseBody ResponseEntity<PagedResources<Habit>> getHabits(
-            @PathVariable("userId") Long userId,
-            @RequestParam(value="completed", defaultValue="false") Boolean completed,
-            @RequestParam(value="achieved", defaultValue="false") Boolean achieved,
-            Pageable pageable,
-            PagedResourcesAssembler assembler
-            ) {
-        Page<Habit> habits = habitService.get(achieved, completed, pageable);
-        return new ResponseEntity<>(assembler.toResource(habits), HttpStatus.OK);
-    }*/
 
     /**
      * merge entities
