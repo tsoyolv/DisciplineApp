@@ -101,6 +101,9 @@ RepositoryEntityLookupConfig - for custom self link
 // This will add a runtime default.
 @GeneratorType(type = MyValueGenerator.class)
 private String name;
+
+For HAL rest (_links etc.) return new ResponseEntity<>(habitsResponse, HttpStatus.OK);
+where habitsResponse extends ResourceSupport org.springframework.hateoas.ResourceSupport
 ========================================================================================================================
 ================================================ SPRING DATA END =======================================================
 ========================================================================================================================
