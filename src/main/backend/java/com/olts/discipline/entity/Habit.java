@@ -40,7 +40,7 @@ public class Habit implements Serializable /* extends Activity doesn't work - ca
     @Range(min = 1)
     private int difficulty;
 
-    private boolean isCompleted;
+    private boolean completed;
 
     private String description;
 
