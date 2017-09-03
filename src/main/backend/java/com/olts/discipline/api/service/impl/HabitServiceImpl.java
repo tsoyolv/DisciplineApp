@@ -8,6 +8,7 @@ import com.olts.discipline.entity.Habit;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * OLTS on 20.08.2017.
@@ -24,6 +25,11 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public Habit get(long id) {
         return repository.findOne(id);
+    }
+
+    @Override
+    public List<Habit> getByUserId(Long userId) {
+        return repository.findByHabitUserId(userId);
     }
 
     @Override

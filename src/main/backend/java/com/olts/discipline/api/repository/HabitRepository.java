@@ -14,6 +14,7 @@ import java.util.List;
 @RepositoryRestResource(path = "habits")
 public interface HabitRepository extends PagingAndSortingRepository<Habit, Long> {
 
+    /*@Query("select h from Habit h where h.achieved=false")*/ // todo doesn't work
     List<Habit> findByHabitUserId(Long userId);
 
     @Override

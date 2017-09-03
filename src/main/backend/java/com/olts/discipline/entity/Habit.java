@@ -44,6 +44,8 @@ public class Habit implements Serializable /* extends Activity doesn't work - ca
 
     private String description;
 
+    private boolean achieved;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User habitUser;
@@ -60,6 +62,10 @@ public class Habit implements Serializable /* extends Activity doesn't work - ca
 
     @Column(name = "completed_count")
     private int completedCount;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "habit")
+    private ActivitySphere activitySphere;
 
     @JsonIgnore
     @OneToMany(mappedBy = "originalHabit")
