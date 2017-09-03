@@ -8,6 +8,7 @@ const ReactDOM = require('react-dom');
 import UserApp from './user-page-app';
 import AllHabitsApp from './all-habits-page-app';
 import UserEditApp from './UserEditPage';
+import UserHabitsPage from './UserHabitsPage';
 
 if(document.getElementById('all_habits')) {
     ReactDOM.render(
@@ -27,5 +28,12 @@ if(document.getElementById('user_edit')) {
     ReactDOM.render(
         <UserEditApp />,
         document.getElementById('user_edit')
+    );
+}
+
+if(document.getElementById('user_habits')) {
+    ReactDOM.render(
+        <UserHabitsPage />,
+        document.getElementById('user_habits')
     );
 }
