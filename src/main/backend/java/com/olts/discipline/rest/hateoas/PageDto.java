@@ -1,4 +1,4 @@
-package com.olts.discipline.rest.dto;
+package com.olts.discipline.rest.hateoas;
 
 import lombok.Data;
 

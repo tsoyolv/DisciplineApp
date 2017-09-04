@@ -1,8 +1,8 @@
-package com.olts.discipline.rest.assembler;
+package com.olts.discipline.rest.hateoas.assembler;
 
-import com.olts.discipline.rest.dto.EmbeddedResource;
-import com.olts.discipline.rest.dto.PageDto;
-import com.olts.discipline.rest.dto.PageableResource;
+import com.olts.discipline.rest.hateoas.EmbeddedResource;
+import com.olts.discipline.rest.hateoas.PageDto;
+import com.olts.discipline.rest.hateoas.PageableResource;
 import com.olts.discipline.rest.mapper.PojoToDtoMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.Link;

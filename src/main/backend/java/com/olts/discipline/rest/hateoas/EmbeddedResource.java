@@ -1,4 +1,4 @@
-package com.olts.discipline.rest.dto;
+package com.olts.discipline.rest.hateoas;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
