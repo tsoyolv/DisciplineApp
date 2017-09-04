@@ -104,6 +104,9 @@ private String name;
 
 For HAL rest (_links etc.) return new ResponseEntity<>(habitsResponse, HttpStatus.OK);
 where habitsResponse extends ResourceSupport org.springframework.hateoas.ResourceSupport
+
+Problems with the pageable return in HAL. Also it is impossible to create links through ControllerLinkBuilder.methodOn,
+since it calls the method recursively, but this is not a bean method -> the services are not injected = null
 ========================================================================================================================
 ================================================ SPRING DATA END =======================================================
 ========================================================================================================================

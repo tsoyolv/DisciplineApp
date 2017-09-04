@@ -4,7 +4,10 @@ import com.olts.discipline.api.service.HabitService;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Habit;
 import com.olts.discipline.entity.User;
-import com.olts.discipline.rest.dto.*;
+import com.olts.discipline.rest.assembler.PageableResourceAssembler;
+import com.olts.discipline.rest.dto.PageableResource;
+import com.olts.discipline.rest.dto.UserGETDto;
+import com.olts.discipline.rest.dto.UserPutDto;
 import com.olts.discipline.rest.mapper.HabitMapper;
 import com.olts.discipline.rest.mapper.UserMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -14,13 +17,12 @@ import org.springframework.data.rest.core.event.AfterSaveEvent;
 import org.springframework.data.rest.core.event.BeforeSaveEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * OLTS on 29.08.2017.
@@ -46,7 +48,7 @@ class UserRestController implements ApplicationEventPublisherAware {
     @GetMapping("/users/current")
     private @ResponseBody ResponseEntity<UserGETDto> getCurrent() {
         User current = userService.getCurrent();
-        UserGETDto userGETDto = userMapper.userToUserGetDto(current);
+        UserGETDto userGETDto = userMapper.pojoToDto(current);
         userGETDto.add(entityLinks.linkForSingleResource(User.class, current.getId()).withSelfRel());
         return ResponseEntity.ok(userGETDto);
     }
@@ -66,11 +68,10 @@ class UserRestController implements ApplicationEventPublisherAware {
             @RequestParam(value="achieved", defaultValue="false") Boolean achieved,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="5") Integer size) {
+        //todo get normal link
+        String methodPath = ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/users/%x/habits", userId)).toString();
         Page<Habit> habitPage = habitService.getByUserId(userId, achieved, completed, page, size);
-        List<HabitDto> responseHabits = habitPage.getContent().stream().map(e -> habitMapper.habitToHabitDto(e)).collect(Collectors.toList());
-        PageableResource habitsResponse = new PageableResource(new EmbeddedResource(responseHabits), new PageDto(page, size, habitPage.getTotalElements(), habitPage.getTotalPages()));
-        //habitsResponse.add(ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(UserRestController.class).getHabits(userId, completed, achieved, page + 1, size)).withRel("next"));
-        return new ResponseEntity<>(habitsResponse, HttpStatus.OK);
+        return new ResponseEntity<>(new PageableResourceAssembler<>(habitMapper, methodPath).toResource(habitPage), HttpStatus.OK);
     }
 
     /*@GetMapping("/users/habits") // todo

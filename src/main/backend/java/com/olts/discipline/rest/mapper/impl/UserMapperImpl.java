@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class UserMapperImpl implements UserMapper {
 
     @Override
-    public UserGETDto userToUserGetDto(User user) {
+    public UserGETDto pojoToDto(User user) {
         UserGETDto userGETDto = new UserGETDto();
         userGETDto.setUsername(user.getUsername());
         userGETDto.setFirstName(user.getFirstName());

@@ -7,9 +7,7 @@ import com.olts.discipline.rest.dto.UserPutDto;
 /**
  * OLTS on 25.08.2017.
  */
-public interface UserMapper {
-    UserGETDto userToUserGetDto(User user);
-
+public interface UserMapper extends PojoToDtoMapper<User, UserGETDto> {
     User userGETDtouser(UserGETDto userGETDto);
 
     UserPutDto userToUserPutDto(User user);

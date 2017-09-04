@@ -21,7 +21,7 @@ public class HabitMapperImpl implements HabitMapper {
     private EntityLinks entityLinks;
 
     @Override
-    public HabitDto habitToHabitDto(Habit habit) {
+    public HabitDto pojoToDto(Habit habit) {
         HabitDto habitDto = new HabitDto();
         habitDto.setName(habit.getName());
         habitDto.setDifficulty(habit.getDifficulty());

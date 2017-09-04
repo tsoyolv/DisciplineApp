@@ -47,6 +47,14 @@ public class DatabaseLoader implements CommandLineRunner {
 
         habitRepository.save(defaultHabit);
 
+        Habit defaultHabit2 = new Habit();
+        defaultHabit2.setName("English 1 hour");
+        defaultHabit2.setDifficulty(5);
+        defaultHabit2.setDescription("Smarter");
+        defaultHabit2.setHabitUser(defaultUser);
+        defaultHabit2.setId(12);
+        habitRepository.save(defaultHabit2);
+
         Habit habit = new Habit();
         habit.setName("Workout");
         habit.setDifficulty(5);
