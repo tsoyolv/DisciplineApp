@@ -14,7 +14,6 @@ import org.springframework.data.rest.core.event.AfterSaveEvent;
 import org.springframework.data.rest.core.event.BeforeSaveEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * OLTS on 29.08.2017.
@@ -75,6 +72,16 @@ class UserRestController implements ApplicationEventPublisherAware {
         //habitsResponse.add(ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(UserRestController.class).getHabits(userId, completed, achieved, page + 1, size)).withRel("next"));
         return new ResponseEntity<>(habitsResponse, HttpStatus.OK);
     }
+
+    /*@GetMapping("/users/habits") // todo
+    private @ResponseBody ResponseEntity<PagedResources<Habit>> getHabits(
+            Pageable pageable,
+            PagedResourcesAssembler assembler
+            ) {
+
+        Page<Habit> habits = habitService.get(false, false, pageable);
+        return new ResponseEntity<>(assembler.toResource(habits), HttpStatus.OK);
+    }*/
 
     /**
      * merge entities
