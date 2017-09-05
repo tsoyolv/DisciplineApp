@@ -10,6 +10,8 @@ import AllHabitsApp from './all-habits-page-app';
 import UserEditApp from './UserEditPage';
 import UserHabitsPage from './UserHabitsPage';
 
+/* todo react routing */
+
 if(document.getElementById('all_habits')) {
     ReactDOM.render(
         <AllHabitsApp />,

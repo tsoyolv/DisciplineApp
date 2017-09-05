@@ -11,6 +11,7 @@ const stompClient = require('./modules/websocket-listener');
 const root = '/api';
 
 import HabitList from './components/habit-list-component'
+import CreateDialog from './components/CreateDialog'
 
 class AllHabitsApp extends React.Component {
 
@@ -232,9 +233,11 @@ class AllHabitsApp extends React.Component {
     }
 
     render() {
+        var filteredAttrs = this.state.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen');
         return (
             <div>
-                <CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
+                <a href="#createHabit">Create</a>
+                <CreateDialog attributes={filteredAttrs} onCreate={this.onCreate} modalId="createHabit" titleName="Create new Habit" buttonName="Create"/>
                 <HabitList habits={this.state.habits}
                            links={this.state.links}
                            pageSize={this.state.pageSize}
@@ -243,60 +246,6 @@ class AllHabitsApp extends React.Component {
                            onUpdate={this.onUpdate}
                            onDelete={this.onDelete}
                            updatePageSize={this.updatePageSize}/>
-            </div>
-        )
-    }
-}
-
-class CreateDialog extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        var newHabit = {};
-        var created_attributes = this.props.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen');
-        created_attributes.forEach(attribute => {
-            newHabit[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
-        });
-        this.props.onCreate(newHabit);
-
-        // clear out the dialog's inputs
-        created_attributes.forEach(attribute => {
-            ReactDOM.findDOMNode(this.refs[attribute]).value = '';
-        });
-
-        // Navigate away from the dialog to hide it.
-        window.location = "#";
-    }
-
-    render() {
-        var inputs = this.props.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen')
-            .map(attribute =>
-                <p key={attribute}>
-                    <input type="text" placeholder={attribute} ref={attribute} className="field"/>
-                </p>
-            );
-
-        return (
-            <div>
-                <a href="#createHabit">Create</a>
-
-                <div id="createHabit" className="modalDialog">
-                    <div>
-                        <a href="#" title="Close" className="close">X</a>
-
-                        <h2>Create new habit</h2>
-
-                        <form>
-                            {inputs}
-                            <button onClick={this.handleSubmit}>Create</button>
-                        </form>
-                    </div>
-                </div>
             </div>
         )
     }
