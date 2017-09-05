@@ -62,16 +62,30 @@ class UserRestController implements ApplicationEventPublisherAware {
     }
 
     @GetMapping("/users/{userId}/habits")
-    private @ResponseBody ResponseEntity<PageableResource> getHabits(
+    private @ResponseBody ResponseEntity<PageableResource> getUserHabits(
             @PathVariable("userId") Long userId,
             @RequestParam(value="completed", defaultValue="false") Boolean completed,
             @RequestParam(value="achieved", defaultValue="false") Boolean achieved,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="5") Integer size) {
+        return new ResponseEntity<>(getUserHabitsResponse(userId, completed, achieved, page, size), HttpStatus.OK);
+    }
+
+    @GetMapping("/users/current/habits")
+    private @ResponseBody ResponseEntity<PageableResource> getCurrentUserHabits(
+            @RequestParam(value="completed", defaultValue="false") Boolean completed,
+            @RequestParam(value="achieved", defaultValue="false") Boolean achieved,
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="size", defaultValue="5") Integer size) {
+        User current = userService.getCurrent();
+        return new ResponseEntity<>(getUserHabitsResponse(current.getId(), completed, achieved, page, size), HttpStatus.OK);
+    }
+
+    private PageableResource getUserHabitsResponse(Long userId, Boolean completed, Boolean achieved, Integer page, Integer size) {
         //todo get normal link
         String methodPath = ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/users/%x/habits", userId)).toString();
         Page<Habit> habitPage = habitService.getByUserId(userId, achieved, completed, page, size);
-        return new ResponseEntity<>(new PageableResourceAssembler<>(habitMapper, methodPath).toResource(habitPage), HttpStatus.OK);
+        return new PageableResourceAssembler<>(habitMapper, methodPath).toResource(habitPage);
     }
 
     /*@GetMapping("/users/habits") // todo
