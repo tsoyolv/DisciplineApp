@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react');
+const ReactDOM = require('react-dom');
 
 export default class CreateDialog extends React.Component {
 
@@ -23,7 +24,7 @@ export default class CreateDialog extends React.Component {
         });
 
         // Navigate away from the dialog to hide it.
-        window.location = "#";
+        window.location = "#"; // todo close modal dialog
     }
 
     render() {
@@ -35,18 +36,26 @@ export default class CreateDialog extends React.Component {
             );
 
         return (
-            <div id={this.props.modalId} className="modalDialog">
-                <div>
-                    <a href="#" title="Close" className="close">X</a>
-
-                    <h2>{this.props.titleName}</h2>
-
+        <div className="modal fade" id={this.props.modalId} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">{this.props.titleName}</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <form>
-                        {inputs}
-                        <button onClick={this.handleSubmit}>{this.props.buttonName}</button>
+                        <div className="modal-body">
+                            {inputs}
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" onClick={this.handleSubmit}>{this.props.buttonName}</button>
+                        </div>
                     </form>
                 </div>
             </div>
+        </div>
         );
     }
 }
