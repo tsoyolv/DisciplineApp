@@ -3,7 +3,8 @@ package com.olts.discipline.rest.api;
 import com.olts.discipline.api.service.HabitService;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Habit;
-import com.olts.discipline.entity.User;
+import com.olts.discipline.rest.dto.HabitDto;
+import com.olts.discipline.rest.mapper.HabitMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.data.rest.core.event.AfterSaveEvent;
@@ -29,6 +30,8 @@ class HabitRestController implements ApplicationEventPublisherAware {
 
     @Resource
     private HabitService habitService;
+    @Resource
+    private HabitMapper habitMapper;
 
     private ApplicationEventPublisher publisher;
 
@@ -41,28 +44,28 @@ class HabitRestController implements ApplicationEventPublisherAware {
      * merge entities
      * */
     @PutMapping("/habits/{habitId}")
-    private @ResponseBody ResponseEntity<?> update(@PathVariable("habitId") String habitId, @RequestBody org.springframework.hateoas.Resource<Habit> input) {
+    private @ResponseBody ResponseEntity<HabitDto> update(@PathVariable("habitId") String habitId, @RequestBody org.springframework.hateoas.Resource<Habit> input) {
         Habit retrievedHabit = habitService.get(Long.parseLong(habitId));
 
-        if (!isValid(userService.getCurrent(), retrievedHabit)) {
+        if (!isCurrentUserHabit(retrievedHabit)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         Habit inputHabit = input.getContent();
         publisher.publishEvent(new BeforeSaveEvent(inputHabit));
-        propagateHabit(inputHabit, retrievedHabit);
-        publisher.publishEvent(new AfterSaveEvent(inputHabit));
-        return ResponseEntity.ok(inputHabit);
-    }
-
-    private void propagateHabit(Habit habitForPut, Habit retrievedHabit) {
-        retrievedHabit.setDescription(habitForPut.getDescription());
-        retrievedHabit.setDifficulty(habitForPut.getDifficulty());
-        retrievedHabit.setName(habitForPut.getName());
+        propagatePut(inputHabit, retrievedHabit);
         habitService.update(retrievedHabit);
+        publisher.publishEvent(new AfterSaveEvent(inputHabit));
+        return ResponseEntity.ok(habitMapper.pojoToDto(inputHabit));
     }
 
-    private boolean isValid(User user, Habit habit) {
-        return habit.getHabitUser().getUsername().equals(user.getUsername());
+    private boolean isCurrentUserHabit(Habit habit) {
+        return habit.getHabitUser().getUsername().equals(userService.getCurrent().getUsername());
+    }
+
+    private void propagatePut(Habit in, Habit out) {
+        out.setDescription(in.getDescription());
+        out.setDifficulty(in.getDifficulty());
+        out.setName(in.getName());
     }
 }

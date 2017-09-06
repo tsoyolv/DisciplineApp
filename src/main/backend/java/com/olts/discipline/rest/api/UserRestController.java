@@ -81,6 +81,7 @@ class UserRestController implements ApplicationEventPublisherAware {
         return new ResponseEntity<>(getUserHabitsResponse(current.getId(), completed, achieved, page, size), HttpStatus.OK);
     }
 
+    // todo move to org.springframework.data.web.PagedResourcesAssembler
     private PageableResource getUserHabitsResponse(Long userId, Boolean completed, Boolean achieved, Integer page, Integer size) {
         //todo get normal link
         String methodPath = ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/users/%x/habits", userId)).toString();
@@ -88,31 +89,21 @@ class UserRestController implements ApplicationEventPublisherAware {
         return new PageableResourceAssembler<>(habitMapper, methodPath).toResource(habitPage);
     }
 
-    /*@GetMapping("/users/habits") // todo
-    private @ResponseBody ResponseEntity<PagedResources<Habit>> getHabits(
-            Pageable pageable,
-            PagedResourcesAssembler assembler
-            ) {
-
-        Page<Habit> habits = habitService.get(false, false, pageable);
-        return new ResponseEntity<>(assembler.toResource(habits), HttpStatus.OK);
-    }*/
-
-    /**
-     * merge entities
-     * */
     @PutMapping("/users/{userId}")
-    private @ResponseBody ResponseEntity<?> update(@PathVariable("userId") String userId, @RequestBody org.springframework.hateoas.Resource<User> input) {
+    private @ResponseBody ResponseEntity<UserGETDto> update(@PathVariable("userId") String userId, @RequestBody org.springframework.hateoas.Resource<User> input) {
         User out = userService.get(Long.parseLong(userId));
         User in = input.getContent();
         publisher.publishEvent(new BeforeSaveEvent(in));
-        propagateUserForPut(in, out);
+        propagatePut(in, out);
         userService.update(out);
         publisher.publishEvent(new AfterSaveEvent(in));
-        return ResponseEntity.ok(in);
+        return ResponseEntity.ok(userMapper.pojoToDto(in));
     }
 
-    private void propagateUserForPut(User in, User out) {
+    /**
+     * PUT pojo propagation
+     * */
+    private void propagatePut(User in, User out) {
         out.setFirstName(in.getFirstName());
         out.setSecondName(in.getSecondName());
         out.setLastName(in.getLastName());

@@ -28,6 +28,9 @@ public class PageableResourceAssembler<T> implements ResourceAssembler<Page<T>, 
 
     @Override
     public PageableResource toResource(Page<T> page) {
+        if (page.getTotalPages() == 0) {
+            return null;
+        }
         List<ResourceSupport> items = page.getContent().stream().map(e -> pojoToDtoMapper.pojoToDto(e)).collect(Collectors.toList());
         PageableResource pageableResource = new PageableResource(new EmbeddedResource(items), new PageDto(page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()));
         if (page.getNumber() > 0) {
