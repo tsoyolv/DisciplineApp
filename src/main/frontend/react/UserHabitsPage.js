@@ -18,7 +18,7 @@ export default class UserHabitsPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {habits: [], attributes: [],  page: 1, pageSize: 10, links: {}};
+        this.state = {habits: [], attributes: [],  page: 1, pageSize: 10, links: {}, alert:null};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
@@ -26,6 +26,7 @@ export default class UserHabitsPage extends React.Component {
         this.onNavigate = this.onNavigate.bind(this);
         this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
         this.refreshAndGoToLastPage = this.refreshAndGoToLastPage.bind(this);
+        this.showAlert = this.showAlert.bind(this);
     }
 
     componentDidMount() {
@@ -106,6 +107,9 @@ export default class UserHabitsPage extends React.Component {
                     'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
                 }
             }).done(response => {
+                if (response.status.code === 201) {
+                    this.setState({alert:{entity:response.entity, message:'Created successfully! Created habit: '}})
+                }
                 /* Let the websocket handler create the state */
             }, response => {
                 if (response.status.code === 500) {
@@ -239,10 +243,17 @@ export default class UserHabitsPage extends React.Component {
         });
     }
 
+    showAlert() {
+        if (this.state.alert != null) {
+            return <EntityAlert message={this.state.alert.message} entity={this.state.alert.entity}/>;
+        }
+    }
+
     render() {
         var filteredAttrs = this.state.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen');
         return (
             <div>
+                {this.showAlert()}
                 <a href="#createHabit" data-toggle="modal" data-target="#createHabit">Create</a>
                 <CreateDialog attributes={filteredAttrs} onCreate={this.onCreate} modalId="createHabit" titleName="Create new Habit" buttonName="Create"/>
                 <HabitList habits={this.state.habits}
@@ -255,5 +266,20 @@ export default class UserHabitsPage extends React.Component {
                            updatePageSize={this.updatePageSize}/>
             </div>
         )
+    }
+}
+
+class EntityAlert extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div className="alert alert-success alert-dismissable">
+                <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {this.props.message} <a href={this.props.entity._links.self.href}>{this.props.entity.name}</a>
+            </div>
+        );
     }
 }
