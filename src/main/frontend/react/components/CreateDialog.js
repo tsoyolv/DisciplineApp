@@ -24,7 +24,7 @@ export default class CreateDialog extends React.Component {
         });
 
         // Navigate away from the dialog to hide it.
-        $('#' + this.props.modalId).modal('hide')
+        $('#' + this.props.modalId).modal('hide');
         window.location = "#"; // todo close modal dialog
     }
 

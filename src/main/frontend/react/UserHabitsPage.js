@@ -214,13 +214,13 @@ export default class UserHabitsPage extends React.Component {
     }
 
     refreshCurrentPage(message) {
-        follow(client, root, [{
-            rel: 'habits',
+        client({
+            method: 'GET',
+            path: GET_USER_HABITS_PATH,
             params: {
-                size: this.state.pageSize,
-                page: this.state.page.number
+                size: this.state.pageSize
             }
-        }]).then(habitCollection => {
+        }).then(habitCollection => {
             this.links = habitCollection.entity._links;
             this.page = habitCollection.entity.page;
 
