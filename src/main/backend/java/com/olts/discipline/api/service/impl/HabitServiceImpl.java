@@ -8,6 +8,7 @@ import com.olts.discipline.entity.Habit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,7 +32,8 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     public Page<Habit> getByUserId(Long userId, Boolean achieved, Boolean completed, Integer page, Integer pageSize) {
-        return repository.findByHabitUserId(userId, achieved, completed, new PageRequest(page, pageSize));
+        PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.ASC, "name");
+        return repository.findByHabitUserId(userId, achieved, completed, pageable);
     }
 
     @Override

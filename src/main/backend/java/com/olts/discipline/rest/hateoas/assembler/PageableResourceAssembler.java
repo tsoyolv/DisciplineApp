@@ -10,6 +10,7 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -20,10 +21,12 @@ public class PageableResourceAssembler<T> implements ResourceAssembler<Page<T>, 
 
     private PojoToDtoMapper<T, ? extends ResourceSupport> pojoToDtoMapper;
     private String rootLink;
+    private Map<String, String> params;
 
-    public PageableResourceAssembler(PojoToDtoMapper<T, ? extends ResourceSupport> pojoToDtoMapper, String rootLink) {
+    public PageableResourceAssembler(PojoToDtoMapper<T, ? extends ResourceSupport> pojoToDtoMapper, String rootLink, Map<String, String> params) {
         this.pojoToDtoMapper = pojoToDtoMapper;
         this.rootLink = rootLink;
+        this.params = params;
     }
 
     @Override
@@ -46,18 +49,26 @@ public class PageableResourceAssembler<T> implements ResourceAssembler<Page<T>, 
     }
 
     private Link getLastLink(Page<T> page) {
-       return new Link(rootLink + String.format("?page=%d&size=%d", page.getTotalPages() - 1, page.getSize())).withRel(Link.REL_LAST);
+       return new Link(rootLink + String.format(getParamsString(), page.getTotalPages() - 1, page.getSize())).withRel(Link.REL_LAST);
+    }
+
+    private String getParamsString() {
+        StringBuilder paramStr = new StringBuilder("?page=%d&size=%d");
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            paramStr.append("&").append(param.getKey()).append("=").append(param.getValue());
+        }
+        return paramStr.toString();
     }
 
     private Link getFirstLink(Page<T> page) {
-        return new Link(rootLink + String.format("?page=%d&size=%d", 0, page.getSize())).withRel(Link.REL_FIRST);
+        return new Link(rootLink + String.format(getParamsString(), 0, page.getSize())).withRel(Link.REL_FIRST);
     }
 
     private Link getNextLink(Page<T> page) {
-        return new Link(rootLink + String.format("?page=%d&size=%d", page.getNumber() + 1, page.getSize())).withRel(Link.REL_NEXT);
+        return new Link(rootLink + String.format(getParamsString(), page.getNumber() + 1, page.getSize())).withRel(Link.REL_NEXT);
     }
 
     private Link getPrevLink(Page<T> page) {
-        return new Link(rootLink + String.format("?page=%d&size=%d", page.getNumber() - 1, page.getSize())).withRel(Link.REL_PREVIOUS);
+        return new Link(rootLink + String.format(getParamsString(), page.getNumber() - 1, page.getSize())).withRel(Link.REL_PREVIOUS);
     }
 }

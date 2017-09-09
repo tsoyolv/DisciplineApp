@@ -4,10 +4,10 @@ import com.olts.discipline.api.service.HabitService;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Habit;
 import com.olts.discipline.entity.User;
-import com.olts.discipline.rest.hateoas.assembler.PageableResourceAssembler;
-import com.olts.discipline.rest.hateoas.PageableResource;
 import com.olts.discipline.rest.dto.UserGETDto;
 import com.olts.discipline.rest.dto.UserPutDto;
+import com.olts.discipline.rest.hateoas.PageableResource;
+import com.olts.discipline.rest.hateoas.assembler.PageableResourceAssembler;
 import com.olts.discipline.rest.mapper.HabitMapper;
 import com.olts.discipline.rest.mapper.UserMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -23,6 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * OLTS on 29.08.2017.
@@ -86,7 +89,8 @@ class UserRestController implements ApplicationEventPublisherAware {
         //todo get normal link
         String methodPath = ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/users/%x/habits", userId)).toString();
         Page<Habit> habitPage = habitService.getByUserId(userId, achieved, completed, page, size);
-        return new PageableResourceAssembler<>(habitMapper, methodPath).toResource(habitPage);
+        Map<String, String> params = Collections.unmodifiableMap(new HashMap<String, String>(){{put("completed", String.valueOf(completed)); put("achieved", String.valueOf(achieved));}});
+        return new PageableResourceAssembler<>(habitMapper, methodPath, params).toResource(habitPage);
     }
 
     @PutMapping("/users/{userId}")
