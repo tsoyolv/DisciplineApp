@@ -17,8 +17,7 @@ export default class UpdateDialog extends React.Component {
             updatedHabit[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
         });
         this.props.onUpdate(this.props.updatedEntity, updatedHabit);
-        var href = this.props.updatedEntity.entity._links.self.href;
-        var dialogId = "updateHabit-" + href.substr(href.lastIndexOf('\\'));
+        var dialogId = this.getDialogId();
         $('#' + dialogId).modal('hide');
         window.location = "#";
     }
@@ -33,7 +32,7 @@ export default class UpdateDialog extends React.Component {
         );
 
         var href = this.props.updatedEntity.entity._links.self.href;
-        var dialogId = "updateHabit-" + href.substr(href.lastIndexOf('\\')); // entity id
+        var dialogId = this.getDialogId();
 
         return (
             <div key={href}>
@@ -62,4 +61,9 @@ export default class UpdateDialog extends React.Component {
         )
     }
 
+    getDialogId() {
+        var href = this.props.updatedEntity.entity._links.self.href;
+         // entity id
+        return "updateHabit-" + href.substr(href.lastIndexOf('\\'));
+    }
 }

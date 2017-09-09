@@ -130,6 +130,9 @@ export default class UserHabitsPage extends React.Component {
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
         }).done(response => {
+            if (response.status.code === 200) {
+                this.setState({alert:{entity:response.entity, message:'Updated habit: '}})
+            }
             /* Let the websocket handler update the state */
         }, response => {
             if (response.status.code === 403) {
@@ -183,7 +186,11 @@ export default class UserHabitsPage extends React.Component {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
                 }
-            }).done(response => {/* let the websocket handle updating the UI */},
+            }).done(response => {
+                if (response.status.code === 204) {
+                    this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
+                }
+                /* let the websocket handle updating the UI */},
                 response => {
                     if (response.status.code === 403) {
                         alert('ACCESS DENIED: You are not authorized to delete ' +
@@ -274,11 +281,17 @@ class EntityAlert extends React.Component {
         super(props);
     }
 
+    showHref() {
+        if (this.props.entity) {
+            return <a href={this.props.entity._links.self.href}>{this.props.entity.name}</a>;
+        }
+    }
+
     render() {
         return (
             <div className="alert alert-success alert-dismissable">
                 <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
-                {this.props.message} <a href={this.props.entity._links.self.href}>{this.props.entity.name}</a>
+                {this.props.message} {this.showHref()}
             </div>
         );
     }
