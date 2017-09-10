@@ -12,10 +12,7 @@ import org.springframework.data.rest.core.event.BeforeSaveEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -57,6 +54,21 @@ class HabitRestController implements ApplicationEventPublisherAware {
         habitService.update(retrievedHabit);
         publisher.publishEvent(new AfterSaveEvent(inputHabit));
         return ResponseEntity.ok(habitMapper.pojoToDto(inputHabit));
+    }
+
+    @PutMapping("/habits/{habitId}/complete")
+    private @ResponseBody ResponseEntity<HabitDto> complete(@PathVariable("habitId") String habitId) {
+        long id = Long.parseLong(habitId);
+        Habit retrievedHabit = habitService.get(id);
+
+        if (!isCurrentUserHabit(retrievedHabit)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        publisher.publishEvent(new BeforeSaveEvent(retrievedHabit));
+        habitService.complete(id);
+        publisher.publishEvent(new AfterSaveEvent(retrievedHabit));
+        return ResponseEntity.ok(habitMapper.pojoToDto(retrievedHabit));
     }
 
     private boolean isCurrentUserHabit(Habit habit) {
