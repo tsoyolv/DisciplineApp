@@ -32,7 +32,7 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     public Page<Habit> getByUserId(Long userId, Boolean achieved, Boolean completed, Integer page, Integer pageSize) {
-        PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.ASC, "name");
+        PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, "createdWhen");
         return repository.findByHabitUserId(userId, achieved, completed, pageable);
     }
 
