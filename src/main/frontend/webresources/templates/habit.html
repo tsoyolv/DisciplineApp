@@ -1,0 +1,87 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- root '/' in src added for spring mvc. for change frontend remove slash and before commit return it again  -->
+<link rel="stylesheet" type="text/css" href="/libraries/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="/libraries/css/font-awesome.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/scroll.css"/>
+<link rel="stylesheet" type="text/css" href="/css/dashboard.css"/>
+<!-- todo stylesheets doesn't work -->
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <title>Discipline</title>
+</head>
+<style media="screen" type="text/css">
+
+    body {
+        min-height: 2000px;
+        padding-top: 70px;
+    }
+
+</style>
+<div class='thetop'></div> <!-- for scrolling -->
+<body>
+
+<form id="logoutForm" method="POST" th:action="@{/logout}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+</form>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Discipline</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a>Notifications are not implemented</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">User <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" onClick="alert('Not implemented')" class="navbar-link disabled">Settings</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#" onclick="document.forms['logoutForm'].submit()">Sign off</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="#" onClick="alert('Not implemented')">Summary </a></li>
+                <li><a href="/user">User</a></li>
+                <li><a href="/user-habit">Habits</a></li>
+                <li><a href="#" onClick="alert('Not implemented')">Tasks</a></li>
+                <li><a href="#" onClick="alert('Not implemented')">Challenges</a></li>
+                <li><a href="#" onClick="alert('Not implemented')">Competition</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1>I am HABIT</h1>
+            <!-- react start -->
+            <!--<div id="user_habits"></div>-->
+            <!-- react end -->
+        </div>
+    </div>
+</div>
+
+</body>
+<div class='scrolltop'>
+    <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
+</div>
+<!-- root '/' in src added for spring mvc. for change frontend remove slash and before commit return it again  -->
+<script type="text/javascript" src="/libraries/js/jquery.min.js"></script>
+<script type="text/javascript" src="/libraries/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/scroll.js"></script>
+<script id="react_built" type="text/javascript" src="/built/bundle.js"></script>
+</html>
