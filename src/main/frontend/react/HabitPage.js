@@ -5,6 +5,7 @@ const client = require('./modules/client');
 
 import Navbar from './components/Navbar'
 import Habit from './components/Habit'
+import HabitHistoryTable from './components/HabitHistoryTable'
 
 export default class HabitPage extends React.Component {
     constructor(props) {
@@ -46,6 +47,7 @@ export default class HabitPage extends React.Component {
                         </div>
                         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                             <Habit habit={this.state.habit} />
+                            <HabitHistoryTable habit={this.state.habit}/>
                         </div>
                     </div>
                 </div>
