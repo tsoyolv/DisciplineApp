@@ -121,6 +121,7 @@ https://stackoverflow.com/questions/31933359/using-react-in-a-multi-page-app
 React has local visiblity. It means that if you add div id without local script it won't find that dom element
 <div id="user"></div>
 <script src="built/bundle.js"></script>
+require('./../api/uriListConverter') - ./../ - get parent folder
 ========================================================================================================================
 ==================================================== REACT END =========================================================
 ========================================================================================================================
