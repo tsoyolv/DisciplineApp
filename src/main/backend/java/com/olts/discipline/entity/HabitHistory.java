@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode()
-@ToString(exclude={"id"})
+@ToString(exclude={"id", "originalHabit"})
 @Entity
 @Table(name = "habit_history")
 public class HabitHistory implements Serializable /* extends Activity doesn't work - can't generate self link HAL  */ {
@@ -30,7 +30,7 @@ public class HabitHistory implements Serializable /* extends Activity doesn't wo
 
     private int difficulty;
 
-    private boolean isCompleted;
+    private boolean completed;
 
     private String description;
 

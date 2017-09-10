@@ -1,15 +1,22 @@
 package com.olts.discipline.rest.api;
 
+import com.olts.discipline.api.service.HabitHistoryService;
 import com.olts.discipline.api.service.HabitService;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.HabitHistory;
 import com.olts.discipline.rest.dto.HabitDto;
+import com.olts.discipline.rest.hateoas.PageableResource;
+import com.olts.discipline.rest.hateoas.assembler.PageableResourceAssembler;
+import com.olts.discipline.rest.mapper.HabitHistoryMapper;
 import com.olts.discipline.rest.mapper.HabitMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.data.domain.Page;
 import org.springframework.data.rest.core.event.AfterSaveEvent;
 import org.springframework.data.rest.core.event.BeforeSaveEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +35,11 @@ class HabitRestController implements ApplicationEventPublisherAware {
     @Resource
     private HabitService habitService;
     @Resource
+    private HabitHistoryService habitHistoryService;
+    @Resource
     private HabitMapper habitMapper;
+    @Resource
+    private HabitHistoryMapper historyMapper;
 
     private ApplicationEventPublisher publisher;
 
@@ -71,6 +82,17 @@ class HabitRestController implements ApplicationEventPublisherAware {
         return ResponseEntity.ok(habitMapper.pojoToDto(retrievedHabit));
     }
 
+    @GetMapping("habits/{habitId}/histories")
+    private @ResponseBody ResponseEntity<PageableResource> getHabitHistories(@PathVariable("habitId") Long habitId,
+                                                                             @RequestParam(value="page", defaultValue="0") Integer page,
+                                                                             @RequestParam(value="size", defaultValue="10") Integer size) {
+        String methodPath = ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/habits/%x/histories", habitId)).toString();
+        Page<HabitHistory> habitHistories = habitHistoryService.getHabitHistories(habitId, page, size);
+        if (!habitHistories.hasContent()) {
+            return ResponseEntity.noContent().build();
+        }
+        return new ResponseEntity<>(new PageableResourceAssembler<>(historyMapper, methodPath, null).toResource(habitHistories), HttpStatus.OK);
+    }
     private boolean isCurrentUserHabit(Habit habit) {
         return habit.getHabitUser().getUsername().equals(userService.getCurrent().getUsername());
     }

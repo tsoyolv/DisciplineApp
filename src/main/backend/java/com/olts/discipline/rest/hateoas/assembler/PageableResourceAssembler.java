@@ -54,8 +54,10 @@ public class PageableResourceAssembler<T> implements ResourceAssembler<Page<T>, 
 
     private String getParamsString() {
         StringBuilder paramStr = new StringBuilder("?page=%d&size=%d");
-        for (Map.Entry<String, String> param : params.entrySet()) {
-            paramStr.append("&").append(param.getKey()).append("=").append(param.getValue());
+        if (params != null) {
+            for (Map.Entry<String, String> param : params.entrySet()) {
+                paramStr.append("&").append(param.getKey()).append("=").append(param.getValue());
+            }
         }
         return paramStr.toString();
     }
