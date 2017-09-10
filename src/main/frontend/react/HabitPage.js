@@ -1,10 +1,33 @@
 'use strict';
 
 const React = require('react');
+const client = require('./modules/client');
 
 import Navbar from './components/Navbar'
+import Habit from './components/Habit'
 
-export default class HabitPage extends React.Component { 
+export default class HabitPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {habit:{}};
+    }
+
+    componentDidMount() {
+        this.loadFromServer();
+    }
+
+    loadFromServer() {
+        var href = window.location.href;
+        var id = href.substr(href.lastIndexOf('\\'));
+        client({
+            method: 'GET',
+            path: '/api/habits/' + id,
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => this.setState({habit:response.entity}))
+    }
+
     render () {
         return (
             <div>
@@ -22,8 +45,7 @@ export default class HabitPage extends React.Component {
                             </ul>
                         </div>
                         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
-
+                            <Habit habit={this.state.habit} />
                         </div>
                     </div>
                 </div>

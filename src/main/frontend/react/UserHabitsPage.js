@@ -23,6 +23,7 @@ export default class UserHabitsPage extends React.Component {
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
         this.onDelete = this.onDelete.bind(this);
+        this.onComplete = this.onComplete.bind(this);
         this.onNavigate = this.onNavigate.bind(this);
         this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
         this.refreshAndGoToLastPage = this.refreshAndGoToLastPage.bind(this);
@@ -200,6 +201,31 @@ export default class UserHabitsPage extends React.Component {
         }
     }
 
+    onComplete(habit) {
+        if(confirm('Complete the habit?')) {
+            var href = habit.entity._links.self.href;
+            var path = 'api/habits/' + href.substr(href.lastIndexOf('\\')) + '/complete';
+            client({
+                method: 'PUT',
+                path: path,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                }
+            }).done(response => {
+                    if (response.status.code === 200) {
+                        this.setState({alert:{entity:response.entity, message:'Completed habit:'}})
+                    }
+                    /* let the websocket handle updating the UI */},
+                response => {
+                    if (response.status.code === 403) {
+                        alert('ACCESS DENIED: You are not authorized to complete ' +
+                            habit.entity._links.self.href);
+                    }
+                });
+        }
+    }
+
     updatePageSize(pageSize) {
         if (pageSize !== this.state.pageSize) {
             this.loadFromServer(pageSize);
@@ -270,6 +296,7 @@ export default class UserHabitsPage extends React.Component {
                            onNavigate={this.onNavigate}
                            onUpdate={this.onUpdate}
                            onDelete={this.onDelete}
+                           onComplete={this.onComplete}
                            updatePageSize={this.updatePageSize}/>
             </div>
         )
@@ -283,7 +310,10 @@ class EntityAlert extends React.Component {
 
     showHref() {
         if (this.props.entity) {
-            return <a href={this.props.entity._links.self.href}>{this.props.entity.name}</a>;
+            var href = this.props.entity._links.self.href;
+            var path = 'habit/';
+            var entityLink = path + href.substr(href.lastIndexOf('\\'));
+            return <a href={entityLink}>{this.props.entity.name}</a>;
         }
     }
 
