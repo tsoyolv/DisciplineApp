@@ -9,6 +9,7 @@ import UserApp from './user-page-app';
 import AllHabitsApp from './all-habits-page-app';
 import UserEditApp from './UserEditPage';
 import UserHabitsPage from './UserHabitsPage';
+import HabitPage from './HabitPage';
 
 /* todo react routing */
 
@@ -37,5 +38,12 @@ if(document.getElementById('user_habits')) {
     ReactDOM.render(
         <UserHabitsPage />,
         document.getElementById('user_habits')
+    );
+}
+
+if(document.getElementById('habit')) {
+    ReactDOM.render(
+        <HabitPage />,
+        document.getElementById('habit')
     );
 }
