@@ -21,66 +21,10 @@
 <div class='thetop'></div> <!-- for scrolling -->
 <body>
 
-<form id="logoutForm" method="POST" th:action="@{/logout}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-</form>
+<!-- react start -->
+<div id="user_edit"></div>
+<!-- react end -->
 
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">Discipline</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><i class="fa fa-bell-o fa-lg" aria-hidden="true"></i><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a>Notifications are not implemented</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">User <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" onClick="alert('Not implemented')" class="navbar-link disabled">Settings</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#" onclick="document.forms['logoutForm'].submit()">Sign off</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li><a href="#" onClick="alert('Not implemented')">Summary </a></li>
-                <li><a href="/user">User <span class="sr-only">(current)</span></a></li>
-                <li><a href="/habit">All Habits</a></li>
-                <li><a href="/user-habit">Habits</a></li>
-                <li><a href="#" onClick="alert('Not implemented')">Tasks</a></li>
-                <li><a href="#" onClick="alert('Not implemented')">Challenges</a></li>
-                <li><a href="#" onClick="alert('Not implemented')">Competition</a></li>
-            </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <!-- react start -->
-            <div id="user_edit"></div>
-            <!-- react end -->
-           <!-- <div class="form-group">
-                <label class="col-lg-3 control-label">Birth date:</label>
-                <div class="col-lg-8">
-                    <input class="form-control" type="date"/>
-                </div>
-            </div>-->
-        </div>
-    </div>
-</div>
 
 </body>
 <div class='scrolltop'>

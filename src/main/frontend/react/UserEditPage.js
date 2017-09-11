@@ -8,7 +8,9 @@ const stompClient = require('./modules/websocket-listener');
 
 const GET_USER_PATH = '/api/users/current/edit';
 
-export default class UserEditApp extends React.Component {
+import Navbar from './components/Navbar'
+
+export default class UserEditPage extends React.Component {
 
     static httpGET(path) {
         return client({
@@ -25,6 +27,8 @@ export default class UserEditApp extends React.Component {
         this.state = {user: {}, attributes: [], updated: false};
         this.onUpdate = this.onUpdate.bind(this);
         this.updateUserState = this.updateUserState.bind(this);
+        this.showCompetition = this.showCompetition.bind(this);
+        this.showChallenges = this.showChallenges.bind(this);
     }
 
     componentDidMount() {
@@ -35,7 +39,7 @@ export default class UserEditApp extends React.Component {
     }
 
     updateUserState(stompMessage) {
-        UserEditApp.httpGET(GET_USER_PATH).done(
+        UserEditPage.httpGET(GET_USER_PATH).done(
             response => {
                 var prop;
                 var propArr = [];
@@ -72,15 +76,50 @@ export default class UserEditApp extends React.Component {
         });
     }
 
+    showCompetition() {
+        if (this.state.user) {
+            if (!this.state.user.hidden) {
+                return (<li><a href="#">Competition (Not implemented)</a></li>);
+            }
+        }
+    }
+
+    showChallenges() {
+        if (this.state.user) {
+            if (!this.state.user.hidden) {
+                return (<li><a href="#">Challenges (Not implemented)</a></li>);
+            }
+        }
+    }
+
     render() {
         return (
-            <div>
-                <h1 className="page-header">{this.state.user.firstName} {this.state.user.secondName}</h1>
+        <div>
+            <Navbar/>
+            <div className="container">
                 <div className="row">
-                    <UploadPhoto/>
-                    <PersonalInfo user={this.state.user} attributes={this.state.attributes} onUpdate={this.onUpdate} updated={this.state.updated} />
+                    <div className="col-sm-3 col-md-2 sidebar">
+                        <ul className="nav nav-sidebar">
+                            <li><a href="#">Summary (Not implemented) </a></li>
+                            <li><a href="/habit">All Habits</a></li>
+                            <li><a href="/user-habit">Habits</a></li>
+                            <li><a href="#">Tasks (Not implemented)</a></li>
+                            {this.showChallenges()}
+                            {this.showCompetition()}
+                        </ul>
+                    </div>
+                    <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                        <div>
+                            <h1 className="page-header">{this.state.user.firstName} {this.state.user.secondName}</h1>
+                            <div className="row">
+                                <UploadPhoto/>
+                                <PersonalInfo user={this.state.user} attributes={this.state.attributes} onUpdate={this.onUpdate} updated={this.state.updated} />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
         );
     }
 }
