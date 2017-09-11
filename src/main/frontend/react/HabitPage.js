@@ -10,7 +10,9 @@ import HabitHistoryTable from './components/HabitHistoryTable'
 export default class HabitPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {habit:{}};
+        this.state = {habit:{}, user:{}};
+        this.showCompetition = this.showCompetition.bind(this);
+        this.showChallenges = this.showChallenges.bind(this);
     }
 
     componentDidMount() {
@@ -26,7 +28,32 @@ export default class HabitPage extends React.Component {
             headers: {
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
-        }).done(response => this.setState({habit:response.entity}))
+        }).done(response => {
+            this.setState({habit:response.entity});
+            client({
+                method: 'GET',
+                path: response.entity._links.habitUser.href,
+                headers: {
+                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                }
+            }).done(response => this.setState({user:response.entity}));
+        });
+    }
+
+    showCompetition() {
+        if (this.state.user) {
+            if (!this.state.user.hidden) {
+                return (<li><a href="#">Competition (Not implemented)</a></li>);
+            }
+        }
+    }
+
+    showChallenges() {
+        if (this.state.user) {
+            if (!this.state.user.hidden) {
+                return (<li><a href="#">Challenges (Not implemented)</a></li>);
+            }
+        }
     }
 
     render () {
@@ -38,11 +65,10 @@ export default class HabitPage extends React.Component {
                         <div className="col-sm-3 col-md-2 sidebar">
                             <ul className="nav nav-sidebar">
                                 <li><a href="#">Summary (Not implemented) </a></li>
-                                <li><a href="/habit">All Habits</a></li>
                                 <li><a href="/user-habit">Habits</a></li>
                                 <li><a href="#">Tasks (Not implemented)</a></li>
-                                <li><a href="#">Challenges (Not implemented)</a></li>
-                                <li><a href="#">Competition (Not implemented)</a></li>
+                                {this.showChallenges()}
+                                {this.showCompetition()}
                             </ul>
                         </div>
                         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

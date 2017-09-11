@@ -120,7 +120,7 @@ class PersonalInfo extends React.Component {
     }
 
     render() {
-        var inputs = this.props.attributes.filter(attribute => attribute != 'isHidden').map(
+        var inputs = this.props.attributes.filter(attribute => attribute != 'hidden').map(
             attribute =>
                 <div key={attribute} className="form-group">
                     <label className="col-lg-3 control-label">{attribute}:</label>
