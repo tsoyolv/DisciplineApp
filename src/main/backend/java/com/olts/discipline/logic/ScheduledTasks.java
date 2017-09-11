@@ -50,7 +50,7 @@ public class ScheduledTasks {
 
     private void processHabitsForCompletion(boolean completed) {
         int pageNum = 0;
-        Page<Habit> page = habitService.get(true, completed, new PageRequest(pageNum, pageSize));
+        Page<Habit> page = habitService.get(false, completed, new PageRequest(pageNum, pageSize));
         while (page.hasContent()) {
             page.getContent().forEach(this::processHabit);
             pageNum++;
