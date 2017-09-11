@@ -29,7 +29,7 @@ public class UserGETDto extends ResourceSupport {
 
     private Integer score;
 
-    private Boolean isHidden;
+    private Boolean hidden;
 
     private Integer level;
 

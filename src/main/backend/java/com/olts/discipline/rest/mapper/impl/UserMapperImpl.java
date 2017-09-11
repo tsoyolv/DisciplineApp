@@ -21,7 +21,7 @@ public class UserMapperImpl implements UserMapper {
         userGETDto.setSecondName(user.getSecondName());
         userGETDto.setLastName(user.getLastName());
         userGETDto.setEmail(user.getEmail());
-        userGETDto.setIsHidden(user.getIsHidden());
+        userGETDto.setHidden(user.getHidden());
         userGETDto.setLevel(user.getLevel());
         userGETDto.setLevelPercentage(user.getLevelPercentage());
         userGETDto.setProgressPerDay(user.getProgressPerDay());
@@ -48,7 +48,7 @@ public class UserMapperImpl implements UserMapper {
         userPutDto.setSecondName(user.getSecondName());
         userPutDto.setLastName(user.getLastName());
         userPutDto.setEmail(user.getEmail());
-        userPutDto.setIsHidden(user.getIsHidden());
+        userPutDto.setIsHidden(user.getHidden());
         userPutDto.setBirthDate(user.getBirthDate());
         userPutDto.setCity(user.getCity());
         userPutDto.setCountry(user.getCountry());

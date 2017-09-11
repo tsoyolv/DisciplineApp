@@ -23,7 +23,7 @@ import java.util.Date;
 public class ScheduledTasks {
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-    private static final int pageSize = 1000;
+    private static final int PAGE_SIZE = 1000;
     @Resource
     private HabitService habitService;
     @Resource
@@ -50,11 +50,10 @@ public class ScheduledTasks {
 
     private void processHabitsForCompletion(boolean completed) {
         int pageNum = 0;
-        Page<Habit> page = habitService.get(false, completed, new PageRequest(pageNum, pageSize));
+        Page<Habit> page = habitService.get(false, completed, new PageRequest(pageNum, PAGE_SIZE));
         while (page.hasContent()) {
             page.getContent().forEach(this::processHabit);
-            pageNum++;
-            page = habitService.get(true, false, new PageRequest(pageNum, pageSize));
+            page = habitService.get(true, false, new PageRequest(++pageNum, PAGE_SIZE));
         }
     }
 

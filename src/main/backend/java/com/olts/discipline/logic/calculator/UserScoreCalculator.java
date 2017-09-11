@@ -20,10 +20,19 @@ public class UserScoreCalculator {
     public void calculate(Habit habit) {
         User user = habit.getHabitUser();
         if (habit.isCompleted()) {
-            user.setHabitScore(user.getHabitScore() + habit.getDifficulty());
+            int score;
+            if (habit.isAchieved()) {
+                score = user.getHabitScore() + habit.getDifficulty() - (habit.getCompletedCount() / Constants.HABIT_BORDER_COUNT);
+            } else {
+                score = user.getHabitScore() + habit.getDifficulty();
+            }
+            user.setHabitScore(score);
         } else {
-            int score = habit.getNonCompletedCount() * (habit.getDifficulty() / Constants.HABIT_BORDER_COUNT);
-            user.setHabitScore(user.getHabitScore() - score);
+            if (habit.isAchieved()) {
+                return;
+            }
+            Double score = Math.ceil(habit.getNonCompletedCount() * ((float) habit.getDifficulty() / Constants.HABIT_BORDER_COUNT));
+            user.setHabitScore(user.getHabitScore() - score.intValue());
         }
         userService.update(user);
     }
