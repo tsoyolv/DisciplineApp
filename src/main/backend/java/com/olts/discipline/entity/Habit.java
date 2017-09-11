@@ -63,6 +63,9 @@ public class Habit implements Serializable /* extends Activity doesn't work - ca
     @Column(name = "completed_count")
     private int completedCount;
 
+    @Column(name = "non_completed_count")
+    private int nonCompletedCount;
+
     @JsonIgnore
     @OneToOne(mappedBy = "habit")
     private ActivitySphere activitySphere;

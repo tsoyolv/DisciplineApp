@@ -46,6 +46,9 @@ public class HabitHistory implements Serializable /* extends Activity doesn't wo
     @Column(name = "completed_count")
     private int completedCount;
 
+    @Column(name = "non_completed_count")
+    private int nonCompletedCount;
+
     private @Version @JsonIgnore
     Long version;
 }

@@ -34,6 +34,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
     private void propagateHistory(Habit originalHabit, HabitHistory history) {
         history.setName(originalHabit.getName());
         history.setCompletedCount(originalHabit.getCompletedCount());
+        history.setNonCompletedCount(originalHabit.getNonCompletedCount());
         history.setCompleted(originalHabit.isCompleted());
         history.setDifficulty(originalHabit.getDifficulty());
         history.setDescription(originalHabit.getDescription());

@@ -26,4 +26,6 @@ public class HabitDto extends ResourceSupport {
     private Date updatedWhen;
 
     private int completedCount;
+
+    private int nonCompletedCount;
 }

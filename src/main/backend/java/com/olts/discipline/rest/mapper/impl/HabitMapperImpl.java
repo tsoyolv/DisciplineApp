@@ -28,6 +28,7 @@ public class HabitMapperImpl implements HabitMapper {
         habitDto.setDescription(habit.getDescription());
         habitDto.setCompleted(habit.isCompleted());
         habitDto.setCompletedCount(habit.getCompletedCount());
+        habitDto.setNonCompletedCount(habit.getNonCompletedCount());
         habitDto.setAchieved(habit.isAchieved());
         habitDto.setUpdatedWhen(habit.getUpdatedWhen());
         habitDto.setCreatedWhen(habit.getCreatedWhen());
