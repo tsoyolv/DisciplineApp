@@ -48,7 +48,7 @@ public class UserMapperImpl implements UserMapper {
         userPutDto.setSecondName(user.getSecondName());
         userPutDto.setLastName(user.getLastName());
         userPutDto.setEmail(user.getEmail());
-        userPutDto.setIsHidden(user.getHidden());
+        userPutDto.setHidden(user.getHidden());
         userPutDto.setBirthDate(user.getBirthDate());
         userPutDto.setCity(user.getCity());
         userPutDto.setCountry(user.getCountry());

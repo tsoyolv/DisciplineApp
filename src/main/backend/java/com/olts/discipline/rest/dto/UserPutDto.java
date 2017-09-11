@@ -18,7 +18,7 @@ public class UserPutDto extends ResourceSupport {
 
     private String email;
 
-    private Boolean isHidden;
+    private Boolean hidden;
 
     private Date birthDate;
 
