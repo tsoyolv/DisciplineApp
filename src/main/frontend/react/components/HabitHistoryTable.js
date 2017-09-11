@@ -29,7 +29,7 @@ export default class HabitHistoryTable extends React.Component {
     }
 
     render() {
-        var outs = this.state.histories.map(it => <HabitHistory key={it.name} history={it}/>);
+        var outs = this.state.histories.map(it => <HabitHistory key={it._links.self.href} history={it}/>);
         return (
             <table className="table">
                 <caption>Activity</caption>
@@ -60,7 +60,7 @@ class HabitHistory extends React.Component {
             <tr>
                 <td>{(new Date(this.props.history.wasCompleted)).toUTCString()}</td>
                 <td>{this.props.history.name}</td>
-                <td>{this.props.history.completed}</td>
+                <td>{this.props.history.completed?'YES':'NO'}</td>
                 <td>{this.props.history.completedCount}</td>
                 <td>{this.props.history.description}</td>
             </tr>
