@@ -29,7 +29,15 @@ export default class UserPage extends React.Component {
     }
 
     componentDidMount() {
-        UserPage.httpGET(GET_USER_PATH).done(response => { this.setState({user:response.entity}); });
+        client({
+            method: 'GET',
+            path: GET_USER_PATH,
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {
+            this.setState({user:response.entity});
+        });
     }
 
     showCompetition() {
@@ -51,7 +59,7 @@ export default class UserPage extends React.Component {
     render() {
         return (
                 <div>
-                    <Navbar/>
+                    <Navbar user={this.state.user} />
                     <div className="container">
                         <div className="row">
                             <div className="col-sm-3 col-md-2 sidebar">

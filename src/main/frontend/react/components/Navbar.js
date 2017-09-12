@@ -6,21 +6,6 @@ const client = require('./../modules/client');
 export default class Navbar extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {user: props.user, notifications:props.notifications};
-    }
-
-    componentDidMount() {
-        if (!this.state.user) {
-            client({
-                method: 'GET',
-                path: '/api/users/current',
-                headers: {
-                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-                }
-            }).done(response => {
-                this.setState({user: response.entity});
-            });
-        }
     }
 
     render() {
@@ -41,7 +26,7 @@ export default class Navbar extends React.Component {
                             </li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
-                            <UserDropdown user={this.state.user}/>
+                            <UserDropdown user={this.props.user}/>
                         </ul>
                     </div>
                 </div>

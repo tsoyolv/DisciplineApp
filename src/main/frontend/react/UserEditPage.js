@@ -95,7 +95,7 @@ export default class UserEditPage extends React.Component {
     render() {
         return (
         <div>
-            <Navbar/>
+            <Navbar user={this.state.user} />
             <div className="container">
                 <div className="row">
                     <div className="col-sm-3 col-md-2 sidebar">
@@ -139,7 +139,7 @@ class PersonalInfo extends React.Component {
     onSave(e) {
         e.preventDefault();
         var updatedUser = {};
-        this.props.attributes.forEach(attribute => {
+        this.props.attributes.filter(attribute => attribute != 'hidden' && attribute != 'username').forEach(attribute => {
             updatedUser[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
         });
         this.props.onUpdate(this.props.user, updatedUser);
@@ -159,7 +159,7 @@ class PersonalInfo extends React.Component {
     }
 
     render() {
-        var inputs = this.props.attributes.filter(attribute => attribute != 'hidden').map(
+        var inputs = this.props.attributes.filter(attribute => attribute != 'hidden' && attribute != 'username').map(
             attribute =>
                 <div key={attribute} className="form-group">
                     <label className="col-lg-3 control-label">{attribute}:</label>

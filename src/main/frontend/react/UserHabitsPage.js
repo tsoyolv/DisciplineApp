@@ -13,12 +13,13 @@ const GET_USER_HABITS_PATH = 'api/users/current/habits';
 
 import HabitList from './components/habit-list-component'
 import CreateDialog from './components/CreateDialog'
+import Navbar from './components/Navbar'
 
 export default class UserHabitsPage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {habits: [], attributes: [],  page: 1, pageSize: 10, links: {}, alert:null};
+        this.state = {habits: [], attributes: [],  page: 1, pageSize: 10, links: {}, alert:null, user:{}};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
@@ -28,6 +29,8 @@ export default class UserHabitsPage extends React.Component {
         this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
         this.refreshAndGoToLastPage = this.refreshAndGoToLastPage.bind(this);
         this.showAlert = this.showAlert.bind(this);
+        this.showCompetition = this.showCompetition.bind(this);
+        this.showChallenges = this.showChallenges.bind(this);
     }
 
     componentDidMount() {
@@ -94,6 +97,16 @@ export default class UserHabitsPage extends React.Component {
                 pageSize: pageSize,
                 links: this.links
             });
+        });
+
+        client({
+            method: 'GET',
+            path: '/api/users/current',
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {
+            this.setState({user:response.entity});
         });
     }
 
@@ -282,23 +295,58 @@ export default class UserHabitsPage extends React.Component {
         }
     }
 
+    // todo move it to another class
+    showCompetition() {
+        if (this.state.user) {
+            if (!this.state.user.hidden) {
+                return (<li><a href="#">Competition (Not implemented)</a></li>);
+            }
+        }
+    }
+
+    showChallenges() {
+        if (this.state.user) {
+            if (!this.state.user.hidden) {
+                return (<li><a href="#">Challenges (Not implemented)</a></li>);
+            }
+        }
+    }
+
     render() {
         var filteredAttrs = this.state.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen');
         return (
-            <div>
-                {this.showAlert()}
-                <a href="#createHabit" data-toggle="modal" data-target="#createHabit">Create</a>
-                <CreateDialog attributes={filteredAttrs} onCreate={this.onCreate} modalId="createHabit" titleName="Create new Habit" buttonName="Create"/>
-                <HabitList habits={this.state.habits}
-                           links={this.state.links}
-                           pageSize={this.state.pageSize}
-                           attributes={this.state.attributes}
-                           onNavigate={this.onNavigate}
-                           onUpdate={this.onUpdate}
-                           onDelete={this.onDelete}
-                           onComplete={this.onComplete}
-                           updatePageSize={this.updatePageSize}/>
+        <div>
+            <Navbar user={this.state.user} />
+            <div className="container">
+                <div className="row">
+                    <div className="col-sm-3 col-md-2 sidebar">
+                        <ul className="nav nav-sidebar">
+                            <li><a href="#">Summary (Not implemented) </a></li>
+                            <li className="active"><a href="#">Habits <span className="sr-only">(current)</span></a></li>
+                            <li><a href="#">Tasks (Not implemented)</a></li>
+                            {this.showChallenges()}
+                            {this.showCompetition()}
+                        </ul>
+                    </div>
+                    <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                        <div>
+                            {this.showAlert()}
+                            <a href="#createHabit" data-toggle="modal" data-target="#createHabit">Create</a>
+                            <CreateDialog attributes={filteredAttrs} onCreate={this.onCreate} modalId="createHabit" titleName="Create new Habit" buttonName="Create"/>
+                            <HabitList habits={this.state.habits}
+                                       links={this.state.links}
+                                       pageSize={this.state.pageSize}
+                                       attributes={this.state.attributes}
+                                       onNavigate={this.onNavigate}
+                                       onUpdate={this.onUpdate}
+                                       onDelete={this.onDelete}
+                                       onComplete={this.onComplete}
+                                       updatePageSize={this.updatePageSize}/>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
         )
     }
 }

@@ -59,7 +59,7 @@ export default class HabitPage extends React.Component {
     render () {
         return (
             <div>
-                <Navbar/>
+                <Navbar user={this.state.user} />
                 <div className="container">
                     <div className="row">
                         <div className="col-sm-3 col-md-2 sidebar">
