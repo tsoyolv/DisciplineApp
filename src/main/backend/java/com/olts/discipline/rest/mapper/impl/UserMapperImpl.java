@@ -44,6 +44,7 @@ public class UserMapperImpl implements UserMapper {
     @Override
     public UserPutDto userToUserPutDto(User user) {
         UserPutDto userPutDto = new UserPutDto();
+        userPutDto.setUsername(user.getUsername());
         userPutDto.setFirstName(user.getFirstName());
         userPutDto.setSecondName(user.getSecondName());
         userPutDto.setLastName(user.getLastName());

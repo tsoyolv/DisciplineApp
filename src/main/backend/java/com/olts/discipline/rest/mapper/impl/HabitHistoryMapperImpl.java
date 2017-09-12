@@ -27,7 +27,7 @@ public class HabitHistoryMapperImpl implements HabitHistoryMapper {
         historyDto.setCompleted(history.isCompleted());
         historyDto.setCompletedCount(history.getCompletedCount());
         historyDto.setDifficulty(history.getDifficulty());
-        historyDto.setWasCompleted(history.getWasCompleted());
+        historyDto.setCompletedDate(history.getCompletedDate());
         LinkBuilder linkBuilder = entityLinks.linkForSingleResource(Habit.class, history.getOriginalHabit().getId());
         historyDto.add(linkBuilder.withRel("originalHabit"));
         Link link = entityLinks.linkForSingleResource(HabitHistory.class, history.getId()).withSelfRel();

@@ -38,10 +38,10 @@ public class HabitHistory implements Serializable /* extends Activity doesn't wo
     @JoinColumn(name = "original_habit", nullable = false)
     private Habit originalHabit;
 
-    @Column(name = "was_completed")
+    @Column(name = "completed_date")
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Date wasCompleted;
+    private Date completedDate;
 
     @Column(name = "completed_count")
     private int completedCount;

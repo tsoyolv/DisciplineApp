@@ -18,7 +18,7 @@ public class HabitHistoryDto extends ResourceSupport {
 
     private String description;
 
-    private Date wasCompleted;
+    private Date completedDate;
 
     private int completedCount;
 }

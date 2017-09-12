@@ -21,7 +21,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
 
     @Override
     public Page<HabitHistory> getHabitHistories(Long habitId, int page, int size) {
-        return repository.findByOriginalHabitId(habitId, new PageRequest(page, size, Sort.Direction.DESC, "wasCompleted"));
+        return repository.findByOriginalHabitId(habitId, new PageRequest(page, size, Sort.Direction.DESC, "completedDate"));
     }
 
     @Override
