@@ -21,8 +21,8 @@ import java.util.Set;
  * 25.04.2017
  */
 @Data
-@EqualsAndHashCode(exclude = {"habitUser"})
-@ToString(exclude={"id", "habitUser"})
+@EqualsAndHashCode(exclude = {"habitUser", "histories", "activitySphere"})
+@ToString(exclude={"id", "habitUser", "histories", "activitySphere"})
 @Entity
 @Table(name = "habit")
 public class Habit implements Serializable /* extends Activity doesn't work - can't generate self link HAL */ {

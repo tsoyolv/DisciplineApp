@@ -14,7 +14,7 @@ import java.util.Date;
  * OLTS on 20.08.2017.
  */
 @Data
-@EqualsAndHashCode()
+@EqualsAndHashCode(exclude = "originalHabit")
 @ToString(exclude={"id", "originalHabit"})
 @Entity
 @Table(name = "habit_history")
