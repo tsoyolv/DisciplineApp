@@ -23,6 +23,7 @@ class Habit extends React.Component {
     render() {
         var href = this.props.habit.entity._links.self.href;
         var habitHref = 'habit/' + href.substr(href.lastIndexOf('\\'));
+        var filteredAttrs = this.filterUpdateAttrs();
         return (
             <tr>
                 <td><a href={habitHref}>{this.props.habit.entity.name}</a></td>
@@ -33,7 +34,7 @@ class Habit extends React.Component {
                 <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleComplete}>Complete</button></td>
                 <td>
                     <UpdateDialog updatedEntity={this.props.habit}
-                                  attributes={this.props.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen')}
+                                  attributes={filteredAttrs}
                                   onUpdate={this.props.onUpdate} titleName="Update dsa" buttonName="Update"/>
                 </td>
                 <td>
@@ -41,6 +42,16 @@ class Habit extends React.Component {
                 </td>
             </tr>
         )
+    }
+
+    filterUpdateAttrs() {
+        return this.props.attributes.filter(attribute =>
+        attribute != 'createdWhen' &&
+        attribute != 'updatedWhen' &&
+        attribute != 'nonCompletedCount' &&
+        attribute != 'achieved' &&
+        attribute != 'completed' &&
+        attribute != 'completedCount');
     }
 }
 

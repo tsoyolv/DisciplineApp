@@ -295,10 +295,9 @@ export default class UserHabitsPage extends React.Component {
         }
     }
 
-    // todo move it to another class
     showCompetition() {
         if (this.state.user) {
-            if (!this.state.user.hidden) {
+            if (this.state.user.hidden != null && !this.state.user.hidden) {
                 return (<li><a href="#">Competition (Not implemented)</a></li>);
             }
         }
@@ -306,14 +305,14 @@ export default class UserHabitsPage extends React.Component {
 
     showChallenges() {
         if (this.state.user) {
-            if (!this.state.user.hidden) {
+            if (this.state.user.hidden != null && !this.state.user.hidden) {
                 return (<li><a href="#">Challenges (Not implemented)</a></li>);
             }
         }
     }
 
     render() {
-        var filteredAttrs = this.state.attributes.filter(attribute => attribute != 'createdWhen' && attribute != 'updatedWhen');
+        var filteredAttrs = this.filterCreationAttrs();
         return (
         <div>
             <Navbar user={this.state.user} />
@@ -348,6 +347,16 @@ export default class UserHabitsPage extends React.Component {
             </div>
         </div>
         )
+    }
+
+    filterCreationAttrs() {
+        return this.state.attributes.filter(attribute =>
+        attribute != 'createdWhen' &&
+        attribute != 'updatedWhen' &&
+        attribute != 'nonCompletedCount' &&
+        attribute != 'achieved' &&
+        attribute != 'completed' &&
+        attribute != 'completedCount');
     }
 }
 

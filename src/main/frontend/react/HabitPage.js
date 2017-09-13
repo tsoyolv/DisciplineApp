@@ -42,7 +42,7 @@ export default class HabitPage extends React.Component {
 
     showCompetition() {
         if (this.state.user) {
-            if (!this.state.user.hidden) {
+            if (this.state.user.hidden != null && !this.state.user.hidden) {
                 return (<li><a href="#">Competition (Not implemented)</a></li>);
             }
         }
@@ -50,7 +50,7 @@ export default class HabitPage extends React.Component {
 
     showChallenges() {
         if (this.state.user) {
-            if (!this.state.user.hidden) {
+            if (this.state.user.hidden != null && !this.state.user.hidden) {
                 return (<li><a href="#">Challenges (Not implemented)</a></li>);
             }
         }
