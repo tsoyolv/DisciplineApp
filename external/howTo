@@ -101,6 +101,12 @@ RepositoryEntityLookupConfig - for custom self link
 // This will add a runtime default.
 @GeneratorType(type = MyValueGenerator.class)
 private String name;
+
+For HAL rest (_links etc.) return new ResponseEntity<>(habitsResponse, HttpStatus.OK);
+where habitsResponse extends ResourceSupport org.springframework.hateoas.ResourceSupport
+
+Problems with the pageable return in HAL. Also it is impossible to create links through ControllerLinkBuilder.methodOn,
+since it calls the method recursively, but this is not a bean method -> the services are not injected = null
 ========================================================================================================================
 ================================================ SPRING DATA END =======================================================
 ========================================================================================================================
@@ -115,6 +121,7 @@ https://stackoverflow.com/questions/31933359/using-react-in-a-multi-page-app
 React has local visiblity. It means that if you add div id without local script it won't find that dom element
 <div id="user"></div>
 <script src="built/bundle.js"></script>
+require('./../api/uriListConverter') - ./../ - get parent folder
 ========================================================================================================================
 ==================================================== REACT END =========================================================
 ========================================================================================================================

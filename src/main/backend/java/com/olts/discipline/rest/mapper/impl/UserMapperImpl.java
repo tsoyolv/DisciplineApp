@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 public class UserMapperImpl implements UserMapper {
 
     @Override
-    public UserGETDto userToUserGetDto(User user) {
+    public UserGETDto pojoToDto(User user) {
         UserGETDto userGETDto = new UserGETDto();
         userGETDto.setUsername(user.getUsername());
         userGETDto.setFirstName(user.getFirstName());
         userGETDto.setSecondName(user.getSecondName());
         userGETDto.setLastName(user.getLastName());
         userGETDto.setEmail(user.getEmail());
-        userGETDto.setIsHidden(user.getIsHidden());
+        userGETDto.setHidden(user.getHidden());
         userGETDto.setLevel(user.getLevel());
         userGETDto.setLevelPercentage(user.getLevelPercentage());
         userGETDto.setProgressPerDay(user.getProgressPerDay());
@@ -44,11 +44,12 @@ public class UserMapperImpl implements UserMapper {
     @Override
     public UserPutDto userToUserPutDto(User user) {
         UserPutDto userPutDto = new UserPutDto();
+        userPutDto.setUsername(user.getUsername());
         userPutDto.setFirstName(user.getFirstName());
         userPutDto.setSecondName(user.getSecondName());
         userPutDto.setLastName(user.getLastName());
         userPutDto.setEmail(user.getEmail());
-        userPutDto.setIsHidden(user.getIsHidden());
+        userPutDto.setHidden(user.getHidden());
         userPutDto.setBirthDate(user.getBirthDate());
         userPutDto.setCity(user.getCity());
         userPutDto.setCountry(user.getCountry());

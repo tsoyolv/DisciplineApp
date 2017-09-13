@@ -34,8 +34,8 @@ public class DatabaseLoader implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        User defaultUser = createDefaultUser("olts", "1");
-        User defaultUser2 = createDefaultUser("user2", "2");
+        User defaultUser = createDefaultUser("olts", "1", "Oleg", "Tsoi", false);
+        User defaultUser2 = createDefaultUser("user2", "2", "Hidden", "User", true);
         authorizeUsers(defaultUser, defaultUser2);
 
         Habit defaultHabit = new Habit();
@@ -46,6 +46,14 @@ public class DatabaseLoader implements CommandLineRunner {
         defaultHabit.setId(1);
 
         habitRepository.save(defaultHabit);
+
+        Habit defaultHabit2 = new Habit();
+        defaultHabit2.setName("English 1 hour");
+        defaultHabit2.setDifficulty(5);
+        defaultHabit2.setDescription("Smarter");
+        defaultHabit2.setHabitUser(defaultUser);
+        defaultHabit2.setId(12);
+        habitRepository.save(defaultHabit2);
 
         Habit habit = new Habit();
         habit.setName("Workout");
@@ -58,11 +66,11 @@ public class DatabaseLoader implements CommandLineRunner {
         SecurityContextHolder.clearContext();
     }
 
-    private User createDefaultUser(String userName, String password) {
+    private User createDefaultUser(String userName, String password, String firstName, String secondName, boolean hidden) {
         User defaultUser = new User();
         defaultUser.setCreatedWhen(new Date());
-        defaultUser.setFirstName("Oleg");
-        defaultUser.setSecondName("Tsoi");
+        defaultUser.setFirstName(firstName);
+        defaultUser.setSecondName(secondName);
         defaultUser.setLastName("Viacheslavovich");
         defaultUser.setUsername(userName);
         defaultUser.setPassword(password);
@@ -72,7 +80,7 @@ public class DatabaseLoader implements CommandLineRunner {
         defaultUser.setHabitScore(9999);
         defaultUser.setTaskScore(9999);
         defaultUser.setLevel(99);
-        defaultUser.setIsHidden(false);
+        defaultUser.setHidden(hidden);
         defaultUser.setLevelPercentage(85);
         defaultUser.setRank(1);
         defaultUser.setProgressPerDay(33);

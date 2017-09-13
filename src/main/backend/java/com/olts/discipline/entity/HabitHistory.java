@@ -14,8 +14,8 @@ import java.util.Date;
  * OLTS on 20.08.2017.
  */
 @Data
-@EqualsAndHashCode()
-@ToString(exclude={"id"})
+@EqualsAndHashCode(exclude = "originalHabit")
+@ToString(exclude={"id", "originalHabit"})
 @Entity
 @Table(name = "habit_history")
 public class HabitHistory implements Serializable /* extends Activity doesn't work - can't generate self link HAL  */ {
@@ -30,7 +30,7 @@ public class HabitHistory implements Serializable /* extends Activity doesn't wo
 
     private int difficulty;
 
-    private boolean isCompleted;
+    private boolean completed;
 
     private String description;
 
@@ -38,13 +38,16 @@ public class HabitHistory implements Serializable /* extends Activity doesn't wo
     @JoinColumn(name = "original_habit", nullable = false)
     private Habit originalHabit;
 
-    @Column(name = "was_completed")
+    @Column(name = "completed_date")
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Date wasCompleted;
+    private Date completedDate;
 
     @Column(name = "completed_count")
     private int completedCount;
+
+    @Column(name = "non_completed_count")
+    private int nonCompletedCount;
 
     private @Version @JsonIgnore
     Long version;

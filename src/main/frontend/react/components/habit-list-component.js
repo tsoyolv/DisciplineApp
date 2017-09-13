@@ -22,7 +22,8 @@ class HabitList extends React.Component {
                    habit={habit}
                    attributes={this.props.attributes}
                    onUpdate={this.props.onUpdate}
-                   onDelete={this.props.onDelete}/>
+                   onDelete={this.props.onDelete}
+                   onComplete={this.props.onComplete}/>
         );
 
         var navLinks = [];
@@ -51,7 +52,7 @@ class HabitList extends React.Component {
                         <th>Description</th>
                         <th>Created when</th>
                         <th>Updated when</th>
-                        <th>User</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>

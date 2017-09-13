@@ -5,9 +5,13 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-import UserApp from './user-page-app';
+import UserPage from './UserPage';
 import AllHabitsApp from './all-habits-page-app';
-import UserEditApp from './UserEditPage';
+import UserEditPage from './UserEditPage';
+import UserHabitsPage from './UserHabitsPage';
+import HabitPage from './HabitPage';
+
+/* todo react routing */
 
 if(document.getElementById('all_habits')) {
     ReactDOM.render(
@@ -18,14 +22,28 @@ if(document.getElementById('all_habits')) {
 
 if(document.getElementById('user')) {
     ReactDOM.render(
-        <UserApp />,
+        <UserPage />,
         document.getElementById('user')
     );
 }
 
 if(document.getElementById('user_edit')) {
     ReactDOM.render(
-        <UserEditApp />,
+        <UserEditPage />,
         document.getElementById('user_edit')
+    );
+}
+
+if(document.getElementById('user_habits')) {
+    ReactDOM.render(
+        <UserHabitsPage />,
+        document.getElementById('user_habits')
+    );
+}
+
+if(document.getElementById('habit')) {
+    ReactDOM.render(
+        <HabitPage />,
+        document.getElementById('habit')
     );
 }

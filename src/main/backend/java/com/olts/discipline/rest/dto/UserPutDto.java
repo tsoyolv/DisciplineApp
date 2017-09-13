@@ -10,6 +10,8 @@ import java.util.Date;
  */
 @Data
 public class UserPutDto extends ResourceSupport {
+    private String username;
+
     private String firstName;
 
     private String secondName;
@@ -18,7 +20,7 @@ public class UserPutDto extends ResourceSupport {
 
     private String email;
 
-    private Boolean isHidden;
+    private Boolean hidden;
 
     private Date birthDate;
 

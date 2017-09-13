@@ -5,6 +5,10 @@ import com.olts.discipline.api.service.HabitHistoryService;
 import com.olts.discipline.api.service.HabitService;
 import com.olts.discipline.api.service.UserScoreRecalculationService;
 import com.olts.discipline.entity.Habit;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,12 +26,29 @@ public class HabitServiceImpl implements HabitService {
     private UserScoreRecalculationService recalculationService;
 
     @Override
-    public Habit get(long id) {
+    public Habit get(Long id) {
         return repository.findOne(id);
     }
 
     @Override
-    public void complete(long id) {
+    public Page<Habit> getByUserId(Long userId, Boolean achieved, Boolean completed, Integer page, Integer pageSize) {
+        PageRequest pageable = new PageRequest(page, pageSize, Sort.Direction.DESC, "createdWhen");
+        return repository.findByHabitUserId(userId, achieved, completed, pageable);
+    }
+
+    @Override
+    public Page<Habit> get(Boolean achieved, Boolean completed, Pageable pageable) {
+        return repository.findAllCompletedAchieved(achieved, completed, pageable);
+    }
+
+
+    @Override
+    public Habit update(Habit habit) {
+        return repository.save(habit);
+    }
+
+    @Override
+    public void complete(Long id) {
         Habit completed = repository.findOne(id);
         recalculationService.recalculateScores(completed.getHabitUser().getId(), completed);
         completed.setCompleted(true);

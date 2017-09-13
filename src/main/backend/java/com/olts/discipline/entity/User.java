@@ -68,7 +68,7 @@ public class User implements Serializable {
 
     private Integer score = 0; // todo default by DB
 
-    private Boolean isHidden = false;
+    private Boolean hidden = false;
 
     private Integer level = 0; // todo can't be changed by rest POST, only GET
 
