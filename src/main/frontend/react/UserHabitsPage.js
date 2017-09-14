@@ -306,7 +306,7 @@ export default class UserHabitsPage extends React.Component {
     showChallenges() {
         if (this.state.user) {
             if (this.state.user.hidden != null && !this.state.user.hidden) {
-                return (<li><a href="#">Challenges (Not implemented)</a></li>);
+                return (<li><a href="/challenge">Challenges</a></li>);
             }
         }
     }

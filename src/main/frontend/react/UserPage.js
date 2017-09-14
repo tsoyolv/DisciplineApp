@@ -11,16 +11,6 @@ import Navbar from './components/Navbar'
 
 export default class UserPage extends React.Component {
 
-    static httpGET(path) {
-        return client({
-            method: 'GET',
-            path: path,
-            headers: {
-                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-            }
-        })
-    }
-
     constructor(props) {
         super(props);
         this.state = {user: {}};
@@ -51,7 +41,7 @@ export default class UserPage extends React.Component {
     showChallenges() {
         if (this.state.user) {
             if (this.state.user.hidden != null && !this.state.user.hidden) {
-                return (<li><a href="#">Challenges (Not implemented)</a></li>);
+                return (<li><a href="/challenge">Challenges</a></li>);
             }
         }
     }

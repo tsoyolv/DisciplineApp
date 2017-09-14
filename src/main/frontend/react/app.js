@@ -10,6 +10,7 @@ import AllHabitsApp from './all-habits-page-app';
 import UserEditPage from './UserEditPage';
 import UserHabitsPage from './UserHabitsPage';
 import HabitPage from './HabitPage';
+import ChallengesPage from './ChallengesPage';
 
 /* todo react routing */
 
@@ -45,5 +46,12 @@ if(document.getElementById('habit')) {
     ReactDOM.render(
         <HabitPage />,
         document.getElementById('habit')
+    );
+}
+
+if(document.getElementById('challenges')) {
+    ReactDOM.render(
+        <ChallengesPage />,
+        document.getElementById('challenges')
     );
 }
