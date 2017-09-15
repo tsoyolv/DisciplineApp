@@ -70,7 +70,7 @@ public class User implements Serializable {
 
     private Boolean hidden = false;
 
-    private Integer level = 0; // todo can't be changed by rest POST, only GET
+    private Integer level = 1; // todo can't be changed by rest POST, only GET
 
     @Column(name = "level_percentage")
     private Integer levelPercentage = 1; // can't be changed by rest POST, only GET
@@ -88,6 +88,12 @@ public class User implements Serializable {
     private String city;
 
     private String country;
+
+    @Column(name = "allowed_groups")
+    private Integer allowedGroups = level;
+
+    @Column(name = "allowed_challenges")
+    private Integer allowedChallenges = level;
 
     @JsonIgnore
     @OneToMany(mappedBy = "users")

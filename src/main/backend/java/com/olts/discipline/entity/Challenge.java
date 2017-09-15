@@ -16,8 +16,8 @@ import java.util.Date;
  */
 
 @Data
-@EqualsAndHashCode(exclude = {"challengeUser", "challengeFrom"})
-@ToString(exclude={"id", "challengeUser", "challengeFrom"})
+@EqualsAndHashCode(exclude = {"challengeUser", "createdBy"})
+@ToString(exclude={"id", "challengeUser", "createdBy"})
 @Entity
 @Table(name = "challenge")
 public class Challenge implements Serializable {
@@ -32,7 +32,9 @@ public class Challenge implements Serializable {
     
     private int difficulty;
 
-    private boolean isCompleted;
+    /**
+     * Challenge completed if accepted users count = level */
+    private boolean completed;
 
     private String description;
 
@@ -44,8 +46,17 @@ public class Challenge implements Serializable {
     private User challengeUser;
 
     @ManyToOne
-    @JoinColumn(name = "challenge_from", nullable = false)
-    private User challengeFrom;
+    @JoinColumn(name = "created_by", nullable = false)
+    private User createdBy;
+
+    private int votes;
+
+    private int acceptedCount;
+
+    private int completedCount;
+
+    /** if true creator can reject user challenge */
+    private boolean withCreator;
 
     @Column(name = "created_when")
     @Temporal(TemporalType.TIMESTAMP)

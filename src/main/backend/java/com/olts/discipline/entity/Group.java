@@ -1,6 +1,7 @@
 package com.olts.discipline.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.Set;
  * OLTS on 27.08.2017.
  */
 @Data
-//@EqualsAndHashCode(exclude = {"challengeUser", "challengeFrom"})
+@EqualsAndHashCode(exclude = {"users"})
 @ToString(exclude={"id"})
 @Entity
 @Table(name = "group_tab")
