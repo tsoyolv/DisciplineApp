@@ -3,17 +3,20 @@ package com.olts.discipline.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
 
 /**
  * OLTS on 27.08.2017.
  */
 @Data
-@EqualsAndHashCode(exclude = {"users"})
-@ToString(exclude={"id"})
+@EqualsAndHashCode(exclude = {"users", "createdBy", "description"})
+@ToString(exclude={"id", "createdBy", "description"})
 @Entity
 @Table(name = "group_tab")
 public class Group implements Serializable {
@@ -24,7 +27,25 @@ public class Group implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String name;
+
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by", nullable = false)
+    private User createdBy;
+
+    @Column(name = "created_when")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date createdWhen;
+
+    @Column(name = "updated_when")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date updatedWhen;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "group_user", joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    private Set<User> users;
+    private List<User> users;
 }

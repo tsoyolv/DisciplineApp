@@ -11,9 +11,7 @@ import org.hibernate.tuple.ValueGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * o.tsoy
@@ -97,7 +95,7 @@ public class User implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "users")
-    private Set<Group> groups = new HashSet<>();
+    private List<Group> groups = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "habitUser")

@@ -13,7 +13,7 @@ import javax.annotation.Resource;
  */
 
 @RepositoryRestController
-class UserChallengeRestRepository implements ApplicationEventPublisherAware {
+class UserChallengeRestController implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher publisher;
 
