@@ -3,16 +3,17 @@ package com.olts.discipline.api.service.impl;
 import com.olts.discipline.api.repository.ChallengeRepository;
 import com.olts.discipline.api.service.ChallengeService;
 import com.olts.discipline.entity.Challenge;
-import com.olts.discipline.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 /**
  * OLTS on 15.09.2017.
  */
+@Service
 public class ChallengeServiceImpl implements ChallengeService {
 
     @Resource
@@ -30,10 +31,6 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     public Challenge create(Challenge challenge) {
-        User creator = challenge.getCreatedBy();
-        if ((creator.getAllowedChallenges() + 1) > creator.getLevel()) {
-            return null;
-        }
         return repository.save(challenge);
     }
 

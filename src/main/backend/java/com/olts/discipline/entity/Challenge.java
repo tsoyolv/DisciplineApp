@@ -41,6 +41,9 @@ public class Challenge implements Serializable {
     @Column(name = "challenge_date")
     private Date challengeDate;
 
+    /**
+     * Group subscriber
+     * */
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User challengeUser;
