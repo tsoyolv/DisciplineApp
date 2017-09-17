@@ -36,9 +36,9 @@ export default class UserHabitsPage extends React.Component {
     componentDidMount() {
         this.loadFromServer(this.state.pageSize);
         stompClient.register([
-            {route: '/topic/newHabit', callback: this.refreshAndGoToLastPage},// todo doesn't work normally
-            {route: '/topic/updateHabit', callback: this.refreshCurrentPage}, //  doesn't work normally
-            {route: '/topic/deleteHabit', callback: this.refreshCurrentPage} //  doesn't work normally
+            {route: '/topic/newHabit', callback: this.refreshAndGoToLastPage},
+            {route: '/topic/updateHabit', callback: this.refreshCurrentPage},
+            {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}
         ]);
     }
 
