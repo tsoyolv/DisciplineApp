@@ -4,7 +4,10 @@ import com.olts.discipline.entity.User;
 import com.olts.discipline.rest.dto.UserGETDto;
 import com.olts.discipline.rest.dto.UserPutDto;
 import com.olts.discipline.rest.mapper.UserMapper;
+import org.springframework.hateoas.EntityLinks;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * OLTS on 25.08.2017.
@@ -12,6 +15,9 @@ import org.springframework.stereotype.Component;
 /* MapStruct doesn't work with lombok for entity (only for dto) */
 @Component("userMapper")
 public class UserMapperImpl implements UserMapper {
+
+    @Resource
+    private EntityLinks entityLinks;
 
     @Override
     public UserGETDto pojoToDto(User user) {
@@ -33,6 +39,7 @@ public class UserMapperImpl implements UserMapper {
         userGETDto.setBirthDate(user.getBirthDate());
         userGETDto.setCity(user.getCity());
         userGETDto.setCountry(user.getCountry());
+        userGETDto.add(entityLinks.linkForSingleResource(User.class, user.getId()).withSelfRel());
         return userGETDto;
     }
 

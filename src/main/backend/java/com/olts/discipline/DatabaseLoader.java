@@ -1,7 +1,9 @@
 package com.olts.discipline;
 
 import com.olts.discipline.api.repository.HabitRepository;
+import com.olts.discipline.api.service.GroupService;
 import com.olts.discipline.api.service.UserService;
+import com.olts.discipline.entity.Group;
 import com.olts.discipline.entity.Habit;
 import com.olts.discipline.entity.User;
 import org.springframework.boot.CommandLineRunner;
@@ -14,8 +16,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OLTS on 20.05.2017.
@@ -63,7 +67,45 @@ public class DatabaseLoader implements CommandLineRunner {
         habit.setId(2);
 
         habitRepository.save(habit);
+
+        testGroup(defaultUser);
+
         SecurityContextHolder.clearContext();
+    }
+
+    protected void testGroup(User defaultUser) {
+        createGroups(defaultUser);
+        List<User> createdGroups = userService.getByGroup(1L, 0, 5).getContent();
+        if (createdGroups.isEmpty()) {
+            throw new RuntimeException("Failed");
+        }
+    }
+
+    private void createGroups(User defaultUser) {
+        createGroup(defaultUser);
+    }
+
+    @Resource
+    private GroupService groupService;
+
+    private void createGroup(User creator) {
+        User u1 = new User(11, "u1", "u1first", 3, 3);
+        User u2 = new User(12, "u2", "u2first", 4, 4);
+        User u3 = new User(13, "u3", "u3first", 5, 5);
+        userService.update(u1);
+        userService.update(u2);
+        userService.update(u3);
+        List<User> gUsers = new ArrayList<User>() {{
+            add(u1);
+            add(u2);
+            add(u3);
+        }};
+
+        Group group = new Group(1, "friends");
+        group.setCreatedBy(creator);
+        group.setUsers(gUsers);
+
+        groupService.create(group);
     }
 
     private User createDefaultUser(String userName, String password, String firstName, String secondName, boolean hidden) {

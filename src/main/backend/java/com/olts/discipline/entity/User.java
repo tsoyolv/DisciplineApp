@@ -25,12 +25,22 @@ import java.util.*;
 public class User implements Serializable {
     private static final long serialVersionUID = 2082395294433209579L;
 
-    public static final class RankValueGenerator implements
-            ValueGenerator<Integer> {
+    public static final class RankValueGenerator implements ValueGenerator<Integer> {
         @Override
         public Integer generateValue(Session session, Object owner) {
             return 999; // todo
         }
+    }
+
+    public User() {}
+
+    // constructor only for tests
+    public User(long id, String username, String firstName, Integer level, Integer rank) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.level = level;
+        this.rank = rank;
     }
 
     @Column
@@ -94,7 +104,7 @@ public class User implements Serializable {
     private Integer allowedChallenges = level;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users")
     private List<Group> groups = new ArrayList<>();
 
     @JsonIgnore

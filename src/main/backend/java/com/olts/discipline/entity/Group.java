@@ -17,10 +17,19 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(exclude = {"users", "createdBy", "description"})
 @ToString(exclude={"id", "createdBy", "description"})
-@Entity
+@Entity(name = "Groups")
 @Table(name = "group_tab")
 public class Group implements Serializable {
     private static final long serialVersionUID = -3988269290702387143L;
+
+    public Group() {
+    }
+
+    // only for tests
+    public Group(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     @Id
     @Column(name = "id")

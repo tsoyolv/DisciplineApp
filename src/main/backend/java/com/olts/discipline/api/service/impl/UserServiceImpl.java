@@ -6,6 +6,8 @@ import com.olts.discipline.api.repository.UserRepository;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,6 +55,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> getByGroup(Long groupId, int page, int size) {
-        return null;
+        return userRepository.findByUserGroup(groupId, new PageRequest(page, size, Sort.Direction.DESC, "rank"));
     }
 }

@@ -93,6 +93,15 @@ class UserRestController implements ApplicationEventPublisherAware {
         return new PageableResourceAssembler<>(habitMapper, methodPath, params).toResource(habitPage);
     }
 
+    @GetMapping("/users/{userId}/groups")
+    private @ResponseBody ResponseEntity<PageableResource> getUserGroups(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="size", defaultValue="10") Integer size) {
+        User user = userService.get(userId);
+        return null; // new ResponseEntity<>(getUserHabitsResponse(current.getId(), completed, achieved, page, size), HttpStatus.OK);
+    }
+
     @PutMapping("/users/{userId}")
     private @ResponseBody ResponseEntity<UserGETDto> update(@PathVariable("userId") String userId, @RequestBody org.springframework.hateoas.Resource<User> input) {
         User out = userService.get(Long.parseLong(userId));
