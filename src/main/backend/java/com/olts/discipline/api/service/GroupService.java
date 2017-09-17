@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
  */
 public interface GroupService {
     Page<Group> get(Integer page, Integer size);
+    Page<Group> getByUserId(Long userId, Integer page, Integer size);
     Group get(Long id);
     Group create(Group group);
     Group update(Group group);

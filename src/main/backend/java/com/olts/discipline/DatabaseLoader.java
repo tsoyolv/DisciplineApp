@@ -1,12 +1,15 @@
 package com.olts.discipline;
 
 import com.olts.discipline.api.repository.HabitRepository;
+import com.olts.discipline.api.service.ChallengeService;
 import com.olts.discipline.api.service.GroupService;
 import com.olts.discipline.api.service.UserService;
+import com.olts.discipline.entity.Challenge;
 import com.olts.discipline.entity.Group;
 import com.olts.discipline.entity.Habit;
 import com.olts.discipline.entity.User;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +38,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
     @Resource
     private UserDetailsService userDetailsService;
+
 
     @Override
     public void run(String... strings) throws Exception {
@@ -69,8 +73,16 @@ public class DatabaseLoader implements CommandLineRunner {
         habitRepository.save(habit);
 
         testGroup(defaultUser);
+        testChallenge(defaultUser);
 
         SecurityContextHolder.clearContext();
+    }
+
+    @Resource
+    private ChallengeService challengeService;
+    private void testChallenge(User defaultUser) {
+        Page<Challenge> byUser = challengeService.getByUserId(defaultUser.getId(), 0, 10);
+        byUser.getTotalPages();
     }
 
     protected void testGroup(User defaultUser) {
@@ -79,6 +91,9 @@ public class DatabaseLoader implements CommandLineRunner {
         if (createdGroups.isEmpty()) {
             throw new RuntimeException("Failed");
         }
+
+        Page<Group> byUser = groupService.getByUserId(defaultUser.getId(), 0, 10);
+        byUser.getTotalPages();
     }
 
     private void createGroups(User defaultUser) {

@@ -29,12 +29,14 @@ public class UserScoreCalculatorImpl implements UserScoreCalculator {
                 score = user.getHabitScore() + habit.getDifficulty();
             }
             user.setHabitScore(score);
+            habit.setCompletedCount(habit.getCompletedCount() + 1);
         } else {
             if (habit.isAchieved()) {
                 return;
             }
             Double score = Math.ceil(habit.getNonCompletedCount() * ((float) habit.getDifficulty() / Constants.HABIT_BORDER_COUNT));
             user.setHabitScore(user.getHabitScore() - score.intValue());
+            habit.setNonCompletedCount(habit.getNonCompletedCount() + 1);
         }
         userService.update(user);
     }

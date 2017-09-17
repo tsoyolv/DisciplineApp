@@ -9,15 +9,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 /**
  * OLTS on 24.08.2017.
  */
 
 @Data
-@EqualsAndHashCode(exclude = {"challengeUser", "createdBy"})
-@ToString(exclude={"id", "challengeUser", "createdBy"})
+@EqualsAndHashCode(exclude = {"users", "createdBy", "groups"})
+@ToString(exclude={"id", "users", "createdBy", "groups"})
 @Entity
 @Table(name = "challenge")
 public class Challenge implements Serializable {
@@ -41,25 +41,28 @@ public class Challenge implements Serializable {
     @Column(name = "challenge_date")
     private Date challengeDate;
 
-    /**
-     * Group subscriber
-     * */
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User challengeUser;
-
-    @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false)
-    private User createdBy;
-
     private int votes;
 
     private int acceptedCount;
 
     private int completedCount;
 
-    /** if true creator can reject user challenge */
-    private boolean withCreator;
+    /** if 'true' - creator can reject user challenge */
+    private boolean withCreator = true;
+
+    private boolean forAllUsers;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "availableChallenges")
+    private List<User> users = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "availableChallenges")
+    private List<Group> groups = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "created_by", nullable = false)
+    private User createdBy;
 
     @Column(name = "created_when")
     @Temporal(TemporalType.TIMESTAMP)

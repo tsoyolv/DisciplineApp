@@ -3,8 +3,8 @@ package com.olts.discipline.api.service.impl;
 import com.olts.discipline.api.repository.HabitRepository;
 import com.olts.discipline.api.service.HabitHistoryService;
 import com.olts.discipline.api.service.HabitService;
-import com.olts.discipline.api.service.UserScoreRecalculationService;
 import com.olts.discipline.entity.Habit;
+import com.olts.discipline.logic.calculator.UserScoreCalculator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,7 @@ public class HabitServiceImpl implements HabitService {
     @Resource
     private HabitHistoryService historyService;
     @Resource
-    private UserScoreRecalculationService recalculationService;
+    private UserScoreCalculator calculator;
 
     @Override
     public Habit get(Long id) {
@@ -50,9 +50,8 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public void complete(Long id) {
         Habit completed = repository.findOne(id);
-        recalculationService.recalculateScores(completed.getHabitUser().getId(), completed);
         completed.setCompleted(true);
-        completed.setCompletedCount(completed.getCompletedCount() + 1);
+        calculator.calculate(completed);
         repository.save(completed);
         historyService.create(completed);
     }

@@ -31,7 +31,7 @@ public class ChallengeMapperImpl implements ChallengeMapper {
         challengeDto.setCompletedCount(challenge.getAcceptedCount());
         challengeDto.setCreatedWhen(challenge.getCreatedWhen());
         challengeDto.setUpdatedWhen(challenge.getUpdatedWhen());
-        challengeDto.add(entityLinks.linkForSingleResource(User.class, challenge.getChallengeUser().getId()).withRel("habitUser"));
+        // users and groups
         challengeDto.add(entityLinks.linkForSingleResource(User.class, challenge.getCreatedBy().getId()).withRel("createdBy"));
         challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).withSelfRel());
         return challengeDto;

@@ -25,6 +25,16 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    public Page<Challenge> getByUserId(Long userId, Integer page, Integer size) {
+        return repository.findByUserId(userId, new PageRequest(page, size, Sort.Direction.DESC, "votes", "updatedWhen"));
+    }
+
+    @Override
+    public Page<Challenge> getByCreatedByUserId(Long userId, Integer page, Integer size) {
+        return repository.findByCreatedById(userId, new PageRequest(page, size, Sort.Direction.DESC, "updatedWhen"));
+    }
+
+    @Override
     public Challenge get(Long id) {
         return repository.findOne(id);
     }

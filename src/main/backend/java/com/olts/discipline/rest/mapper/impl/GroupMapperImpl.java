@@ -27,7 +27,7 @@ public class GroupMapperImpl implements GroupMapper {
         dto.setDescription(obj.getDescription());
         dto.setCreatedWhen(obj.getCreatedWhen());
         dto.setUpdatedWhen(obj.getUpdatedWhen());
-        dto.add(ControllerLinkBuilder.linkTo(GroupRestController.class).slash(String.format("api/groups/%x/users", obj.getId())).withRel("users"));
+        dto.add(GroupRestController.linkToGroupUsers(obj.getId()).withRel("users"));
         dto.add(entityLinks.linkForSingleResource(User.class, obj.getCreatedBy().getId()).withRel("createdBy"));
         dto.add(entityLinks.linkForSingleResource(Group.class, obj.getId()).withSelfRel());
         return dto;

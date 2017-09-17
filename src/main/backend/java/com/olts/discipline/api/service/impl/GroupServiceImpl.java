@@ -24,6 +24,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public Page<Group> getByUserId(Long userId, Integer page, Integer size) {
+        return repository.findByUserId(userId, new PageRequest(page, size, Sort.Direction.DESC, "updatedWhen"));
+    }
+
+    @Override
     public Group get(Long id) {
         return repository.getOne(id);
     }

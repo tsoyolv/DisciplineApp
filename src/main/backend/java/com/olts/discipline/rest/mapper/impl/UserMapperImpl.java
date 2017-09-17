@@ -1,13 +1,19 @@
 package com.olts.discipline.rest.mapper.impl;
 
-import com.olts.discipline.entity.User;
+import com.olts.discipline.entity.*;
+import com.olts.discipline.rest.api.UserRestController;
 import com.olts.discipline.rest.dto.UserGETDto;
 import com.olts.discipline.rest.dto.UserPutDto;
 import com.olts.discipline.rest.mapper.UserMapper;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * OLTS on 25.08.2017.
@@ -20,27 +26,31 @@ public class UserMapperImpl implements UserMapper {
     private EntityLinks entityLinks;
 
     @Override
-    public UserGETDto pojoToDto(User user) {
-        UserGETDto userGETDto = new UserGETDto();
-        userGETDto.setUsername(user.getUsername());
-        userGETDto.setFirstName(user.getFirstName());
-        userGETDto.setSecondName(user.getSecondName());
-        userGETDto.setLastName(user.getLastName());
-        userGETDto.setEmail(user.getEmail());
-        userGETDto.setHidden(user.getHidden());
-        userGETDto.setLevel(user.getLevel());
-        userGETDto.setLevelPercentage(user.getLevelPercentage());
-        userGETDto.setProgressPerDay(user.getProgressPerDay());
-        userGETDto.setScore(user.getScore());
-        userGETDto.setHabitScore(user.getHabitScore());
-        userGETDto.setTaskScore(user.getTaskScore());
-        userGETDto.setCreatedWhen(user.getCreatedWhen());
-        userGETDto.setRank(user.getRank());
-        userGETDto.setBirthDate(user.getBirthDate());
-        userGETDto.setCity(user.getCity());
-        userGETDto.setCountry(user.getCountry());
-        userGETDto.add(entityLinks.linkForSingleResource(User.class, user.getId()).withSelfRel());
-        return userGETDto;
+    public UserGETDto pojoToDto(User obj) {
+        UserGETDto dto = new UserGETDto();
+        dto.setUsername(obj.getUsername());
+        dto.setFirstName(obj.getFirstName());
+        dto.setSecondName(obj.getSecondName());
+        dto.setLastName(obj.getLastName());
+        dto.setEmail(obj.getEmail());
+        dto.setHidden(obj.getHidden());
+        dto.setLevel(obj.getLevel());
+        dto.setLevelPercentage(obj.getLevelPercentage());
+        dto.setProgressPerDay(obj.getProgressPerDay());
+        dto.setScore(obj.getScore());
+        dto.setHabitScore(obj.getHabitScore());
+        dto.setTaskScore(obj.getTaskScore());
+        dto.setCreatedWhen(obj.getCreatedWhen());
+        dto.setRank(obj.getRank());
+        dto.setBirthDate(obj.getBirthDate());
+        dto.setCity(obj.getCity());
+        dto.setCountry(obj.getCountry());
+        //private Set<Task> tasks = new HashSet<>();
+        dto.add(UserRestController.linkToUserChallenges(obj.getId()).withRel("challenges"));
+        dto.add(UserRestController.linkToUserHabits(obj.getId()).withRel("habits"));
+        dto.add(UserRestController.linkToUserGroups(obj.getId()).withRel("groups"));
+        dto.add(entityLinks.linkForSingleResource(User.class, obj.getId()).withSelfRel());
+        return dto;
     }
 
     @Override // todo

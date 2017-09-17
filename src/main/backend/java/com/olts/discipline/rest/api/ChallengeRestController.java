@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * OLTS on 15.09.2017.
  */
 @RepositoryRestController
-class ChallengeRestController implements ApplicationEventPublisherAware {
+public class ChallengeRestController implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher publisher;
 

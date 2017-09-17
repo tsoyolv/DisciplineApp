@@ -18,8 +18,8 @@ import java.util.*;
  * 25.04.2017
  */
 @Data
-@EqualsAndHashCode(exclude = {"passwordConfirm", "habits", "tasks", "roles"})
-@ToString(exclude={"id", "password", "passwordConfirm", "habits", "tasks", "roles"})
+@EqualsAndHashCode(exclude = {"passwordConfirm", "habits", "tasks", "roles", "availableChallenges"})
+@ToString(exclude={"id", "password", "passwordConfirm", "habits", "tasks", "roles", "availableChallenges"})
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
@@ -116,8 +116,9 @@ public class User implements Serializable {
     private Set<Task> tasks = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "challengeUser")
-    private Set<Challenge> challenges = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_challenge", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "challenge_id", referencedColumnName = "id"))
+    private List<Challenge> availableChallenges = new ArrayList<>();
 
     @JsonIgnore
     @ManyToMany

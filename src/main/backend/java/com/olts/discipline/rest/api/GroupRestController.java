@@ -27,7 +27,9 @@ import javax.annotation.Resource;
  */
 @RepositoryRestController
 public class GroupRestController implements ApplicationEventPublisherAware {
-
+    public static ControllerLinkBuilder linkToGroupUsers(Long groupId) {
+        return ControllerLinkBuilder.linkTo(GroupRestController.class).slash(String.format("api/groups/%x/users", groupId));
+    }
     private ApplicationEventPublisher publisher;
 
     @Override
@@ -66,9 +68,8 @@ public class GroupRestController implements ApplicationEventPublisherAware {
             @PathVariable("groupId") Long groupId,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="10") Integer size) {
-        String methodPath = ControllerLinkBuilder.linkTo(GroupRestController.class).slash(String.format("api/groups/%x/users", groupId)).toString();
+        String methodPath = linkToGroupUsers(groupId).toString();
         Page<User> users = userService.getByGroup(groupId, page, size);
         return new ResponseEntity<>(new PageableResourceAssembler<>(userMapper, methodPath, null).toResource(users), HttpStatus.OK);
     }
-
 }
