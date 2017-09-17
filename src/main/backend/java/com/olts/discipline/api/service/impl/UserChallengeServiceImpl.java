@@ -24,11 +24,20 @@ public class UserChallengeServiceImpl implements UserChallengeService {
     }
 
     @Override
-    public Page<UserChallenge> get(Boolean completed, Integer page, Integer size) {
+    public Page<UserChallenge> getByUserId(Long userId, Boolean completed, Integer page, Integer size) {
         if (completed) {
-            return reposiory.findCompleted(new PageRequest(page, size, Sort.Direction.DESC, "completedDate"));
+            return reposiory.findByUserCompleted(userId, new PageRequest(page, size, Sort.Direction.DESC, "completedDate"));
         } else {
-            return reposiory.findNonCompleted(new PageRequest(page, size, Sort.Direction.DESC, "acceptedDate"));
+            return reposiory.findByUserNonCompleted(userId, new PageRequest(page, size, Sort.Direction.DESC, "acceptedDate"));
+        }
+    }
+
+    @Override
+    public Page<UserChallenge> getByOriginalChallengeId(Long originalChallengeId, Boolean completed, Integer page, Integer size) {
+        if (completed) {
+            return reposiory.findByOriginalChallengeCompleted(originalChallengeId, new PageRequest(page, size, Sort.Direction.DESC, "completedDate"));
+        } else {
+            return reposiory.findByOriginalChallengeNonCompleted(originalChallengeId, new PageRequest(page, size, Sort.Direction.DESC, "acceptedDate"));
         }
     }
 

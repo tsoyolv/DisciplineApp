@@ -2,7 +2,9 @@ package com.olts.discipline.rest.mapper.impl;
 
 import com.olts.discipline.entity.Challenge;
 import com.olts.discipline.entity.User;
+import com.olts.discipline.rest.api.ChallengeRestController;
 import com.olts.discipline.rest.dto.ChallengeDto;
+import com.olts.discipline.rest.dto.ChallengePostDto;
 import com.olts.discipline.rest.mapper.ChallengeMapper;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.stereotype.Component;
@@ -32,8 +34,19 @@ public class ChallengeMapperImpl implements ChallengeMapper {
         challengeDto.setCreatedWhen(challenge.getCreatedWhen());
         challengeDto.setUpdatedWhen(challenge.getUpdatedWhen());
         // users and groups
+        challengeDto.add(ChallengeRestController.linkToUserChallenges(challenge.getId()).withRel("userchallenges"));
         challengeDto.add(entityLinks.linkForSingleResource(User.class, challenge.getCreatedBy().getId()).withRel("createdBy"));
         challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).withSelfRel());
         return challengeDto;
+    }
+
+    @Override
+    public Challenge challengePostDtoToChallenge(ChallengePostDto postDto) {
+        Challenge challenge = new Challenge();
+        challenge.setName(postDto.getName());
+        challenge.setDescription(postDto.getDescription());
+        challenge.setChallengeDate(postDto.getChallengeDate());
+        challenge.setDifficulty(postDto.getDifficulty());
+        return challenge;
     }
 }

@@ -1,21 +1,12 @@
 package com.olts.discipline.rest.api;
 
-import com.olts.discipline.api.service.ChallengeService;
-import com.olts.discipline.api.service.GroupService;
-import com.olts.discipline.api.service.HabitService;
-import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.entity.Challenge;
-import com.olts.discipline.entity.Group;
-import com.olts.discipline.entity.Habit;
-import com.olts.discipline.entity.User;
+import com.olts.discipline.api.service.*;
+import com.olts.discipline.entity.*;
 import com.olts.discipline.rest.dto.UserGETDto;
 import com.olts.discipline.rest.dto.UserPutDto;
 import com.olts.discipline.rest.hateoas.PageableResource;
 import com.olts.discipline.rest.hateoas.assembler.PageableResourceAssembler;
-import com.olts.discipline.rest.mapper.ChallengeMapper;
-import com.olts.discipline.rest.mapper.GroupMapper;
-import com.olts.discipline.rest.mapper.HabitMapper;
-import com.olts.discipline.rest.mapper.UserMapper;
+import com.olts.discipline.rest.mapper.*;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.data.domain.Page;
@@ -45,8 +36,11 @@ public class UserRestController implements ApplicationEventPublisherAware {
     public static ControllerLinkBuilder linkToUserGroups(Long userId) {
         return ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/users/%x/groups", userId));
     }
-    public static ControllerLinkBuilder linkToUserChallenges(Long userId) {
+    public static ControllerLinkBuilder linkToAvailableUserChallenges(Long userId) {
         return ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/users/%x/challenges", userId));
+    }
+    public static ControllerLinkBuilder linkToUserChallenges(Long userId) {
+        return ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/users/%x/userchallenges", userId));
     }
     private ApplicationEventPublisher publisher;
     @Override
@@ -64,6 +58,8 @@ public class UserRestController implements ApplicationEventPublisherAware {
     @Resource
     private ChallengeService challengeService;
     @Resource
+    private UserChallengeService userChallengeService;
+    @Resource
     private UserMapper userMapper;
     @Resource
     private HabitMapper habitMapper;
@@ -71,6 +67,8 @@ public class UserRestController implements ApplicationEventPublisherAware {
     private GroupMapper groupMapper;
     @Resource
     private ChallengeMapper challengeMapper;
+    @Resource
+    private UserChallengeMapper userChallengeMapper;
 
     @GetMapping("/users/current")
     private @ResponseBody ResponseEntity<UserGETDto> getCurrent() {
@@ -127,15 +125,27 @@ public class UserRestController implements ApplicationEventPublisherAware {
     }
 
     @GetMapping("/users/{userId}/challenges")
-    private @ResponseBody ResponseEntity<PageableResource> getUserChallenges(
+    private @ResponseBody ResponseEntity<PageableResource> getAvailableUserChallenges(
             @PathVariable("userId") Long userId,
             @RequestParam(value="createdBy", defaultValue="false") Boolean createdBy,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="10") Integer size) {
-        String path = linkToUserChallenges(userId).toString();
+        String path = linkToAvailableUserChallenges(userId).toString();
         Page<Challenge> challenges = createdBy ? challengeService.getByCreatedByUserId(userId, page, size) : challengeService.getByUserId(userId, page, size);
         Map<String, String> params = Collections.unmodifiableMap(new HashMap<String, String>(){{put("createdBy", String.valueOf(createdBy));}});
         return new ResponseEntity<>(new PageableResourceAssembler<>(challengeMapper, path, params).toResource(challenges), HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{userId}/userchallenges")
+    private @ResponseBody ResponseEntity<PageableResource> getUserChallenges(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value="completed", defaultValue="false") Boolean completed,
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="size", defaultValue="10") Integer size) {
+        String path = linkToUserChallenges(userId).toString();
+        Page<UserChallenge> userChallenges = userChallengeService.getByUserId(userId, completed, page, size);
+        Map<String, String> params = Collections.unmodifiableMap(new HashMap<String, String>(){{put("completed", String.valueOf(completed));}});
+        return new ResponseEntity<>(new PageableResourceAssembler<>(userChallengeMapper, path, params).toResource(userChallenges), HttpStatus.OK);
     }
 
     @PutMapping("/users/{userId}")

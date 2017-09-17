@@ -6,14 +6,9 @@ import com.olts.discipline.rest.dto.UserGETDto;
 import com.olts.discipline.rest.dto.UserPutDto;
 import com.olts.discipline.rest.mapper.UserMapper;
 import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * OLTS on 25.08.2017.
@@ -46,7 +41,7 @@ public class UserMapperImpl implements UserMapper {
         dto.setCity(obj.getCity());
         dto.setCountry(obj.getCountry());
         //private Set<Task> tasks = new HashSet<>();
-        dto.add(UserRestController.linkToUserChallenges(obj.getId()).withRel("challenges"));
+        dto.add(UserRestController.linkToAvailableUserChallenges(obj.getId()).withRel("challenges"));
         dto.add(UserRestController.linkToUserHabits(obj.getId()).withRel("habits"));
         dto.add(UserRestController.linkToUserGroups(obj.getId()).withRel("groups"));
         dto.add(entityLinks.linkForSingleResource(User.class, obj.getId()).withSelfRel());

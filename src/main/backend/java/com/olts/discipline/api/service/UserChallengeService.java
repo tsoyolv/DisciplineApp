@@ -9,7 +9,8 @@ import org.springframework.data.domain.Page;
 
 public interface UserChallengeService {
     Page<UserChallenge> get(Integer page, Integer size);
-    Page<UserChallenge> get(Boolean completed, Integer page, Integer size);
+    Page<UserChallenge> getByUserId(Long userId, Boolean completed, Integer page, Integer size);
+    Page<UserChallenge> getByOriginalChallengeId(Long originalChallengeId, Boolean completed, Integer page, Integer size);
     UserChallenge get(Long id);
     UserChallenge create(UserChallenge challenge);
     UserChallenge update(UserChallenge challenge);

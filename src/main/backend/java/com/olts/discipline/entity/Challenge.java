@@ -41,7 +41,7 @@ public class Challenge implements Serializable {
     @Column(name = "challenge_date")
     private Date challengeDate;
 
-    private int votes;
+    private int votes = 0;
 
     private int acceptedCount;
 
@@ -50,7 +50,7 @@ public class Challenge implements Serializable {
     /** if 'true' - creator can reject user challenge */
     private boolean withCreator = true;
 
-    private boolean forAllUsers;
+    private boolean forAllUsers = true;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "availableChallenges")

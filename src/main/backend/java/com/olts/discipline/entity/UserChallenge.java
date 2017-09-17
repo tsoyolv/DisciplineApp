@@ -18,7 +18,7 @@ import java.util.Date;
 @EqualsAndHashCode(exclude = {"originalChallenge", "originalChallenge"})
 @ToString(exclude={"id", "challengeUser", "originalChallenge"})
 @Entity
-@Table(name = "challenge")
+@Table(name = "user_challenge")
 public class UserChallenge implements Serializable {
     private static final long serialVersionUID = 3836314309380176978L;
 
