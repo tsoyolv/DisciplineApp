@@ -6,6 +6,7 @@ const client = require('./modules/client');
 import Navbar from './components/Navbar'
 import CreateChallenge from './components/CreateChallenge'
 import AvailableChallengesTable from './components/AvailableChallengesTable'
+import UserChallengesTable from './components/UserChallengesTable'
 
 export default class ChallengesPage extends React.Component {
     constructor(props) {
@@ -42,7 +43,9 @@ export default class ChallengesPage extends React.Component {
                         </div>
                         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                             <CreateChallenge />
-                            <AvailableChallengesTable user={this.state.user}/>
+                            <AvailableChallengesTable created="false" title="Available challenges"/>
+                            <AvailableChallengesTable created="true" title="Created by me"/>
+                            <UserChallengesTable completed="false" title="My challenges"/>
                         </div>
                     </div>
                 </div>

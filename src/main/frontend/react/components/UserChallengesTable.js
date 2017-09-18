@@ -5,7 +5,7 @@ const client = require('./../modules/client');
 
 const stompClient = require('./../modules/websocket-listener');
 
-export default class AvailableChallengesTable extends React.Component {
+export default class UserChallengesTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {challenges: []};
@@ -15,20 +15,20 @@ export default class AvailableChallengesTable extends React.Component {
     componentDidMount() {
         this.loadChallenges();
         stompClient.register([
-            {route: '/topic/newChallenge', callback: this.loadChallenges},
+            {route: '/topic/newUserChallenge', callback: this.loadChallenges},
             /*{route: '/topic/updateHabit', callback: this.refreshCurrentPage},
-            {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}*/
+             {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}*/
         ]);
     }
 
     loadChallenges() {
         var par = {};
-        if (this.props.created) {
-            par = {createdBy: this.props.created}
+        if (this.props.completed) {
+            par = {completed: this.props.completed}
         }
         client({
             method: 'GET',
-            path: '/api/users/current/challenges',
+            path: '/api/users/current/userchallenges',
             params: par,
             headers: {
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
