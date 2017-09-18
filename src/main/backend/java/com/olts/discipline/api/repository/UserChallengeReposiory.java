@@ -19,9 +19,9 @@ public interface UserChallengeReposiory extends JpaRepository<UserChallenge, Lon
     @Query("select c from UserChallenge c where c.originalChallenge.id=:origChallenge and c.completedDate is not null")
     Page<UserChallenge> findByOriginalChallengeCompleted(@Param("origChallenge")Long origChallenge, Pageable pageable);
 
-    @Query("select c from UserChallenge c where c.challengeUser=:userId and c.completedDate is null")
+    @Query("select c from UserChallenge c where c.challengeUser.id=:userId and c.completedDate is null")
     Page<UserChallenge> findByUserNonCompleted(@Param("userId")Long userId, Pageable pageable);
 
-    @Query("select c from UserChallenge c where c.challengeUser=:userId and c.completedDate is not null")
+    @Query("select c from UserChallenge c where c.challengeUser.id=:userId and c.completedDate is not null")
     Page<UserChallenge> findByUserCompleted(@Param("userId")Long userId, Pageable pageable);
 }

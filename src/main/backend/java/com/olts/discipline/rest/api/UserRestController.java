@@ -130,10 +130,23 @@ public class UserRestController implements ApplicationEventPublisherAware {
             @RequestParam(value="createdBy", defaultValue="false") Boolean createdBy,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="10") Integer size) {
+        return new ResponseEntity<>(getAvailableChallenges(userId, createdBy, page, size), HttpStatus.OK);
+    }
+
+    @GetMapping("/users/current/challenges")
+    private @ResponseBody ResponseEntity<PageableResource> getCurrentAvailableChallenges(
+            @RequestParam(value="createdBy", defaultValue="false") Boolean createdBy,
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="size", defaultValue="10") Integer size) {
+        return new ResponseEntity<>(getAvailableChallenges(userService.getCurrent().getId(), createdBy, page, size), HttpStatus.OK);
+    }
+
+    private PageableResource getAvailableChallenges(Long userId, Boolean createdBy, int page, int size) {
         String path = linkToAvailableUserChallenges(userId).toString();
         Page<Challenge> challenges = createdBy ? challengeService.getByCreatedByUserId(userId, page, size) : challengeService.getByUserId(userId, page, size);
         Map<String, String> params = Collections.unmodifiableMap(new HashMap<String, String>(){{put("createdBy", String.valueOf(createdBy));}});
-        return new ResponseEntity<>(new PageableResourceAssembler<>(challengeMapper, path, params).toResource(challenges), HttpStatus.OK);
+        PageableResourceAssembler<Challenge> assembler = new PageableResourceAssembler<>(challengeMapper, path, params);
+        return assembler.toResource(challenges);
     }
 
     @GetMapping("/users/{userId}/userchallenges")
@@ -142,10 +155,22 @@ public class UserRestController implements ApplicationEventPublisherAware {
             @RequestParam(value="completed", defaultValue="false") Boolean completed,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="10") Integer size) {
+        return new ResponseEntity<>(userChallenges(userId, completed, page, size), HttpStatus.OK);
+    }
+
+    @GetMapping("/users/current/userchallenges")
+    private @ResponseBody ResponseEntity<PageableResource> getCurrentUserChallenges(
+            @RequestParam(value="completed", defaultValue="false") Boolean completed,
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="size", defaultValue="10") Integer size) {
+        return new ResponseEntity<>(userChallenges(userService.getCurrent().getId(), completed, page, size), HttpStatus.OK);
+    }
+
+    private PageableResource userChallenges(Long userId, boolean completed, int page, int size) {
         String path = linkToUserChallenges(userId).toString();
         Page<UserChallenge> userChallenges = userChallengeService.getByUserId(userId, completed, page, size);
         Map<String, String> params = Collections.unmodifiableMap(new HashMap<String, String>(){{put("completed", String.valueOf(completed));}});
-        return new ResponseEntity<>(new PageableResourceAssembler<>(userChallengeMapper, path, params).toResource(userChallenges), HttpStatus.OK);
+        return new PageableResourceAssembler<>(userChallengeMapper, path, params).toResource(userChallenges);
     }
 
     @PutMapping("/users/{userId}")
