@@ -39,7 +39,7 @@ export default class AvailableChallengesTable extends React.Component {
     render () {
         var outs = this.state.challenges.map(it => <Challenge key={it._links.self.href} challenge={it}/>);
         return (
-            <table className="table">
+            <table className="table table-hover">
                 <caption>{this.props.title}</caption>
                 <thead>
                 <tr>
@@ -65,6 +65,52 @@ export default class AvailableChallengesTable extends React.Component {
 class Challenge extends React.Component {
     constructor(props) {
         super(props);
+        this.handleVote = this.handleVote.bind(this);
+        this.handleAccept = this.handleAccept.bind(this);
+    }
+
+    handleVote() {
+        client({
+            method: 'PUT',
+            path: habit.entity._links.self.href,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {
+                if (response.status.code === 204) {
+                    this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
+                }
+                /* let the websocket handle updating the UI */},
+            response => {
+                if (response.status.code === 403) {
+                    alert('ACCESS DENIED: You are not authorized to delete ' +
+                        habit.entity._links.self.href);
+                }
+            });
+    }
+
+    handleAccept() {
+        if(confirm('Accept the challenge?')) {
+            client({
+                method: 'PUT',
+                path: this.props.challenge._links.accept.href,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                }
+            }).done(response => {
+                    if (response.status.code === 200) {
+                        //this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
+                    }
+                    /* let the websocket handle updating the UI */},
+                response => {
+                    if (response.status.code === 403) {
+                        alert('ACCESS DENIED: You are not authorized to delete ' +
+                            habit.entity._links.self.href);
+                    }
+                });
+        }
     }
 
     render () {
@@ -76,8 +122,8 @@ class Challenge extends React.Component {
                 <td>{this.props.challenge.votes}</td>
                 <td>{"created by"}</td>
                 <td>{this.props.challenge.withCreator?'YES':'NO'}</td>
-                <td>button vote</td>
-                <td>button accept</td>
+                <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleVote}>Vote</button></td>
+                <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleAccept}>Accept</button></td>
             </tr>
         );
     }
