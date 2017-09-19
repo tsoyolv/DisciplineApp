@@ -14,8 +14,8 @@ import com.olts.discipline.rest.mapper.UserChallengeMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.data.domain.Page;
+import org.springframework.data.rest.core.event.AfterCreateEvent;
 import org.springframework.data.rest.core.event.AfterSaveEvent;
-import org.springframework.data.rest.core.event.BeforeSaveEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -67,13 +67,13 @@ public class ChallengeRestController implements ApplicationEventPublisherAware {
         return ResponseEntity.ok(mapper.pojoToDto(created));
     }
 
-    @PutMapping("/challenges/{}/accept")
+    @PutMapping("/challenges/{challengeId}/accept")
     private @ResponseBody ResponseEntity<ChallengeDto> accept(@PathVariable("challengeId") Long challengeId) {
         Challenge challenge = challengeService.get(challengeId);
-        publisher.publishEvent(new BeforeSaveEvent(challenge));
-        //userChallengeService.accept(challengeId);
-        publisher.publishEvent(new AfterSaveEvent(challenge));
-        return null;// ResponseEntity.ok(mapper.pojoToDto(accepted));
+
+        UserChallenge accept = userChallengeService.accept(challengeId, userService.getCurrent().getId());
+        publisher.publishEvent(new AfterCreateEvent(accept));
+        return ResponseEntity.ok(mapper.pojoToDto(challengeService.get(challengeId)/* get again after changes */));
     }
 
     @GetMapping("/challenges/{challengeId}/userchallenges")

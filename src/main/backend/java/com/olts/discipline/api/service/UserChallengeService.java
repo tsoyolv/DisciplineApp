@@ -15,4 +15,5 @@ public interface UserChallengeService {
     UserChallenge create(UserChallenge challenge);
     UserChallenge update(UserChallenge challenge);
     void delete(Long id);
+    UserChallenge accept(Long originalChallengeId, Long userId);
 }

@@ -1,7 +1,10 @@
 package com.olts.discipline.api.service.impl;
 
 import com.olts.discipline.api.repository.UserChallengeReposiory;
+import com.olts.discipline.api.service.ChallengeService;
 import com.olts.discipline.api.service.UserChallengeService;
+import com.olts.discipline.api.service.UserService;
+import com.olts.discipline.entity.Challenge;
 import com.olts.discipline.entity.UserChallenge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +20,10 @@ import javax.annotation.Resource;
 public class UserChallengeServiceImpl implements UserChallengeService {
     @Resource
     private UserChallengeReposiory reposiory;
+    @Resource
+    private ChallengeService challengeService;
+    @Resource
+    private UserService userService;
 
     @Override
     public Page<UserChallenge> get(Integer page, Integer size) {
@@ -59,5 +66,18 @@ public class UserChallengeServiceImpl implements UserChallengeService {
     @Override
     public void delete(Long id) {
         reposiory.delete(id);
+    }
+
+    @Override
+    public UserChallenge accept(Long originalChallengeId, Long userId) {
+        Challenge challenge = challengeService.get(originalChallengeId);
+        if (challenge == null) {throw new IllegalArgumentException("original challenge doesn't exist");}
+        challenge.setAcceptedCount(challenge.getAcceptedCount() + 1);
+        challengeService.update(challenge);
+
+        UserChallenge userChallenge = new UserChallenge();
+        userChallenge.setOriginalChallenge(challenge);
+        userChallenge.setChallengeUser(userService.get(userId));
+        return create(userChallenge);
     }
 }

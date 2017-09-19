@@ -44,7 +44,7 @@ public class UserChallenge implements Serializable {
     private Date updatedWhen;
 
     @ManyToOne
-    @JoinColumn(name = "originalChallenge", nullable = false)
+    @JoinColumn(name = "challenge_id", nullable = false)
     private Challenge originalChallenge;
 
     @ManyToOne
