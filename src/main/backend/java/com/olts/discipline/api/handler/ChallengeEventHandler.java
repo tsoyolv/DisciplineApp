@@ -33,7 +33,6 @@ public class ChallengeEventHandler {
     }
 
     @HandleBeforeCreate
-    @HandleBeforeSave
     public void applyUserInformationUsingSecurityContext(Challenge challenge) {
         challenge.setCreatedBy(userService.getCurrent());
     }

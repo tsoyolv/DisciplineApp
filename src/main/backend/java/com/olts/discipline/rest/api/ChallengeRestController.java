@@ -36,6 +36,9 @@ public class ChallengeRestController implements ApplicationEventPublisherAware {
     public static ControllerLinkBuilder linkToUserChallenges(Long challengeId) {
         return ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/challenges/%x/userchallenges", challengeId));
     }
+    public static ControllerLinkBuilder linkToChallenge(Long challengeId) {
+        return ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("challenge/%x", challengeId));
+    }
     private ApplicationEventPublisher publisher;
 
     @Override
@@ -70,10 +73,9 @@ public class ChallengeRestController implements ApplicationEventPublisherAware {
 
     @PutMapping("/challenges/{challengeId}/accept")
     private @ResponseBody ResponseEntity<ChallengeDto> accept(@PathVariable("challengeId") Long challengeId) {
-        Challenge challenge = challengeService.get(challengeId);
-
         UserChallenge accept = userChallengeService.accept(challengeId, userService.getCurrent().getId());
         publisher.publishEvent(new AfterCreateEvent(accept));
+        publisher.publishEvent(new AfterSaveEvent(challengeService.get(challengeId)));
         return ResponseEntity.ok(mapper.pojoToDto(challengeService.get(challengeId)/* get again after changes */));
     }
 

@@ -18,5 +18,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             "(select c.id from Challenge c inner join c.users u where u.id=:userId) or c.forAllUsers=true" )// " or c.id in" +
             //"(select c.id from Challenge c inner join c.groups where c.id=:userId)") //todo
     Page<Challenge> findByUserId(@Param("userId")Long userId, Pageable pageable);
-    Page<Challenge> findByCreatedById(Long createdById, Pageable pageable);
+    @Query("select distinct c from Challenge c where c.createdBy.id=:createdById")
+    Page<Challenge> findByCreatedById(@Param("createdById")Long createdById, Pageable pageable);
 }

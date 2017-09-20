@@ -37,9 +37,18 @@ public class ChallengeMapperImpl implements ChallengeMapper {
         challengeDto.setCompletedCount(challenge.getAcceptedCount());
         challengeDto.setCreatedWhen(challenge.getCreatedWhen());
         challengeDto.setUpdatedWhen(challenge.getUpdatedWhen());
-        for (User user : challenge.getVotedUsers()) {
+        challengeDto.setVoteableForCurrentUser(true);
+        for (User user : challenge.getVotedUsers()) { // todo stream
             if (user.getId() == userService.getCurrent().getId()) {
-                challengeDto.setVoteableForCurrentUser(true);
+                challengeDto.setVoteableForCurrentUser(false);
+                break;
+            }
+        }
+        challengeDto.setAcceptableForCurrentUser(true);
+        for (User user : challenge.getAcceptedUsers()) { // todo stream
+            if (user.getId() == userService.getCurrent().getId()) {
+                challengeDto.setAcceptableForCurrentUser(false);
+                break;
             }
         }
         // users and groups links
@@ -47,6 +56,7 @@ public class ChallengeMapperImpl implements ChallengeMapper {
         challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).slash("accept").withRel("accept"));
         challengeDto.add(ChallengeRestController.linkToUserChallenges(challenge.getId()).withRel("userchallenges"));
         challengeDto.add(entityLinks.linkForSingleResource(User.class, challenge.getCreatedBy().getId()).withRel("createdBy"));
+        challengeDto.add(ChallengeRestController.linkToChallenge(challenge.getId()).withRel("link"));
         challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).withSelfRel());
         return challengeDto;
     }

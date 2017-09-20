@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Data
 @EqualsAndHashCode(exclude = {"users", "createdBy", "groups"})
-@ToString(exclude={"id", "users", "createdBy", "groups"})
+@ToString(of = {"id", "name"})
 @Entity
 @Table(name = "challenge")
 public class Challenge implements Serializable {
