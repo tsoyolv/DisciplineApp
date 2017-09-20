@@ -16,8 +16,8 @@ export default class AvailableChallengesTable extends React.Component {
         this.loadChallenges();
         stompClient.register([
             {route: '/topic/newChallenge', callback: this.loadChallenges},
-            /*{route: '/topic/updateHabit', callback: this.refreshCurrentPage},
-            {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}*/
+            {route: '/topic/updateChallenge', callback: this.loadChallenges}
+            /*{route: '/topic/deleteHabit', callback: this.refreshCurrentPage}*/
         ]);
     }
 
@@ -72,14 +72,14 @@ class Challenge extends React.Component {
     handleVote() {
         client({
             method: 'PUT',
-            path: habit.entity._links.self.href,
+            path: this.props.challenge._links.vote.href,
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
         }).done(response => {
-                if (response.status.code === 204) {
-                    this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
+                if (response.status.code === 200) {
+                   // this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
                 }
                 /* let the websocket handle updating the UI */},
             response => {
@@ -122,7 +122,7 @@ class Challenge extends React.Component {
                 <td>{this.props.challenge.votes}</td>
                 <td>{"created by"}</td>
                 <td>{this.props.challenge.withCreator?'YES':'NO'}</td>
-                <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleVote}>Vote</button></td>
+                <td><button className="btn btn-lg btn-primary btn-block" disabled={this.props.challenge.voteableForCurrentUser} onClick={this.handleVote}>Vote</button></td>
                 <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleAccept}>Accept</button></td>
             </tr>
         );
