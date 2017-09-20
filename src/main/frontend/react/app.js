@@ -11,6 +11,7 @@ import UserEditPage from './UserEditPage';
 import UserHabitsPage from './UserHabitsPage';
 import HabitPage from './HabitPage';
 import ChallengesPage from './ChallengesPage';
+import ChallengePage from './ChallengePage';
 
 /* todo react routing */
 
@@ -53,5 +54,12 @@ if(document.getElementById('challenges')) {
     ReactDOM.render(
         <ChallengesPage />,
         document.getElementById('challenges')
+    );
+}
+
+if(document.getElementById('challenge')) {
+    ReactDOM.render(
+        <ChallengePage />,
+        document.getElementById('challenge')
     );
 }

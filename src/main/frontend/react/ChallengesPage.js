@@ -45,7 +45,7 @@ export default class ChallengesPage extends React.Component {
                             <CreateChallenge />
                             <AvailableChallengesTable created="false" title="Available challenges"/>
                             <AvailableChallengesTable created="true" title="Created by me"/>
-                            <UserChallengesTable completed="false" title="My challenges"/>
+                            <UserChallengesTable completed="false" title="Accepted challenges"/>
                         </div>
                     </div>
                 </div>

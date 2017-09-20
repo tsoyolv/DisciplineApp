@@ -51,7 +51,7 @@ export default class UserChallengesTable extends React.Component {
                     <th>Created by</th>
                     <th>Need in creator check</th>
                     <th>Vote</th>
-                    <th>Accept</th>
+                    <th>Complete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -119,8 +119,8 @@ class UserChallenge extends React.Component {
     }
 
     render () {
-        return (<tr onClick={this.challengeOnClick}>
-                <td>{this.props.challenge.name}</td>
+        return (<tr>
+                <td><a href={this.props.challenge._links.self.href}>{this.props.challenge.name}</a></td>
                 <td>{this.props.challenge.difficulty}</td>
                 <td>{this.props.challenge.description}</td>
                 <td>{(new Date(this.props.challenge.challengeDate)).toUTCString()}</td>

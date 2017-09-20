@@ -115,15 +115,15 @@ class Challenge extends React.Component {
 
     render () {
         return (<tr>
-                <td>{this.props.challenge.name}</td>
+                <td><a href={this.props.challenge._links.link.href}>{this.props.challenge.name}</a></td>
                 <td>{this.props.challenge.difficulty}</td>
                 <td>{this.props.challenge.description}</td>
                 <td>{(new Date(this.props.challenge.challengeDate)).toUTCString()}</td>
                 <td>{this.props.challenge.votes}</td>
                 <td>{"created by"}</td>
                 <td>{this.props.challenge.withCreator?'YES':'NO'}</td>
-                <td><button className="btn btn-lg btn-primary btn-block" disabled={this.props.challenge.voteableForCurrentUser} onClick={this.handleVote}>Vote</button></td>
-                <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleAccept}>Accept</button></td>
+                <td><button className="btn btn-lg btn-primary btn-block" disabled={!this.props.challenge.voteableForCurrentUser} onClick={this.handleVote}>Vote</button></td>
+                <td><button className="btn btn-lg btn-primary btn-block" disabled={!this.props.challenge.acceptableForCurrentUser} onClick={this.handleAccept}>Accept</button></td>
             </tr>
         );
     }
