@@ -1,5 +1,6 @@
 package com.olts.discipline.rest.mapper.impl;
 
+import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Challenge;
 import com.olts.discipline.entity.User;
 import com.olts.discipline.rest.api.ChallengeRestController;
@@ -20,6 +21,9 @@ public class ChallengeMapperImpl implements ChallengeMapper {
     @Resource
     private EntityLinks entityLinks;
 
+    @Resource
+    private UserService userService;
+
     @Override
     public ChallengeDto pojoToDto(Challenge challenge) {
         ChallengeDto challengeDto = new ChallengeDto();
@@ -33,7 +37,13 @@ public class ChallengeMapperImpl implements ChallengeMapper {
         challengeDto.setCompletedCount(challenge.getAcceptedCount());
         challengeDto.setCreatedWhen(challenge.getCreatedWhen());
         challengeDto.setUpdatedWhen(challenge.getUpdatedWhen());
-        // users and groups
+        for (User user : challenge.getVotedUsers()) {
+            if (user.getId() == userService.getCurrent().getId()) {
+                challengeDto.setVoteableForCurrentUser(true);
+            }
+        }
+        // users and groups links
+        challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).slash("vote").withRel("vote"));
         challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).slash("accept").withRel("accept"));
         challengeDto.add(ChallengeRestController.linkToUserChallenges(challenge.getId()).withRel("userchallenges"));
         challengeDto.add(entityLinks.linkForSingleResource(User.class, challenge.getCreatedBy().getId()).withRel("createdBy"));

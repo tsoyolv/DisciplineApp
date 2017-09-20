@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * OLTS on 24.08.2017.
@@ -53,6 +54,18 @@ public class Challenge implements Serializable {
     private boolean forAllUsers = true;
 
     @JsonIgnore
+    @ManyToMany(mappedBy = "votedChallenges")
+    private Set<User> votedUsers = new HashSet<>();
+
+    @Transient @JsonIgnore
+    private Set<Long> votedUsersIds = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(mappedBy = "acceptedChallenges")
+    private Set<User> acceptedUsers = new HashSet<>();
+    @Transient @JsonIgnore
+    private Set<Long> acceptedUsersIds = new HashSet<>();
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "availableChallenges")
     private List<User> users = new ArrayList<>();
 
@@ -76,4 +89,20 @@ public class Challenge implements Serializable {
 
     private @Version @JsonIgnore
     Long version;
+
+    public void addVotedUser(User user) {
+        votedUsers.add(user);
+        user.getVotedChallenges().add(this);
+    }
+
+    public void addAcceptedUser(User user) {
+        acceptedUsers.add(user);
+        user.getAcceptedChallenges().add(this);
+    }
+
+    @PostLoad
+    private void postLoad() {
+        acceptedUsersIds = acceptedUsers.stream().map(User::getId).collect(Collectors.toSet());
+        votedUsersIds = votedUsers.stream().map(User::getId).collect(Collectors.toSet());
+    }
 }

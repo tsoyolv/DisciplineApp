@@ -47,7 +47,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public Challenge update(Challenge challenge) {
         // propagate todo
-        return null;
+        return repository.save(challenge);
     }
 
     @Override

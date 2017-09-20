@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.data.domain.Page;
 import org.springframework.data.rest.core.event.AfterCreateEvent;
 import org.springframework.data.rest.core.event.AfterSaveEvent;
+import org.springframework.data.rest.core.event.BeforeSaveEvent;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -74,6 +75,17 @@ public class ChallengeRestController implements ApplicationEventPublisherAware {
         UserChallenge accept = userChallengeService.accept(challengeId, userService.getCurrent().getId());
         publisher.publishEvent(new AfterCreateEvent(accept));
         return ResponseEntity.ok(mapper.pojoToDto(challengeService.get(challengeId)/* get again after changes */));
+    }
+
+    @PutMapping("/challenges/{challengeId}/vote")
+    private @ResponseBody ResponseEntity<ChallengeDto> vote(@PathVariable("challengeId") Long challengeId) {
+        Challenge challenge = challengeService.get(challengeId);
+        publisher.publishEvent(new BeforeSaveEvent(challenge));
+        challenge.setVotes(challenge.getVotes() + 1);
+        challenge.addVotedUser(userService.getCurrent());
+        challengeService.update(challenge);
+        publisher.publishEvent(new AfterSaveEvent(challenge));
+        return ResponseEntity.ok(mapper.pojoToDto(challenge));
     }
 
     @GetMapping("/challenges/{challengeId}/userchallenges")

@@ -27,6 +27,8 @@ public class ChallengeDto extends ResourceSupport {
 
     private boolean withCreator;
 
+    private boolean voteableForCurrentUser;
+
     private Date createdWhen;
 
     private Date updatedWhen;
