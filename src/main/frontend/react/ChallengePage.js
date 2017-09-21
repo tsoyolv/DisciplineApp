@@ -9,7 +9,7 @@ import Navbar from './components/Navbar'
 export default class ChallengePage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {user: {}};
+        this.state = {user: {}, origChallenge:{}};
     }
 
     componentDidMount() {
@@ -22,9 +22,21 @@ export default class ChallengePage extends React.Component {
         }).done(response => {
             this.setState({user:response.entity});
         });
+
+        var href = window.location.href;
+        var id = href.substr(href.lastIndexOf('\\'));
+        client({
+            method: 'GET',
+            path: '/api/challenges/' + id,
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {this.setState({origChallenge:response.entity});});
     }
 
     render () {
+        var href = window.location.href;
+        var id = href.substr(href.lastIndexOf('\\'));
         return (
             <div>
                 <Navbar user={this.state.user} />
@@ -40,8 +52,9 @@ export default class ChallengePage extends React.Component {
                             </ul>
                         </div>
                         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                            CHAT
-                            <UserChallengesTable completed="false" title="User challenges"/>
+                            <Challenge challenge={this.state.origChallenge}/>
+                            <ChatDiv origChallenge={this.state.origChallenge}/>
+                            <UserChallengesTable origchallenge={this.state.origChallenge} completed="false" title="User challenges"/>
                         </div>
                     </div>
                 </div>
@@ -152,5 +165,38 @@ class UserChallenge extends React.Component {
                 <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleVote}>Vote</button></td>
                 </tr>
         );
+    }
+}
+
+class Challenge extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render () {
+        return (
+            <div><h1 className="page-header">{this.props.challenge.name}</h1>
+                <h4>{this.props.challenge.difficulty}</h4>
+                <span className="text-muted">Difficulty</span>
+                <h4>{this.props.challenge.description}</h4>
+                <span className="text-muted">Description</span>
+                <h4>{this.props.challenge.votes}</h4>
+                <span className="text-muted">Votes</span>
+            </div>
+        );
+    }
+}
+
+class ChatDiv extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render () {
+        if (this.props.origChallenge.acceptableForCurrentUser != undefined && !this.props.origChallenge.acceptableForCurrentUser) {
+            return <h1>CHAT</h1>
+        } else {
+            return <h2>Chat is locked. Accept challenge for unlock.</h2>
+        }
     }
 }
