@@ -121,8 +121,18 @@ class UserChallengesTable extends React.Component {
 class UserChallenge extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {user: {}};
         this.handleVote = this.handleVote.bind(this);
-        this.challengeOnClick = this.challengeOnClick.bind(this);
+    }
+
+    componentDidMount() {
+        client({
+            method: 'GET',
+            path: this.props.challenge._links.challengeUser.href,
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {this.setState({user:response.entity});});
     }
 
     handleVote() {
@@ -146,13 +156,13 @@ class UserChallenge extends React.Component {
          });*/
     }
 
-    challengeOnClick() {
-        window.location = this.props.challenge._links.self.href;
-    }
-
     render () {
+        var userlink = '#';
+        if (this.state.user._links) {
+            userlink = this.state.user._links.self.href;
+        }
         return (<tr>
-                <td><a href='#'>User name</a></td>  {/*<a href={this.props.challenge._links.link.href}>{this.props.challenge.name}</a>*/}
+                <td><a href={userlink}>{this.state.user.username}</a></td>  {/*<a href={this.props.challenge._links.link.href}>{this.props.challenge.name}</a>*/}
                 <td>
                     <div className="progress">
                         <div style={{width: '60%'}} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" className="red progress-bar">
@@ -190,13 +200,184 @@ class Challenge extends React.Component {
 class ChatDiv extends React.Component {
     constructor(props) {
         super(props);
+        this.handleAccept = this.handleAccept.bind(this);
+    }
+
+    handleAccept() {
+        if(confirm('Accept the challenge?')) {
+            client({
+                method: 'PUT',
+                path: this.props.origChallenge._links.accept.href,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+                }
+            }).done(response => {
+                    if (response.status.code === 200) {
+                        //this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
+                    }
+                    /* let the websocket handle updating the UI */},
+                response => {
+                    if (response.status.code === 403) {
+                        alert('ACCESS DENIED: You are not authorized to delete ' +
+                            habit.entity._links.self.href);
+                    }
+                });
+        }
     }
 
     render () {
         if (this.props.origChallenge.acceptableForCurrentUser != undefined && !this.props.origChallenge.acceptableForCurrentUser) {
-            return <h1>CHAT</h1>
+            return <ChatApp/>
         } else {
-            return <h2>Chat is locked. Accept challenge for unlock.</h2>
+            return <h2>Chat is locked. Accept the challenge for unlock. <button className="btn btn-lg btn-primary" onClick={this.handleAccept}>Accept</button></h2>
         }
     }
 }
+
+class ChatApp extends React.Component {
+    //socket = {};
+    constructor(props) {
+        super(props);
+        this.state = { messages: [] };
+        this.sendHandler = this.sendHandler.bind(this);
+
+        // Connect to the server
+    //    this.socket = io(config.api, { query: `username=${props.username}` }).connect();
+
+        // Listen for messages from the server
+        /*this.socket.on('server:message', message => {
+            this.addMessage(message);
+        });*/
+    }
+
+    sendHandler(message) {
+        const messageObject = {
+            username: this.props.username,
+            message
+        };
+
+        // Emit the message to the server
+       // this.socket.emit('client:message', messageObject);
+
+        messageObject.fromMe = true;
+        this.addMessage(messageObject);
+    }
+
+    addMessage(message) {
+        // Append the message to the component state
+        const messages = this.state.messages;
+        messages.push(message);
+        this.setState({ messages });
+    }
+
+    render() {
+        return (
+            <div className="container">
+                <h3>React Chat App</h3>
+                <Messages messages={this.state.messages} />
+                <ChatInput onSend={this.sendHandler} />
+            </div>
+        );
+    }
+
+}
+ChatApp.defaultProps = {
+    username: 'Anonymous'
+};
+
+class Messages extends React.Component {
+    componentDidUpdate() {
+        // There is a new message in the state, scroll to bottom of list
+        const objDiv = document.getElementById('messageList');
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    render() {
+        // Loop through all the messages in the state and create a Message component
+        const messages = this.props.messages.map((message, i) => {
+            return (
+                <Message
+                    key={i}
+                    username={message.username}
+                    message={message.message}
+                    fromMe={message.fromMe} />
+            );
+        });
+
+        return (
+            <div className='messages' id='messageList'>
+                { messages }
+            </div>
+        );
+    }
+}
+
+Messages.defaultProps = {
+    messages: []
+};
+
+class Message extends React.Component {
+    render() {
+        // Was the message sent by the current user. If so, add a css class
+        const fromMe = this.props.fromMe ? 'from-me' : '';
+
+        return (
+            <div className={`message ${fromMe}`}>
+                <div className='username'>
+                    { this.props.username }
+                </div>
+                <div className='message-body'>
+                    { this.props.message }
+                </div>
+            </div>
+        );
+    }
+}
+
+Message.defaultProps = {
+    message: '',
+    username: '',
+    fromMe: false
+};
+
+class ChatInput extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { chatInput: '' };
+
+        // React ES6 does not bind 'this' to event handlers by default
+        this.submitHandler = this.submitHandler.bind(this);
+        this.textChangeHandler = this.textChangeHandler.bind(this);
+    }
+
+    submitHandler(event) {
+        // Stop the form from refreshing the page on submit
+        event.preventDefault();
+
+        // Clear the input box
+        this.setState({ chatInput: '' });
+
+        // Call the onSend callback with the chatInput message
+        this.props.onSend(this.state.chatInput);
+    }
+
+    textChangeHandler(event)  {
+        this.setState({ chatInput: event.target.value });
+    }
+
+    render() {
+        return (
+            <form className="chat-input" onSubmit={this.submitHandler}>
+                <input type="text"
+                       onChange={this.textChangeHandler}
+                       value={this.state.chatInput}
+                       placeholder="Write a message..."
+                       required />
+            </form>
+        );
+    }
+}
+
+ChatInput.defaultProps = {
+};
