@@ -31,7 +31,7 @@ public class UserChallengeMapperImpl implements UserChallengeMapper {
         dto.setDescription(obj.getOriginalChallenge().getDescription());
         dto.setChallengeDate(obj.getOriginalChallenge().getChallengeDate());
         dto.setWithCreator(obj.getOriginalChallenge().isWithCreator());
-        dto.add(entityLinks.linkForSingleResource(User.class, obj.getChallengeUser()).withRel("challengeUser"));
+        dto.add(entityLinks.linkForSingleResource(User.class, obj.getChallengeUser().getId()).withRel("challengeUser"));
         dto.add(entityLinks.linkForSingleResource(Challenge.class, obj.getOriginalChallenge().getId()).withRel("originalChallenge"));
         dto.add(entityLinks.linkForSingleResource(UserChallenge.class, obj.getId()).withSelfRel());
         return dto;

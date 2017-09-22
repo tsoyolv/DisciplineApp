@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "challenge")
 public class Challenge implements Serializable {
-    private static final long serialVersionUID = 3836314309380176978L;
+    private static final long serialVersionUID = -6674807502021869989L;
 
     @Id
     @Column(name = "id")
@@ -64,6 +64,10 @@ public class Challenge implements Serializable {
     private Set<User> acceptedUsers = new HashSet<>();
     @Transient @JsonIgnore
     private Set<Long> acceptedUsersIds = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "messageChallenge")
+    private Set<Message> messages = new HashSet<>();
 
     @JsonIgnore
     @ManyToMany(mappedBy = "availableChallenges")

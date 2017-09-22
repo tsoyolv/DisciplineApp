@@ -112,6 +112,10 @@ public class User implements Serializable {
     private Set<Habit> habits = new HashSet<>();
 
     @JsonIgnore
+    @OneToMany(mappedBy = "messageUser")
+    private Set<Message> messages = new HashSet<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy = "challengeUser")
     private List<UserChallenge> userChallenges = new ArrayList<>();
 
