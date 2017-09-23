@@ -5,6 +5,9 @@ const client = require('./modules/client');
 const stompClient = require('./modules/websocket-listener');
 
 import Navbar from './components/Navbar'
+import Challenge from './components/Challenge'
+import UserChallengeTableRow from './components/UserChallengeTableRow'
+import ChatDiv from './components/ChatDiv'
 
 export default class ChallengePage extends React.Component {
     constructor(props) {
@@ -54,7 +57,7 @@ export default class ChallengePage extends React.Component {
                         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                             <Challenge challenge={this.state.origChallenge}/>
                             <ChatDiv origChallenge={this.state.origChallenge} user={this.state.user}/>
-                            <UserChallengesTable origchallenge={this.state.origChallenge} completed="false" title="User challenges"/>
+                            <UserChallengesTable origchallenge={this.state.origChallenge} completed="false" title="Accepted challenges"/>
                         </div>
                     </div>
                 </div>
@@ -85,7 +88,7 @@ class UserChallengesTable extends React.Component {
             par = {completed: this.props.completed}
         }
         var href = window.location.href;
-        var id = href.substr(href.lastIndexOf('\\'));
+        var id = href.substr(href.lastIndexOf('/') + 1);
         client({
             method: 'GET',
             path: '/api/challenges/' + id + '/userchallenges', /* /challenges/{challengeId}/userchallenges */
@@ -97,7 +100,7 @@ class UserChallengesTable extends React.Component {
     }
 
     render () {
-        var outs = this.state.challenges.map(it => <UserChallenge key={it._links.self.href} challenge={it}/>);
+        var outs = this.state.challenges.map(it => <UserChallengeTableRow key={it._links.self.href} challenge={it}/>);
         return (
             <table className="table table-hover">
                 <caption>{this.props.title}</caption>
@@ -117,323 +120,3 @@ class UserChallengesTable extends React.Component {
         );
     }
 }
-
-class UserChallenge extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {user: {}};
-        this.handleVote = this.handleVote.bind(this);
-    }
-
-    componentDidMount() {
-        client({
-            method: 'GET',
-            path: this.props.challenge._links.challengeUser.href,
-            headers: {
-                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-            }
-        }).done(response => {this.setState({user:response.entity});});
-    }
-
-    handleVote() {
-        /*client({
-         method: 'PUT',
-         path: habit.entity._links.self.href,
-         headers: {
-         'Content-Type': 'application/json',
-         'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-         }
-         }).done(response => {
-         if (response.status.code === 204) {
-         this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
-         }
-         /!* let the websocket handle updating the UI *!/},
-         response => {
-         if (response.status.code === 403) {
-         alert('ACCESS DENIED: You are not authorized to delete ' +
-         habit.entity._links.self.href);
-         }
-         });*/
-    }
-
-    render () {
-        var userlink = '#';
-        if (this.state.user._links) {
-            userlink = this.state.user._links.self.href;
-        }
-        return (<tr>
-                <td><a href={userlink}>{this.state.user.username}</a></td>  {/*<a href={this.props.challenge._links.link.href}>{this.props.challenge.name}</a>*/}
-                <td>
-                    <div className="progress">
-                        <div style={{width: '60%'}} aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" className="red progress-bar">
-                            <span>60%</span>
-                        </div>
-                    </div>
-                </td>
-                <td>{(new Date(this.props.challenge.updatedWhen)).toUTCString()}</td>
-                <td>{this.props.challenge.votes}</td>
-                <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleVote}>Vote</button></td>
-                </tr>
-        );
-    }
-}
-
-class Challenge extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render () {
-        return (
-            <div><h1 className="page-header">{this.props.challenge.name}</h1>
-                <h4>{this.props.challenge.difficulty}</h4>
-                <span className="text-muted">Difficulty</span>
-                <h4>{this.props.challenge.description}</h4>
-                <span className="text-muted">Description</span>
-                <h4>{this.props.challenge.votes}</h4>
-                <span className="text-muted">Votes</span>
-            </div>
-        );
-    }
-}
-
-class ChatDiv extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleAccept = this.handleAccept.bind(this);
-    }
-
-    handleAccept() {
-        if(confirm('Accept the challenge?')) {
-            client({
-                method: 'PUT',
-                path: this.props.origChallenge._links.accept.href,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-                }
-            }).done(response => {
-                    if (response.status.code === 200) {
-                        //this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
-                    }
-                    /* let the websocket handle updating the UI */},
-                response => {
-                    if (response.status.code === 403) {
-                        alert('ACCESS DENIED: You are not authorized to delete ' +
-                            habit.entity._links.self.href);
-                    }
-                });
-        }
-    }
-
-    render () {
-        if (this.props.origChallenge.acceptableForCurrentUser != undefined && !this.props.origChallenge.acceptableForCurrentUser) {
-            return <ChatApp challenge={this.props.origChallenge} user={this.props.user}/>
-        } else {
-            return <h2>Chat is locked. Accept the challenge for unlock. <button className="btn btn-lg btn-primary" onClick={this.handleAccept}>Accept</button></h2>
-        }
-    }
-}
-
-class ChatApp extends React.Component {
-    //socket = {};
-    constructor(props) {
-        super(props);
-        this.state = { messages: [] };
-        this.sendHandler = this.sendHandler.bind(this);
-        this.loadMessages = this.loadMessages.bind(this);
-
-        // Connect to the server
-    //    this.socket = io(config.api, { query: `username=${props.username}` }).connect();
-
-        // Listen for messages from the server
-        /*this.socket.on('server:message', message => {
-            this.addMessage(message);
-        });*/
-    }
-
-    componentDidMount() {
-        this.loadMessages();
-        stompClient.register([
-            {route: '/topic/newMessage', callback: this.loadMessages},
-            /*{route: '/topic/updateHabit', callback: this.refreshCurrentPage},
-             {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}*/
-        ]);
-    }
-
-    loadMessages() {
-        client({
-            method: 'GET',
-            path: this.props.challenge._links.messages.href,
-            headers: {
-                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-            }
-        }).done(response => {
-            var messages = response.entity._embedded.items;
-            messages = messages.sort(function(a,b){
-                // Turn your strings into dates, and then subtract them
-                // to get a value that is either negative, positive, or zero.
-                return new Date(a.wasSent) - new Date(b.wasSent);
-            });
-            messages.forEach(m => {
-                var href = m._links.self.href;
-                var messageId = href.substr(href.lastIndexOf('/') + 1);
-                const messageObject = {
-                    username: m.username,
-                    message: m.message,
-                    wasSent: m.wasSent,
-                    messageId:messageId
-                };
-                if (m.username == this.props.user.username) {
-                    messageObject.fromMe = true;
-                }
-                this.addMessage(messageObject);
-            });
-        });
-    }
-
-    sendHandler(message) {
-        const messageEntity = {
-            message: message
-        };
-
-        var challengeHref = this.props.challenge._links.self.href;
-        var challengeId = challengeHref.substr(challengeHref.lastIndexOf('/') + 1);
-        var userHref = this.props.user._links.self.href;
-        var userId = userHref.substr(userHref.lastIndexOf('/') + 1);
-        client({
-            method: 'POST',
-            path: '/api/messages/send/' + challengeId + '/' + userId,
-            entity: messageEntity,
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
-            }
-        }).done(response => {});
-    }
-
-    addMessage(message) {
-        // Append the message to the component state
-        const messages = this.state.messages;
-        if (messages.find(m => m.messageId == message.messageId)) {
-            return;
-        }
-        messages.push(message);
-        this.setState({ messages });
-    }
-
-    render() {
-        return (
-            <div className="container">
-                <h3>Challenge chat1</h3>
-                <Messages messages={this.state.messages} />
-                <ChatInput onSend={this.sendHandler} />
-            </div>
-        );
-    }
-
-}
-ChatApp.defaultProps = {
-    username: 'Anonymous'
-};
-
-class Messages extends React.Component {
-    componentDidUpdate() {
-        // There is a new message in the state, scroll to bottom of list
-        const objDiv = document.getElementById('messageList');
-        objDiv.scrollTop = objDiv.scrollHeight;
-    }
-
-    render() {
-        // Loop through all the messages in the state and create a Message component
-        const messages = this.props.messages.map((message, i) => {
-            return (
-                <Message
-                    key={i}
-                    username={message.username}
-                    message={message.message}
-                    fromMe={message.fromMe}
-                    wasSent={message.wasSent}
-                />
-            );
-        });
-
-        return (
-            <div className='messages' id='messageList'>
-                { messages }
-            </div>
-        );
-    }
-}
-
-Messages.defaultProps = {
-    messages: []
-};
-
-class Message extends React.Component {
-    render() {
-        // Was the message sent by the current user. If so, add a css class
-        const fromMe = this.props.fromMe ? 'from-me' : '';
-
-        return (
-            <div className={`message ${fromMe}`}>
-                <div className='username'>
-                    { this.props.username }
-                </div>
-                <div className='username'>
-                    {(new Date(this.props.wasSent)).toUTCString()}
-                </div>
-                <div className='message-body'>
-                    { this.props.message }
-                </div>
-            </div>
-        );
-    }
-}
-
-Message.defaultProps = {
-    message: '',
-    username: '',
-    fromMe: false
-};
-
-class ChatInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { chatInput: '' };
-
-        // React ES6 does not bind 'this' to event handlers by default
-        this.submitHandler = this.submitHandler.bind(this);
-        this.textChangeHandler = this.textChangeHandler.bind(this);
-    }
-
-    submitHandler(event) {
-        // Stop the form from refreshing the page on submit
-        event.preventDefault();
-
-        // Clear the input box
-        this.setState({ chatInput: '' });
-
-        // Call the onSend callback with the chatInput message
-        this.props.onSend(this.state.chatInput);
-    }
-
-    textChangeHandler(event)  {
-        this.setState({ chatInput: event.target.value });
-    }
-
-    render() {
-        return (
-            <form className="chat-input" onSubmit={this.submitHandler}>
-                <input type="text"
-                       onChange={this.textChangeHandler}
-                       value={this.state.chatInput}
-                       placeholder="Write a message..."
-                       required />
-            </form>
-        );
-    }
-}
-
-ChatInput.defaultProps = {
-};
