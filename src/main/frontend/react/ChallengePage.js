@@ -228,7 +228,7 @@ class ChatDiv extends React.Component {
 
     render () {
         if (this.props.origChallenge.acceptableForCurrentUser != undefined && !this.props.origChallenge.acceptableForCurrentUser) {
-            return <ChatApp/>
+            return <ChatApp challenge={this.props.origChallenge}/>
         } else {
             return <h2>Chat is locked. Accept the challenge for unlock. <button className="btn btn-lg btn-primary" onClick={this.handleAccept}>Accept</button></h2>
         }
@@ -241,6 +241,7 @@ class ChatApp extends React.Component {
         super(props);
         this.state = { messages: [] };
         this.sendHandler = this.sendHandler.bind(this);
+        this.loadMessages = this.loadMessages.bind(this);
 
         // Connect to the server
     //    this.socket = io(config.api, { query: `username=${props.username}` }).connect();
@@ -251,11 +252,53 @@ class ChatApp extends React.Component {
         });*/
     }
 
+    componentDidMount() {
+        this.loadMessages();
+        stompClient.register([
+            {route: '/topic/newMessage', callback: this.loadMessages},
+            /*{route: '/topic/updateHabit', callback: this.refreshCurrentPage},
+             {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}*/
+        ]);
+    }
+
+    loadMessages() {
+        client({
+            method: 'GET',
+            path: this.props.challenge._links.messages.href,
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {
+            var messages = response.entity._embedded.items;
+            messages.forEach(m => {
+                const messageObject = {
+                    username: m.username,
+                    message: m.message
+                };
+
+                // Emit the message to the server
+                // this.socket.emit('client:message', messageObject);
+
+                //messageObject.fromMe = true;
+                this.addMessage(messageObject);
+            });
+        });
+    }
+
     sendHandler(message) {
         const messageObject = {
             username: this.props.username,
             message
         };
+
+        /*client({
+            method: 'POST',
+            path: '/api/challenges/' + challengeId + '/' + userId,
+            entitty: messageEntity,
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
+        }).done(response => {});*/
 
         // Emit the message to the server
        // this.socket.emit('client:message', messageObject);
