@@ -53,7 +53,7 @@ export default class ChallengePage extends React.Component {
                         </div>
                         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                             <Challenge challenge={this.state.origChallenge}/>
-                            <ChatDiv origChallenge={this.state.origChallenge}/>
+                            <ChatDiv origChallenge={this.state.origChallenge} user={this.state.user}/>
                             <UserChallengesTable origchallenge={this.state.origChallenge} completed="false" title="User challenges"/>
                         </div>
                     </div>
@@ -228,7 +228,7 @@ class ChatDiv extends React.Component {
 
     render () {
         if (this.props.origChallenge.acceptableForCurrentUser != undefined && !this.props.origChallenge.acceptableForCurrentUser) {
-            return <ChatApp challenge={this.props.origChallenge}/>
+            return <ChatApp challenge={this.props.origChallenge} user={this.props.user}/>
         } else {
             return <h2>Chat is locked. Accept the challenge for unlock. <button className="btn btn-lg btn-primary" onClick={this.handleAccept}>Accept</button></h2>
         }
@@ -276,6 +276,9 @@ class ChatApp extends React.Component {
                     message: m.message
                 };
 
+                if (m.username == this.props.user.username) {
+                    messageObject.fromMe = true;
+                }
                 // Emit the message to the server
                 // this.socket.emit('client:message', messageObject);
 
@@ -291,14 +294,23 @@ class ChatApp extends React.Component {
             message
         };
 
-        /*client({
+        const messageEntity = {
+            message: message
+        };
+
+        var challengeHref = this.props.challenge._links.self.href;
+        var challengeId = challengeHref.substr(challengeHref.lastIndexOf('\\'));
+        var userHref = this.props.user._links.self.href;
+        var userId = userHref.substr(userHref.lastIndexOf('\\'));
+        client({
             method: 'POST',
-            path: '/api/challenges/' + challengeId + '/' + userId,
-            entitty: messageEntity,
+            path: '/api/messages/send/' + challengeId + '/' + userId,
+            entity: messageEntity,
             headers: {
+                'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
-        }).done(response => {});*/
+        }).done(response => {});
 
         // Emit the message to the server
        // this.socket.emit('client:message', messageObject);
@@ -317,7 +329,7 @@ class ChatApp extends React.Component {
     render() {
         return (
             <div className="container">
-                <h3>React Chat App</h3>
+                <h3>Challenge chat</h3>
                 <Messages messages={this.state.messages} />
                 <ChatInput onSend={this.sendHandler} />
             </div>
