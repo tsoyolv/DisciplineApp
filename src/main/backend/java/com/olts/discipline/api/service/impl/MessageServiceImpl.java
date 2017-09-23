@@ -7,6 +7,7 @@ import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,7 +32,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Page<Message> getByChallengeId(Long challengeId, Integer page, Integer size) {
-        throw new UnsupportedOperationException("not implemented");
+        return repository.findByMessageChallengeId(challengeId, new PageRequest(page, size, Sort.Direction.ASC, "wasSent"));
     }
 
     @Override
