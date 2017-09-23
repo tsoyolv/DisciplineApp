@@ -32,7 +32,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Page<Message> getByChallengeId(Long challengeId, Integer page, Integer size) {
-        return repository.findByMessageChallengeId(challengeId, new PageRequest(page, size, Sort.Direction.ASC, "wasSent"));
+        return repository.findByMessageChallengeIdOrderByWasSentDesc(challengeId, new PageRequest(page, size, Sort.Direction.ASC, "wasSent"));
     }
 
     @Override

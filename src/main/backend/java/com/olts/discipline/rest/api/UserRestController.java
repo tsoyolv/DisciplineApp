@@ -74,7 +74,6 @@ public class UserRestController implements ApplicationEventPublisherAware {
     private @ResponseBody ResponseEntity<UserGETDto> getCurrent() {
         User current = userService.getCurrent();
         UserGETDto userGETDto = userMapper.pojoToDto(current);
-        userGETDto.add(entityLinks.linkForSingleResource(User.class, current.getId()).withSelfRel());
         return ResponseEntity.ok(userGETDto);
     }
 

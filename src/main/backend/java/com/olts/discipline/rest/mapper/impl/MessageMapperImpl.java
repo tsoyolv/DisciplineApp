@@ -28,6 +28,7 @@ public class MessageMapperImpl implements MessageMapper {
         messageDto.setWasSent(message.getWasSent());
         messageDto.add(entityLinks.linkForSingleResource(User.class, message.getMessageUser().getId()).withRel("messageUser"));
         messageDto.add(entityLinks.linkForSingleResource(Challenge.class, message.getMessageChallenge().getId()).withRel("messageChallenge"));
+        messageDto.add(entityLinks.linkForSingleResource(Message.class, message.getId()).withSelfRel());
         return messageDto;
     }
 }

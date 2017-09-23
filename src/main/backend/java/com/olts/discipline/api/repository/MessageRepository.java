@@ -11,5 +11,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  */
 @RepositoryRestResource(path = "messages")
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    Page<Message> findByMessageChallengeId(Long messageChallengeId, Pageable pageable);
+    Page<Message> findByMessageChallengeIdOrderByWasSentDesc(Long messageChallengeId, Pageable pageable);
 }
