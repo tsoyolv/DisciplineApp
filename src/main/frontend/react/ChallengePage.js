@@ -24,7 +24,7 @@ export default class ChallengePage extends React.Component {
         });
 
         var href = window.location.href;
-        var id = href.substr(href.lastIndexOf('\\'));
+        var id = href.substr(href.lastIndexOf('/') + 1);
         client({
             method: 'GET',
             path: '/api/challenges/' + id,
@@ -36,7 +36,7 @@ export default class ChallengePage extends React.Component {
 
     render () {
         var href = window.location.href;
-        var id = href.substr(href.lastIndexOf('\\'));
+        var id = href.substr(href.lastIndexOf('/') + 1);
         return (
             <div>
                 <Navbar user={this.state.user} />
@@ -270,38 +270,37 @@ class ChatApp extends React.Component {
             }
         }).done(response => {
             var messages = response.entity._embedded.items;
+            messages = messages.sort(function(a,b){
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(a.wasSent) - new Date(b.wasSent);
+            });
             messages.forEach(m => {
+                var href = m._links.self.href;
+                var messageId = href.substr(href.lastIndexOf('/') + 1);
                 const messageObject = {
                     username: m.username,
-                    message: m.message
+                    message: m.message,
+                    wasSent: m.wasSent,
+                    messageId:messageId
                 };
-
                 if (m.username == this.props.user.username) {
                     messageObject.fromMe = true;
                 }
-                // Emit the message to the server
-                // this.socket.emit('client:message', messageObject);
-
-                //messageObject.fromMe = true;
                 this.addMessage(messageObject);
             });
         });
     }
 
     sendHandler(message) {
-        const messageObject = {
-            username: this.props.username,
-            message
-        };
-
         const messageEntity = {
             message: message
         };
 
         var challengeHref = this.props.challenge._links.self.href;
-        var challengeId = challengeHref.substr(challengeHref.lastIndexOf('\\'));
+        var challengeId = challengeHref.substr(challengeHref.lastIndexOf('/') + 1);
         var userHref = this.props.user._links.self.href;
-        var userId = userHref.substr(userHref.lastIndexOf('\\'));
+        var userId = userHref.substr(userHref.lastIndexOf('/') + 1);
         client({
             method: 'POST',
             path: '/api/messages/send/' + challengeId + '/' + userId,
@@ -311,17 +310,14 @@ class ChatApp extends React.Component {
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
         }).done(response => {});
-
-        // Emit the message to the server
-       // this.socket.emit('client:message', messageObject);
-
-        messageObject.fromMe = true;
-        this.addMessage(messageObject);
     }
 
     addMessage(message) {
         // Append the message to the component state
         const messages = this.state.messages;
+        if (messages.find(m => m.messageId == message.messageId)) {
+            return;
+        }
         messages.push(message);
         this.setState({ messages });
     }
@@ -329,7 +325,7 @@ class ChatApp extends React.Component {
     render() {
         return (
             <div className="container">
-                <h3>Challenge chat</h3>
+                <h3>Challenge chat1</h3>
                 <Messages messages={this.state.messages} />
                 <ChatInput onSend={this.sendHandler} />
             </div>
@@ -356,7 +352,9 @@ class Messages extends React.Component {
                     key={i}
                     username={message.username}
                     message={message.message}
-                    fromMe={message.fromMe} />
+                    fromMe={message.fromMe}
+                    wasSent={message.wasSent}
+                />
             );
         });
 
@@ -381,6 +379,9 @@ class Message extends React.Component {
             <div className={`message ${fromMe}`}>
                 <div className='username'>
                     { this.props.username }
+                </div>
+                <div className='username'>
+                    {(new Date(this.props.wasSent)).toUTCString()}
                 </div>
                 <div className='message-body'>
                     { this.props.message }
