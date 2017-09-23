@@ -55,6 +55,7 @@ public class ChallengeMapperImpl implements ChallengeMapper {
         challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).slash("vote").withRel("vote"));
         challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).slash("accept").withRel("accept"));
         challengeDto.add(ChallengeRestController.linkToUserChallenges(challenge.getId()).withRel("userchallenges"));
+        challengeDto.add(ChallengeRestController.linkToChallengeMessages(challenge.getId()).withRel("messages"));
         challengeDto.add(entityLinks.linkForSingleResource(User.class, challenge.getCreatedBy().getId()).withRel("createdBy"));
         challengeDto.add(ChallengeRestController.linkToChallenge(challenge.getId()).withRel("link"));
         challengeDto.add(entityLinks.linkForSingleResource(Challenge.class, challenge.getId()).withSelfRel());

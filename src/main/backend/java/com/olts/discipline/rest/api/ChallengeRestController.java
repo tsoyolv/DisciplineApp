@@ -1,15 +1,18 @@
 package com.olts.discipline.rest.api;
 
 import com.olts.discipline.api.service.ChallengeService;
+import com.olts.discipline.api.service.MessageService;
 import com.olts.discipline.api.service.UserChallengeService;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Challenge;
+import com.olts.discipline.entity.Message;
 import com.olts.discipline.entity.User;
 import com.olts.discipline.entity.UserChallenge;
 import com.olts.discipline.rest.dto.ChallengeDto;
 import com.olts.discipline.rest.hateoas.PageableResource;
 import com.olts.discipline.rest.hateoas.assembler.PageableResourceAssembler;
 import com.olts.discipline.rest.mapper.ChallengeMapper;
+import com.olts.discipline.rest.mapper.MessageMapper;
 import com.olts.discipline.rest.mapper.UserChallengeMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -33,6 +36,9 @@ import java.util.Map;
  */
 @RepositoryRestController
 public class ChallengeRestController implements ApplicationEventPublisherAware {
+    public static ControllerLinkBuilder linkToChallengeMessages(Long challengeId) {
+        return ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/challenges/%x/messages", challengeId));
+    }
     public static ControllerLinkBuilder linkToUserChallenges(Long challengeId) {
         return ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/challenges/%x/userchallenges", challengeId));
     }
@@ -53,9 +59,13 @@ public class ChallengeRestController implements ApplicationEventPublisherAware {
     @Resource
     private UserService userService;
     @Resource
+    private MessageService messageService;
+    @Resource
     private ChallengeMapper mapper;
     @Resource
     private UserChallengeMapper userChallengeMapper;
+    @Resource
+    private MessageMapper messageMapper;
 
     @GetMapping("/challenges/{challengeId}")
     private @ResponseBody ResponseEntity<ChallengeDto> getChallenge(@PathVariable("challengeId") Long challengeId) {
@@ -72,6 +82,16 @@ public class ChallengeRestController implements ApplicationEventPublisherAware {
         Page<UserChallenge> userChallenges = userChallengeService.getByOriginalChallengeId(challengeId, completed, page, size);
         Map<String, String> params = Collections.unmodifiableMap(new HashMap<String, String>(){{put("completed", String.valueOf(completed));}});
         return new ResponseEntity<>(new PageableResourceAssembler<>(userChallengeMapper, path, params).toResource(userChallenges), HttpStatus.OK);
+    }
+
+    @GetMapping("/challenges/{challengeId}/messages")
+    private @ResponseBody ResponseEntity<PageableResource> getChallengeMessages(
+            @PathVariable("challengeId") Long challengeId,
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="size", defaultValue="10") Integer size) {
+        String path = linkToChallengeMessages(challengeId).toString();
+        Page<Message> messagePage = messageService.getByChallengeId(challengeId, page, size);
+        return new ResponseEntity<>(new PageableResourceAssembler<>(messageMapper, path, null).toResource(messagePage), HttpStatus.OK);
     }
 
     @PostMapping("/challenges/")
