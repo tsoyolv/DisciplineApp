@@ -19,6 +19,10 @@ public class ChallengeDto extends ResourceSupport {
 
     private Date challengeDate;
 
+    private String sphere;
+
+    private String type;
+
     private int votes;
 
     private int acceptedCount;

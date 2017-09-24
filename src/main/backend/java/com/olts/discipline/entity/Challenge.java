@@ -53,6 +53,12 @@ public class Challenge implements Serializable {
 
     private boolean forAllUsers = true;
 
+    @Enumerated(EnumType.STRING)
+    private ChallengeType type;
+
+    @Enumerated(EnumType.STRING)
+    private ChallengeSphere sphere;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "votedChallenges")
     private Set<User> votedUsers = new HashSet<>();

@@ -38,6 +38,8 @@ public class ChallengeMapperImpl implements ChallengeMapper {
         challengeDto.setCreatedWhen(challenge.getCreatedWhen());
         challengeDto.setUpdatedWhen(challenge.getUpdatedWhen());
         challengeDto.setVoteableForCurrentUser(true);
+        challengeDto.setSphere(challenge.getSphere().name());
+        challengeDto.setType(challenge.getType().name());
         for (User user : challenge.getVotedUsers()) { // todo stream
             if (user.getId() == userService.getCurrent().getId()) {
                 challengeDto.setVoteableForCurrentUser(false);

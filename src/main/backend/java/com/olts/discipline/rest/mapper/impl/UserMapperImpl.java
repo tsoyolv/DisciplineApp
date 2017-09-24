@@ -44,6 +44,7 @@ public class UserMapperImpl implements UserMapper {
         dto.add(UserRestController.linkToAvailableUserChallenges(obj.getId()).withRel("challenges"));
         dto.add(UserRestController.linkToUserHabits(obj.getId()).withRel("habits"));
         dto.add(UserRestController.linkToUserGroups(obj.getId()).withRel("groups"));
+        dto.add(UserRestController.linkToUserChallenges(obj.getId()).withRel("userChallenges"));
         dto.add(entityLinks.linkForSingleResource(User.class, obj.getId()).withSelfRel());
         return dto;
     }
