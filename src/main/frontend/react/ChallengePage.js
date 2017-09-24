@@ -47,7 +47,7 @@ export default class ChallengePage extends React.Component {
                     <div className="row">
                         <div className="col-sm-3 col-md-2 sidebar">
                             <ul className="nav nav-sidebar">
-                                <li><a href="#">Summary (Not implemented) </a></li>
+                                <li><a href="/summary">Summary</a></li>
                                 <li><a href="/user-habit">Habits</a></li>
                                 <li><a href="#">Tasks (Not implemented)</a></li>
                                 <li><a href="/challenge">Challenges</a></li>

@@ -320,7 +320,7 @@ export default class UserHabitsPage extends React.Component {
                 <div className="row">
                     <div className="col-sm-3 col-md-2 sidebar">
                         <ul className="nav nav-sidebar">
-                            <li><a href="#">Summary (Not implemented) </a></li>
+                            <li><a href="/summary">Summary</a></li>
                             <li className="active"><a href="#">Habits <span className="sr-only">(current)</span></a></li>
                             <li><a href="#">Tasks (Not implemented)</a></li>
                             {this.showChallenges()}

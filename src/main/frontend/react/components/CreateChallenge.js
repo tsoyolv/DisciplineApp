@@ -66,7 +66,7 @@ export default class CreateChallenge extends React.Component {
         return (
             <div>
                 <a href="#createChallenge" data-toggle="modal" data-target="#createChallenge">Create</a>
-                <CreateDialog attributes={filteredAttrs} onCreate={this.onCreate} modalId="createChallenge" titleName="Create new Challenge" buttonName="Create"/>
+                <CreateDialog attributes={filteredAttrs} onCreate={this.onCreate} modalId="createChallenge" titleName="Create challenge" buttonName="Create"/>
             </div>
         );
     }
@@ -82,7 +82,7 @@ class CreateDialog extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        var filterAttrs = this.filterAttrs()
+        var filterAttrs = this.filterAttrs();
         var object = {};
         filterAttrs.forEach(attribute => {
             object[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
@@ -132,8 +132,50 @@ class CreateDialog extends React.Component {
                         </div>
                         <form>
                             <div className="modal-body">
-                                {inputs}
+                                <p key="name">
+                                    <label className="col-lg-3 control-label">Name:</label>
+                                    <div className="col-lg-8">
+                                        <input type="text" placeholder="" ref="name" className="field"/>
+                                    </div>
+                                </p>
+                                <p key="difficulty">
+                                    <label className="col-lg-3 control-label">Difficulty:</label>
+                                    <div className="col-lg-8">
+                                        <input type="text" placeholder="" ref="difficulty" className="field"/>
+                                    </div>
+                                </p>
+                                <p key="description">
+                                    <label className="col-lg-3 control-label">Description:</label>
+                                    <div className="col-lg-8">
+                                        <input type="text" placeholder="" ref="description" className="field"/>
+                                    </div>
+                                </p>
+                                <p key="type">
+                                    <label className="col-lg-3 control-label">Type:</label>
+                                    <div className="col-lg-8">
+                                        <div className="ui-select">
+                                            <select id="type" className="form-control" ref="type">
+                                                <option value="HABIT">Habit</option>
+                                                <option value="NORMAL">Normal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </p>
+                                <p key="sphere">
+                                    <label className="col-lg-3 control-label">Sphere:</label>
+                                    <div className="col-lg-8">
+                                        <div className="ui-select">
+                                            <select id="sphere" className="form-control" ref="sphere">
+                                                <option value="HEALTH">Health</option>
+                                                <option value="INTELLECT">Intellect</option>
+                                                <option value="MENTALITY">Mentality</option>
+                                                <option value="FAMILY">Family</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </p>
                             </div>
+
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-primary" onClick={this.handleSubmit}>{this.props.buttonName}</button>
                             </div>

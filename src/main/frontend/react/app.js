@@ -12,6 +12,7 @@ import UserHabitsPage from './UserHabitsPage';
 import HabitPage from './HabitPage';
 import ChallengesPage from './ChallengesPage';
 import ChallengePage from './ChallengePage';
+import Summary from './Summary';
 
 /* todo react routing */
 
@@ -61,5 +62,12 @@ if(document.getElementById('challenge')) {
     ReactDOM.render(
         <ChallengePage />,
         document.getElementById('challenge')
+    );
+}
+
+if(document.getElementById('summary')) {
+    ReactDOM.render(
+        <Summary />,
+        document.getElementById('summary')
     );
 }

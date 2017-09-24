@@ -46,7 +46,7 @@ export default class AvailableChallengesTable extends React.Component {
                 <tr>
                     <th>Name</th>
                     <th>Difficulty</th>
-                    <th>Description</th>
+                    <th>Sphere</th>
                     <th>Challenge Date</th>
                     <th>Votes</th>
                     <th>Created by</th>
@@ -119,7 +119,7 @@ class Challenge extends React.Component {
         return (<tr>
                 <td><a href={this.props.challenge._links.link.href}>{this.props.challenge.name}</a></td>
                 <td>{this.props.challenge.difficulty}</td>
-                <td>{this.props.challenge.description}</td>
+                <td>{this.props.challenge.sphere}</td>
                 <td>{(new Date(this.props.challenge.challengeDate)).toUTCString()}</td>
                 <td>{this.props.challenge.votes}</td>
                 <td>{"created by"}</td>

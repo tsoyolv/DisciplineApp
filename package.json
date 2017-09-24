@@ -37,6 +37,7 @@
     "babel-preset-react": "^6.16.0",
     "jquery": "1.11.1",
     "bootstrap": "3.3.7",
-    "font-awesome": "4.7.0"
+    "font-awesome": "4.7.0",
+    "highcharts": "5.0.14"
   }
 }
