@@ -60,7 +60,7 @@ export default class ChallengesPage extends React.Component {
                         <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                             I am summary
                             <div  style={{minWidth:'310px', height:'400px', maxWidth:'600px', margin:'0 auto'}}>
-                                <Chart/>
+                                {/*<Chart/>*/}
                             </div>
                             {/*<Chart/>*/}
                         </div>

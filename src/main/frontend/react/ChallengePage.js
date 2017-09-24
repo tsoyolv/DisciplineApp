@@ -58,6 +58,10 @@ export default class ChallengePage extends React.Component {
                             <Challenge challenge={this.state.origChallenge}/>
                             <ChatDiv origChallenge={this.state.origChallenge} user={this.state.user}/>
                             <UserChallengesTable origchallenge={this.state.origChallenge} completed="false" title="Accepted challenges"/>
+                            <div className="row nav-row">
+                                <button data-toggle="collapse" data-target="#userChallengesTableDiv2" type="button" className="btn btn-primary">Show/hide completed challenges</button>
+                            </div>
+                            <UserChallengesTable origchallenge={this.state.origChallenge} completed="true" divId="userChallengesTableDiv2" divClass="collapse" title="Accepted challenges"/>
                         </div>
                     </div>
                 </div>
@@ -102,6 +106,7 @@ class UserChallengesTable extends React.Component {
     render () {
         var outs = this.state.challenges.map(it => <UserChallengeTableRow key={it._links.self.href} challenge={it}/>);
         return (
+            <div id={this.props.divId} className={this.props.divClass}>
             <table className="table table-hover">
                 <caption>{this.props.title}</caption>
                 <thead>
@@ -117,6 +122,7 @@ class UserChallengesTable extends React.Component {
                 {outs}
                 </tbody>
             </table>
+            </div>
         );
     }
 }

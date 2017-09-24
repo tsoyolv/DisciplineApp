@@ -45,13 +45,17 @@ export default class ChallengesPage extends React.Component {
                             <CreateChallenge />
                             <AvailableChallengesTable created="false" title="Available challenges" divId="availableChallengesTableDiv1"/>
                             <div className="row nav-row">
-                                <button data-toggle="collapse" data-target="#availableChallengesTableDiv2" type="button" className="btn btn-primary" onClick={this.hideCreatedByMeChallengesTable}>Show/hide created by me challenges</button>
+                                <button data-toggle="collapse" data-target="#availableChallengesTableDiv2" type="button" className="btn btn-primary">Show/hide created by me challenges</button>
                             </div>
                             <AvailableChallengesTable created="true" title="Created by me" divId="availableChallengesTableDiv2" divClass="collapse"/>
                             <div className="row nav-row">
-                                <button data-toggle="collapse" data-target="#userChallengesTableDiv" type="button" className="btn btn-primary" onClick={this.hideUserChallengeTable}>Show/hide accepted challenges</button>
+                                <button data-toggle="collapse" data-target="#userChallengesTableDiv" type="button" className="btn btn-primary">Show/hide accepted challenges</button>
                             </div>
                             <UserChallengesTable completed="false" title="Accepted challenges" divClass="collapse" divId="userChallengesTableDiv"/>
+                            <div className="row nav-row">
+                                <button data-toggle="collapse" data-target="#userChallengesTableDiv2" type="button" className="btn btn-primary">Show/hide completed challenges</button>
+                            </div>
+                            <UserChallengesTable completed="true" title="Accepted challenges" divClass="collapse" divId="userChallengesTableDiv2"/>
                         </div>
                     </div>
                 </div>

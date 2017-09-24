@@ -16,6 +16,7 @@ export default class UserChallengesTable extends React.Component {
         this.loadChallenges();
         stompClient.register([
             {route: '/topic/newUserChallenge', callback: this.loadChallenges},
+            {route: '/topic/updateUserChallenge', callback: this.loadChallenges}
             /*{route: '/topic/updateHabit', callback: this.refreshCurrentPage},
              {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}*/
         ]);
@@ -33,7 +34,8 @@ export default class UserChallengesTable extends React.Component {
             headers: {
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
-        }).done(response => {this.setState({challenges:response.entity._embedded.items});});
+        }).done(
+            response => {this.setState({challenges:response.entity._embedded.items});});
     }
 
     render () {
@@ -73,31 +75,31 @@ class UserChallenge extends React.Component {
     }
 
     handleVote() {
-        /*client({
+        client({
             method: 'PUT',
-            path: habit.entity._links.self.href,
+            path: this.props.challenge._links.vote.href,
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
             }
         }).done(response => {
-                if (response.status.code === 204) {
-                    this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
+                if (response.status.code === 200) {
+                    // this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
                 }
-                /!* let the websocket handle updating the UI *!/},
+                /* let the websocket handle updating the UI */},
             response => {
                 if (response.status.code === 403) {
                     alert('ACCESS DENIED: You are not authorized to delete ' +
                         habit.entity._links.self.href);
                 }
-            });*/
+            });
     }
 
     handleComplete() {
-        /*if(confirm('Accept the challenge?')) {
+        if(confirm('Complete the challenge?')) {
             client({
                 method: 'PUT',
-                path: this.props.challenge._links.accept.href,
+                path: this.props.challenge._links.complete.href,
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
@@ -106,14 +108,14 @@ class UserChallenge extends React.Component {
                     if (response.status.code === 200) {
                         //this.setState({alert:{entity:response.entity, message:'Deletion successful'}})
                     }
-                    /!* let the websocket handle updating the UI *!/},
+                    /* let the websocket handle updating the UI */},
                 response => {
                     if (response.status.code === 403) {
                         alert('ACCESS DENIED: You are not authorized to delete ' +
                             habit.entity._links.self.href);
                     }
                 });
-        }*/
+        }
     }
 
     challengeOnClick() {
@@ -129,7 +131,7 @@ class UserChallenge extends React.Component {
                 <td>{this.props.challenge.votes}</td>
                 <td>{"created by"}</td>
                 <td>{this.props.challenge.withCreator?'YES':'NO'}</td>
-                <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleVote}>Vote</button></td>
+                <td><button className="btn btn-lg btn-primary btn-block" disabled={!this.props.challenge.voteableForCurrentUser} onClick={this.handleVote}>Vote</button></td>
                 <td><button className="btn btn-lg btn-primary btn-block" onClick={this.handleComplete}>Complete</button></td>
             </tr>
         );
