@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * OLTS on 16.09.2017.
@@ -62,6 +63,16 @@ public class UserChallengeServiceImpl implements UserChallengeService {
     @Override
     public UserChallenge update(UserChallenge challenge) {
         return reposiory.save(challenge);
+    }
+
+    @Override
+    public UserChallenge complete(Long challengeId) {
+        UserChallenge userChallenge = get(challengeId);
+        userChallenge.setCompletedDate(new Date());
+        Challenge originalChallenge = userChallenge.getOriginalChallenge();
+        originalChallenge.setCompletedCount(originalChallenge.getCompletedCount() + 1);
+        challengeService.update(originalChallenge);
+        return update(userChallenge);
     }
 
     @Override

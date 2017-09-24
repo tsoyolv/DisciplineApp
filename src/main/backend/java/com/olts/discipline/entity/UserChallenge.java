@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * OLTS on 16.09.2017.
@@ -51,7 +53,16 @@ public class UserChallenge implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private User challengeUser;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "votedUserChallenges")
+    private Set<User> votedUsers = new HashSet<>();
+
     private @Version
     @JsonIgnore
     Long version;
+
+    public void addVotedUser(User user) {
+        votedUsers.add(user);
+        user.getVotedUserChallenges().add(this);
+    }
 }

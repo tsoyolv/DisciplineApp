@@ -18,7 +18,7 @@ import java.util.*;
  * 25.04.2017
  */
 @Data
-@EqualsAndHashCode(exclude = {"passwordConfirm", "habits", "tasks", "roles", "availableChallenges"})
+@EqualsAndHashCode(of = {"id", "username"})
 @ToString(exclude={"id", "password", "passwordConfirm", "habits", "tasks", "roles", "availableChallenges"})
 @Entity
 @Table(name = "user")
@@ -132,6 +132,11 @@ public class User implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "vote_challenge", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "challenge_id", referencedColumnName = "id"))
     private List<Challenge> votedChallenges = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "vote_user_challenge", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_challenge_id", referencedColumnName = "id"))
+    private List<UserChallenge> votedUserChallenges = new ArrayList<>();
 
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
