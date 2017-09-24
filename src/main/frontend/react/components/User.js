@@ -10,7 +10,16 @@ export default class User extends React.Component {
     render() {
         return (
             <div>
-                <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName} <a  className="text-muted" href="/edit">Edit</a></h1>
+                <h1 className="page-header">{this.props.user.firstName} {this.props.user.secondName}
+                    <span className="pull-right">
+                        <a href="/edit"><button className="btn btn-sm btn-warning" type="button"
+                                data-toggle="tooltip"
+                                data-original-title="Edit this user">
+                            <i className="glyphicon glyphicon-edit"></i>
+                        </button></a>
+                    </span>
+                </h1>
+
                 Progress <span className="text-muted">(Lvl {this.props.user.level})</span>
                 <div className="progress">
                     <div className="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{width: this.props.user.levelPercentage + '%'}}>{this.props.user.levelPercentage + '%'}</div>
@@ -25,33 +34,73 @@ export default class User extends React.Component {
                         </div>
                     </div>
                     <div className="col-md-9 personal-info">
-                        <div>
-                            <h4>{this.props.user.username}</h4>
-                            <span className="text-muted">User Name</span>
-                            <h4>{this.props.user.firstName}</h4>
-                            <span className="text-muted">First Name</span>
-                            <h4>{this.props.user.secondName}</h4>
-                            <span className="text-muted">Second Name</span>
-                            <h4>{this.props.user.lastName}</h4>
-                            <span className="text-muted">Last Name</span>
-                            <h4>{this.props.user.email}</h4>
-                            <span className="text-muted">Email</span>
-                            <h4>{this.props.user.rank}</h4>
-                            <span className="text-muted">Rank</span>
-                            <h4>{this.props.user.score}</h4>
-                            <span className="text-muted">All score</span>
-                            <h4>{this.props.user.habitScore}</h4>
-                            <span className="text-muted">Habit score</span>
-                            <h4>{this.props.user.taskScore}</h4>
-                            <span className="text-muted">Task score</span>
-                            <h4> {(new Date(this.props.user.birthDate)).toUTCString()}</h4>
-                            <span className="text-muted">Birth date</span>
-                            <h4>{this.props.user.city}</h4>
-                            <span className="text-muted">City</span>
-                            <h4>{this.props.user.country}</h4>
-                            <span className="text-muted">Country</span>
-                            <h4>None</h4>
-                            <span className="text-muted">Groups</span>
+                        <div className="panel-body">
+                            <div className="row">
+                                <div className=" col-md-9 col-lg-9 hidden-xs hidden-sm">
+                                    <strong>Info</strong><br></br>
+                                    <table className="table table-user-information">
+                                        <tbody>
+                                        <tr>
+                                            <td>User Name:</td>
+                                            <td><strong>{this.props.user.username}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>First Name:</td>
+                                            <td><strong>{this.props.user.firstName}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Second Name:</td>
+                                            <td><strong>{this.props.user.secondName}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Last Name:</td>
+                                            <td><strong>{this.props.user.lastName}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email:</td>
+                                            <td><strong>{this.props.user.email}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Rank:</td>
+                                            <td><strong>{this.props.user.rank}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>All score:</td>
+                                            <td><strong>{this.props.user.score}</strong></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <button className="btn btn-primary" data-toggle="collapse" data-target="#demo">Additional info</button>
+                                    <div id="demo" className="collapse">
+                                        <table className="table table-user-information">
+                                            <tbody>
+                                            <tr>
+                                                <td>Habit score:</td>
+                                                <td><strong>{this.props.user.habitScore}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Task score:</td>
+                                                <td><strong>{this.props.user.taskScore}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Birthday:</td>
+                                                <td><strong>{(new Date(this.props.user.birthDate)).toUTCString()}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>City:</td>
+                                                <td><strong>{this.props.user.city}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Country:</td>
+                                                <td><strong>{this.props.user.country}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Groups:</td>
+                                                <td><strong>not implemented</strong></td>
+                                            </tr></tbody></table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

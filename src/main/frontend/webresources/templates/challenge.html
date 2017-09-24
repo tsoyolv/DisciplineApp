@@ -1,0 +1,158 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- root '/' in src added for spring mvc. for change frontend remove slash and before commit return it again  -->
+<link rel="stylesheet" type="text/css" href="/libraries/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="/libraries/css/font-awesome.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/scroll.css"/>
+<link rel="stylesheet" type="text/css" href="/css/dashboard.css"/>
+<style>
+    body {
+        font-family: 'proxima-nova', sans-serif;
+        margin: 0;
+    }
+
+    html, body, #app, .container {
+        min-height: 80vh;
+        max-height: 80vh;
+        max-width: 100%;
+    }
+
+    input[type="text"] {
+        margin: 10px 0px;
+        height: 60px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        color: #1e1e1e;
+        font: 400 1rem "proxima-nova", sans-serif;
+        width: 80%;
+        border: 1px solid #dee0e0;
+        padding: 0 20px;
+        -webkit-transition: border-color 0.2s ease-in-out;
+        -moz-transition: border-color 0.2s ease-in-out;
+        transition: border-color 0.2s ease-in-out;
+    }
+
+    input[type="text"]:focus {
+        border: 1px solid #AF9570;
+        outline: none !important;
+    }
+
+    input[type="submit"] {
+        background-color: #323232;
+        color: white;
+        font: 700 1rem "proxima-nova",sans-serif;
+        border: none;
+        position: relative;
+        -webkit-transition: 0.3s ease-in-out;
+        -moz-transition: 0.3s ease-in-out;
+        transition: 0.3s ease-in-out;
+        text-decoration: none;
+        padding: 20px 80px;
+        text-align: center;
+        cursor: pointer;
+        -webkit-box-shadow: -7px 7px 0px rgba(50,50,50,0.15);
+        -moz-box-shadow: -7px 7px 0px rgba(50,50,50,0.15);
+        box-shadow: -7px 7px 0px rgba(50,50,50,0.15);
+        margin-top: 20px;
+    }
+
+    input[type="submit"]:hover {
+        -webkit-box-shadow: -10px 10px 0px rgba(50,50,50,0.15);
+        -moz-box-shadow: -10px 10px 0px rgba(50,50,50,0.15);
+        box-shadow: -10px 10px 0px rgba(50,50,50,0.15);
+        background-color: #1e1e1e;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .messages {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        flex-grow: 1;
+        padding: 20px;
+    }
+
+    h3 {
+        text-align: center;
+        padding: 20px 0;
+        margin: 0;
+        border-bottom: 1px solid #ddd;
+        background-color: #eee;
+    }
+
+    .chat-input {
+        position: relative;
+        overflow: hidden;
+        padding: 0 40px;
+        flex-shrink: 0;
+    }
+
+    .chat-input input[type="text"] {
+        width: 100%;
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+
+    .message.from-me .username {
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #999;
+        margin-bottom: 5px;
+    }
+
+    .message.from-me {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 5px;
+    }
+
+    .message.from-me .message-body {
+        background-color: #af9570;
+        color: white;
+    }
+
+    .message {
+        margin-bottom: 20px;
+    }
+    .message-body {
+        max-width: 80%;
+        display: inline-block;
+        padding: 20px;
+        background-color: #eee;
+        border: 1px;
+        border-radius: 5px;
+        padding-right: 50px;
+    }
+
+    .username {
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #999;
+        margin-bottom: 5px;
+    }
+</style>
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <title>Discipline</title>
+</head>
+<div class='thetop'></div> <!-- for scrolling -->
+<body>
+
+<!-- react start -->
+<div id="challenge"></div>
+<!-- react end -->
+
+</body>
+<div class='scrolltop'>
+    <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
+</div>
+<!-- root '/' in src added for spring mvc. for change frontend remove slash and before commit return it again  -->
+<script type="text/javascript" src="/libraries/js/jquery.min.js"></script>
+<script type="text/javascript" src="/libraries/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/scroll.js"></script>
+<script id="react_built" type="text/javascript" src="/built/bundle.js"></script>
+</html>

@@ -36,9 +36,9 @@ export default class UserHabitsPage extends React.Component {
     componentDidMount() {
         this.loadFromServer(this.state.pageSize);
         stompClient.register([
-            {route: '/topic/newHabit', callback: this.refreshAndGoToLastPage},// todo doesn't work normally
-            {route: '/topic/updateHabit', callback: this.refreshCurrentPage}, //  doesn't work normally
-            {route: '/topic/deleteHabit', callback: this.refreshCurrentPage} //  doesn't work normally
+            {route: '/topic/newHabit', callback: this.refreshAndGoToLastPage},
+            {route: '/topic/updateHabit', callback: this.refreshCurrentPage},
+            {route: '/topic/deleteHabit', callback: this.refreshCurrentPage}
         ]);
     }
 
@@ -306,7 +306,7 @@ export default class UserHabitsPage extends React.Component {
     showChallenges() {
         if (this.state.user) {
             if (this.state.user.hidden != null && !this.state.user.hidden) {
-                return (<li><a href="#">Challenges (Not implemented)</a></li>);
+                return (<li><a href="/challenge">Challenges</a></li>);
             }
         }
     }
@@ -320,7 +320,7 @@ export default class UserHabitsPage extends React.Component {
                 <div className="row">
                     <div className="col-sm-3 col-md-2 sidebar">
                         <ul className="nav nav-sidebar">
-                            <li><a href="#">Summary (Not implemented) </a></li>
+                            <li><a href="/summary">Summary</a></li>
                             <li className="active"><a href="#">Habits <span className="sr-only">(current)</span></a></li>
                             <li><a href="#">Tasks (Not implemented)</a></li>
                             {this.showChallenges()}

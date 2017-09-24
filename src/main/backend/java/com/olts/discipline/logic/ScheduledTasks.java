@@ -67,7 +67,6 @@ public class ScheduledTasks {
                 failHabit(habit);
                 return;
             }
-            habit.setNonCompletedCount(habit.getNonCompletedCount() + 1);
             habitService.update(habit);
             userScoreCalculator.calculate(habit);
             historyService.create(habit);

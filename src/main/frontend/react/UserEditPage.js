@@ -87,7 +87,7 @@ export default class UserEditPage extends React.Component {
     showChallenges() {
         if (this.state.user) {
             if (this.state.user.hidden != null && !this.state.user.hidden) {
-                return (<li><a href="#">Challenges (Not implemented)</a></li>);
+                return (<li><a href="/challenge">Challenges</a></li>);
             }
         }
     }
@@ -100,7 +100,7 @@ export default class UserEditPage extends React.Component {
                 <div className="row">
                     <div className="col-sm-3 col-md-2 sidebar">
                         <ul className="nav nav-sidebar">
-                            <li><a href="#">Summary (Not implemented) </a></li>
+                            <li><a href="/summary">Summary</a></li>
                             <li><a href="/user-habit">Habits</a></li>
                             <li><a href="#">Tasks (Not implemented)</a></li>
                             {this.showChallenges()}

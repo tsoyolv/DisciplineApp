@@ -27,8 +27,10 @@ import javax.annotation.Resource;
  * OLTS on 28.05.2017.
  */
 @RepositoryRestController
-class HabitRestController implements ApplicationEventPublisherAware {
-
+public class HabitRestController implements ApplicationEventPublisherAware {
+    public static ControllerLinkBuilder linkToHabitHistories(@PathVariable("habitId") Long habitId) {
+        return ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/habits/%x/histories", habitId));
+    }
     @Resource
     private UserService userService;
 
@@ -86,13 +88,14 @@ class HabitRestController implements ApplicationEventPublisherAware {
     private @ResponseBody ResponseEntity<PageableResource> getHabitHistories(@PathVariable("habitId") Long habitId,
                                                                              @RequestParam(value="page", defaultValue="0") Integer page,
                                                                              @RequestParam(value="size", defaultValue="10") Integer size) {
-        String methodPath = ControllerLinkBuilder.linkTo(UserRestController.class).slash(String.format("api/habits/%x/histories", habitId)).toString();
+        String methodPath = linkToHabitHistories(habitId).toString();
         Page<HabitHistory> habitHistories = habitHistoryService.getHabitHistories(habitId, page, size);
         if (!habitHistories.hasContent()) {
             return ResponseEntity.noContent().build();
         }
         return new ResponseEntity<>(new PageableResourceAssembler<>(historyMapper, methodPath, null).toResource(habitHistories), HttpStatus.OK);
     }
+
     private boolean isCurrentUserHabit(Habit habit) {
         return habit.getHabitUser().getUsername().equals(userService.getCurrent().getUsername());
     }

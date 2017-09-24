@@ -2,11 +2,10 @@ package com.olts.discipline.rest.mapper.impl;
 
 import com.olts.discipline.entity.Habit;
 import com.olts.discipline.entity.User;
+import com.olts.discipline.rest.api.HabitRestController;
 import com.olts.discipline.rest.dto.HabitDto;
 import com.olts.discipline.rest.mapper.HabitMapper;
 import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.LinkBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -21,22 +20,21 @@ public class HabitMapperImpl implements HabitMapper {
     private EntityLinks entityLinks;
 
     @Override
-    public HabitDto pojoToDto(Habit habit) {
-        HabitDto habitDto = new HabitDto();
-        habitDto.setName(habit.getName());
-        habitDto.setDifficulty(habit.getDifficulty());
-        habitDto.setDescription(habit.getDescription());
-        habitDto.setCompleted(habit.isCompleted());
-        habitDto.setCompletedCount(habit.getCompletedCount());
-        habitDto.setNonCompletedCount(habit.getNonCompletedCount());
-        habitDto.setAchieved(habit.isAchieved());
-        habitDto.setUpdatedWhen(habit.getUpdatedWhen());
-        habitDto.setCreatedWhen(habit.getCreatedWhen());
-        LinkBuilder linkBuilder = entityLinks.linkForSingleResource(User.class, habit.getHabitUser().getId());
-        habitDto.add(linkBuilder.withRel("habitUser"));
-        Link link = entityLinks.linkForSingleResource(Habit.class, habit.getId()).withSelfRel();
-        habitDto.add(link);
-        return habitDto;
+    public HabitDto pojoToDto(Habit obj) {
+        HabitDto dto = new HabitDto();
+        dto.setName(obj.getName());
+        dto.setDifficulty(obj.getDifficulty());
+        dto.setDescription(obj.getDescription());
+        dto.setCompleted(obj.isCompleted());
+        dto.setCompletedCount(obj.getCompletedCount());
+        dto.setNonCompletedCount(obj.getNonCompletedCount());
+        dto.setAchieved(obj.isAchieved());
+        dto.setUpdatedWhen(obj.getUpdatedWhen());
+        dto.setCreatedWhen(obj.getCreatedWhen());
+        dto.add(HabitRestController.linkToHabitHistories(obj.getId()).withRel("histories"));
+        dto.add(entityLinks.linkForSingleResource(User.class, obj.getHabitUser().getId()).withRel("habitUser"));
+        dto.add(entityLinks.linkForSingleResource(Habit.class, obj.getId()).withSelfRel());
+        return dto;
     }
 
     @Override

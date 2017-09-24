@@ -1,10 +1,8 @@
 package com.olts.discipline.api.service;
 
 
-import com.olts.discipline.entity.Habit;
 import com.olts.discipline.entity.User;
-
-import java.util.Collection;
+import org.springframework.data.domain.Page;
 
 public interface UserService {
     void create(User user);
@@ -17,9 +15,5 @@ public interface UserService {
 
     User getCurrent();
 
-    Collection<Habit> getUserHabits(long userId);
-
-    Collection<Habit> getNotCompletedUserHabits(long userId);
-
-    Collection<Habit> getCompletedUserHabits(long userId);
+    Page<User> getByGroup(Long groupId, int page, int size);
 }

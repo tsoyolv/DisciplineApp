@@ -11,28 +11,36 @@ import org.hibernate.tuple.ValueGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * o.tsoy
  * 25.04.2017
  */
 @Data
-@EqualsAndHashCode(exclude = {"passwordConfirm", "habits", "tasks", "roles"})
-@ToString(exclude={"id", "password", "passwordConfirm", "habits", "tasks", "roles"})
+@EqualsAndHashCode(of = {"id", "username"})
+@ToString(exclude={"id", "password", "passwordConfirm", "habits", "tasks", "roles", "availableChallenges"})
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
     private static final long serialVersionUID = 2082395294433209579L;
 
-    public static final class RankValueGenerator implements
-            ValueGenerator<Integer> {
+    public static final class RankValueGenerator implements ValueGenerator<Integer> {
         @Override
         public Integer generateValue(Session session, Object owner) {
             return 999; // todo
         }
+    }
+
+    public User() {}
+
+    // constructor only for tests
+    public User(long id, String username, String firstName, Integer level, Integer rank) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.level = level;
+        this.rank = rank;
     }
 
     @Column
@@ -70,7 +78,7 @@ public class User implements Serializable {
 
     private Boolean hidden = false;
 
-    private Integer level = 0; // todo can't be changed by rest POST, only GET
+    private Integer level = 1; // todo can't be changed by rest POST, only GET
 
     @Column(name = "level_percentage")
     private Integer levelPercentage = 1; // can't be changed by rest POST, only GET
@@ -89,21 +97,51 @@ public class User implements Serializable {
 
     private String country;
 
+    @Column(name = "allowed_groups")
+    private Integer allowedGroups = level;
+
+    @Column(name = "allowed_challenges")
+    private Integer allowedChallenges = level;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "users")
-    private Set<Group> groups = new HashSet<>();
+    @ManyToMany(mappedBy = "users")
+    private List<Group> groups = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "habitUser")
     private Set<Habit> habits = new HashSet<>();
 
     @JsonIgnore
+    @OneToMany(mappedBy = "messageUser")
+    private Set<Message> messages = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "challengeUser")
+    private List<UserChallenge> userChallenges = new ArrayList<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy = "taskUser")
     private Set<Task> tasks = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "challengeUser")
-    private Set<Challenge> challenges = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_challenge", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "challenge_id", referencedColumnName = "id"))
+    private List<Challenge> availableChallenges = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "vote_challenge", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "challenge_id", referencedColumnName = "id"))
+    private List<Challenge> votedChallenges = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "vote_user_challenge", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_challenge_id", referencedColumnName = "id"))
+    private List<UserChallenge> votedUserChallenges = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "accept_challenge", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "challenge_id", referencedColumnName = "id"))
+    private List<Challenge> acceptedChallenges = new ArrayList<>();
 
     @JsonIgnore
     @ManyToMany
