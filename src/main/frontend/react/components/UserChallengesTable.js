@@ -39,6 +39,7 @@ export default class UserChallengesTable extends React.Component {
     render () {
         var outs = this.state.challenges.map(it => <UserChallenge key={it._links.self.href} challenge={it}/>);
         return (
+            <div id={this.props.divId} className={this.props.divClass}>
             <table className="table table-hover">
                 <caption>{this.props.title}</caption>
                 <thead>
@@ -58,6 +59,7 @@ export default class UserChallengesTable extends React.Component {
                 {outs}
                 </tbody>
             </table>
+            </div>
         );
     }
 }
