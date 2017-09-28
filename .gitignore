@@ -1,8 +1,7 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 node_modules
-built
-libraries
+
 
 ### STS ###
 .apt_generated

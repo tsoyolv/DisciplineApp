@@ -111,15 +111,12 @@
         </resources>
 
         <testResources>
-            <testResource><directory>src/test/resources</directory></testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
         </testResources>
 
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
@@ -139,6 +136,12 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>webpack build</id>
+                        <goals>
+                            <goal>webpack</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>npm install</id>
                         <goals>
                             <goal>npm</goal>
@@ -146,12 +149,6 @@
                         <configuration>
                             <arguments>install</arguments>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>webpack build</id>
-                        <goals>
-                            <goal>webpack</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -165,7 +162,8 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/css</outputDirectory>
+                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/css
+                            </outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>node_modules/bootstrap/dist/css</directory>
@@ -185,7 +183,8 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/js</outputDirectory>
+                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/js
+                            </outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>node_modules/bootstrap/dist/js</directory>
@@ -205,7 +204,8 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/fonts</outputDirectory>
+                            <outputDirectory>${basedir}/src/main/frontend/webresources/templates/libraries/fonts
+                            </outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>node_modules/bootstrap/dist/fonts</directory>
@@ -219,6 +219,10 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
