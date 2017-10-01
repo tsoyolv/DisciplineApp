@@ -1,19 +1,26 @@
-package com.olts.discipline.entity;
+package com.olts.discipline.entity.habit;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * OLTS on 03.09.2017.
+ * Sphere of the life where user can develop him habits.
  */
 @Data
 /*@EqualsAndHashCode(exclude = {"habitUser"})
 @ToString(exclude={"id", "habitUser"})*/
 @Entity
 @Table(name = "activity_sphere")
-public class ActivitySphere implements Serializable {
+class ActivitySphere implements Serializable {
     private static final long serialVersionUID = -2133500032462136937L;
 
     @Id

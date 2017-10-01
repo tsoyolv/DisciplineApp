@@ -1,6 +1,6 @@
 package com.olts.discipline.api.service;
 
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

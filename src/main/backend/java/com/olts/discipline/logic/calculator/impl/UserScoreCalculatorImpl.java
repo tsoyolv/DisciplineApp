@@ -3,7 +3,7 @@ package com.olts.discipline.logic.calculator.impl;
 import com.olts.discipline.Constants;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Challenge;
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 import com.olts.discipline.entity.User;
 import com.olts.discipline.logic.calculator.UserScoreCalculator;
 import org.springframework.stereotype.Component;

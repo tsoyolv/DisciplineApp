@@ -1,6 +1,6 @@
 package com.olts.discipline.rest.mapper;
 
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 import com.olts.discipline.rest.dto.HabitDto;
 
 /**
