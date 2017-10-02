@@ -2,8 +2,8 @@ package com.olts.discipline.api.service.impl;
 
 import com.olts.discipline.api.repository.HabitHistoryRepository;
 import com.olts.discipline.api.service.HabitHistoryService;
-import com.olts.discipline.entity.Habit;
-import com.olts.discipline.entity.HabitHistory;
+import com.olts.discipline.entity.habit.Habit;
+import com.olts.discipline.entity.habit.HabitHistory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

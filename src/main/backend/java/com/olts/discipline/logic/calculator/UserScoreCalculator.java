@@ -1,7 +1,7 @@
 package com.olts.discipline.logic.calculator;
 
 import com.olts.discipline.entity.Challenge;
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 
 /**
  * OLTS on 15.09.2017.

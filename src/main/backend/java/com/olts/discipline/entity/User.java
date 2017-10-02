@@ -1,6 +1,7 @@
 package com.olts.discipline.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.olts.discipline.entity.habit.Habit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
