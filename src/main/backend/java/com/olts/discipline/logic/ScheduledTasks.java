@@ -3,7 +3,7 @@ package com.olts.discipline.logic;
 import com.olts.discipline.Constants;
 import com.olts.discipline.api.service.HabitHistoryService;
 import com.olts.discipline.api.service.HabitService;
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 import com.olts.discipline.logic.calculator.UserScoreCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package com.olts.discipline.rest.mapper.impl;
 
-import com.olts.discipline.entity.Habit;
-import com.olts.discipline.entity.HabitHistory;
+import com.olts.discipline.entity.habit.Habit;
+import com.olts.discipline.entity.habit.HabitHistory;
 import com.olts.discipline.rest.dto.HabitHistoryDto;
 import com.olts.discipline.rest.mapper.HabitHistoryMapper;
 import org.springframework.hateoas.EntityLinks;

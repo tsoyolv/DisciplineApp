@@ -2,6 +2,7 @@ package com.olts.discipline.rest.api;
 
 import com.olts.discipline.api.service.*;
 import com.olts.discipline.entity.*;
+import com.olts.discipline.entity.habit.Habit;
 import com.olts.discipline.rest.dto.UserGETDto;
 import com.olts.discipline.rest.dto.UserPutDto;
 import com.olts.discipline.rest.hateoas.PageableResource;

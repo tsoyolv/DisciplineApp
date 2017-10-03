@@ -1,6 +1,6 @@
 package com.olts.discipline.rest.mapper.impl;
 
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 import com.olts.discipline.entity.User;
 import com.olts.discipline.rest.api.HabitRestController;
 import com.olts.discipline.rest.dto.HabitDto;

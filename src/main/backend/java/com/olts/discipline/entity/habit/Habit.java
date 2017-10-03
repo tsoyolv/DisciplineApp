@@ -1,6 +1,7 @@
-package com.olts.discipline.entity;
+package com.olts.discipline.entity.habit;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.olts.discipline.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -17,12 +18,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * o.tsoy
- * 25.04.2017
+ * What the user can develop.
  */
 @Data
 @EqualsAndHashCode(exclude = {"habitUser", "histories", "activitySphere"})
-@ToString(exclude={"id", "habitUser", "histories", "activitySphere"})
+@ToString(exclude = {"id", "habitUser", "histories", "activitySphere"})
 @Entity
 @Table(name = "habit")
 public class Habit implements Serializable /* extends Activity doesn't work - can't generate self link HAL */ {
@@ -74,6 +74,7 @@ public class Habit implements Serializable /* extends Activity doesn't work - ca
     @OneToMany(mappedBy = "originalHabit")
     private Set<HabitHistory> histories = new HashSet<>();
 
-    private @Version @JsonIgnore
+    private @Version
+    @JsonIgnore
     Long version;
 }

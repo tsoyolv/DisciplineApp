@@ -3,7 +3,7 @@ package com.olts.discipline.api.service.impl;
 import com.olts.discipline.api.repository.HabitRepository;
 import com.olts.discipline.api.service.HabitHistoryService;
 import com.olts.discipline.api.service.HabitService;
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 import com.olts.discipline.logic.calculator.UserScoreCalculator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

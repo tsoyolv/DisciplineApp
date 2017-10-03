@@ -1,7 +1,7 @@
 package com.olts.discipline.api.handler;
 
 import com.olts.discipline.api.service.UserService;
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.*;
 import org.springframework.hateoas.EntityLinks;

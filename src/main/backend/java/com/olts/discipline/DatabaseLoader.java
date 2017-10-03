@@ -6,7 +6,7 @@ import com.olts.discipline.api.service.GroupService;
 import com.olts.discipline.api.service.UserService;
 import com.olts.discipline.entity.Challenge;
 import com.olts.discipline.entity.Group;
-import com.olts.discipline.entity.Habit;
+import com.olts.discipline.entity.habit.Habit;
 import com.olts.discipline.entity.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.Page;

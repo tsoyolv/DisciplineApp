@@ -1,6 +1,6 @@
 package com.olts.discipline.api.repository;
 
-import com.olts.discipline.entity.HabitHistory;
+import com.olts.discipline.entity.habit.HabitHistory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
