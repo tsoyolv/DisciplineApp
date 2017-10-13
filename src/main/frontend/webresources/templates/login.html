@@ -2,12 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <link rel="stylesheet" type="text/css" href="libraries/css/bootstrap.min.css"/>
-<!--<link rel="stylesheet" href="css/signin.css"/>-->
-<style>
-    .has-error {
-        color: red
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="libraries/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="css/login.css"/>
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -27,7 +23,7 @@
 <body>
 
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-dicipline navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -45,41 +41,78 @@
     </div>
 </nav>
 
-<div class="jumbotron">
-<div class="container container-fluid">
-    <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-7">
-            <h1>Discipline</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <hr/>
-            <h3>Test</h3>
-            <p>Lorem ipsum...</p>
-        </div>
-        <div class="col-sm-3 sidenav">
-        <form class="form-signin" method="POST" action="#" th:object="${userForm}" th:action="@{/login}">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <div class="form-group has-error">
-                <span th:text="${message}"></span>
-                <input name="username" type="text" class="form-control" placeholder="Username" autofocus="autofocus"
-                       th:field="${userForm.username}"/>
-                <input name="password" type="password" class="form-control" placeholder="Password"
-                       th:field="${userForm.password}"/>
-                <span th:text="${error}"> </span>
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"/> Remember me
-                    </label>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                <h4 class="text-center"><a th:href="@{/registration}">Create an account</a></h4>
+<div>
+    <div class="container container-fluid">
+        <div class="row">
+
+            <div class="col-sm-1"></div>
+
+            <div class="col-sm-7">
+                <h1>Discipline.</h1>
+                <p>Discipline - the entertaining ability to improve yourself, create positive habits, goals. Be more productive, more obsessed </p>
+                <h3>Test</h3>
+                <p>yourself...</p>
+                <hr/>
+
+                <h2>Habits</h2>
+                <h4>Create habits or choose from suggested. </h4>
+                <p>Complete them</p>
+
+                <h2>Challenges</h2>
+                <h4>Competition between your friends or other people</h4>
+                <p>Test yourself</p>
             </div>
-        </form>
+
+            <div class="col-sm-3 loginform">
+                <form class="form-signin" method="POST" action="#" th:object="${userForm}" th:action="@{/login}">
+                    <h2 class="form-signin-heading">Login via</h2>
+                    <div class="social-buttons">
+                        <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                        <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+                    </div>
+
+                    or
+
+                    <div class="form-group has-error">
+                        <span th:text="${message}"></span>
+                        <input name="username" type="text" class="form-control" placeholder="Email" autofocus="autofocus" th:field="${userForm.username}"/>
+                    </div>
+
+                    <div class="form-group has-error">
+                        <input name="password" type="password" class="form-control" placeholder="Password" th:field="${userForm.password}"/>
+                        <span th:text="${error}"> </span>
+                    </div>
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="remember-me"/> keep me logged-in
+                        </label>
+                    </div>
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+                    <div class="help-block text-right"><a href="">Forget the password?</a></div>
+                    <div class="bottom text-center">
+                        <h4 class="text-center">New here? <a th:href="@{/registration}">Sign up</a></h4>
+                    </div>
+
+                </form>
+            </div>
+
         </div>
     </div>
+   <!-- <div class="container container-fluid">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-8">
+                <h2>Habits</h2>
+                <h4>Create habits or choose from suggested. </h4>
+                <p>Complete them</p>
+            </div>
+        </div>
+    </div>-->
 </div>
-    </div>
 
 </body>
 
