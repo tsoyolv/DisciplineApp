@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<script src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="js/tether.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-<link rel="stylesheet" href="css/main.css"/>
-
-
+<link rel="stylesheet" type="text/css" href="libraries/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="libraries/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="css/login.css"/>
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -27,42 +22,100 @@
 
 <body>
 
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="#">Discipline</a>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/registration}">Registration</a>
-            </li>
-            <!--<li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled example</a>
-            </li>-->
-        </ul>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Discipline</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/registration">Sign up</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 
-<div class="container">
-    <!--/*@thymesVar id="userForm" type="com.disciplineapp.entity.User"*/-->
-    <form method="POST" action="#" class="form-signin" th:object="${userForm}" th:action="@{/login}">
-        <h2 class="form-heading">Please sign in</h2>
-        <div class="form-group has-error">
-            <span th:text="${message}"></span>
-            <input name="username" type="text" class="form-control" placeholder="Username" autofocus="autofocus"
-                   th:field="${userForm.username}"/>
-            <input name="password" type="password" class="form-control" placeholder="Password"
-                   th:field="${userForm.password}"/>
-            <span th:text="${error}"> </span>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-            <h4 class="text-center"><a th:href="@{/registration}">Create an account</a></h4>
+<div>
+    <div class="container container-fluid">
+        <div class="row">
+
+            <div class="col-sm-1"></div>
+
+            <div class="col-sm-7">
+                <h1>Discipline.</h1>
+                <p>Discipline - the entertaining ability to improve yourself, create positive habits, goals. Be more productive, more obsessed </p>
+                <h3>Test</h3>
+                <p>yourself...</p>
+                <hr/>
+
+                <h2>Habits</h2>
+                <h4>Create habits or choose from suggested. </h4>
+                <p>Complete them</p>
+
+                <h2>Challenges</h2>
+                <h4>Competition between your friends or other people</h4>
+                <p>Test yourself</p>
+            </div>
+
+            <div class="col-sm-3 loginform">
+                <form class="form-signin" method="POST" action="#" th:object="${userForm}" th:action="@{/login}">
+                    <h2 class="form-signin-heading">Login via</h2>
+                    <div class="social-buttons">
+                        <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                        <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+                    </div>
+
+                    or
+
+                    <div class="form-group has-error">
+                        <span th:text="${message}"></span>
+                        <input name="username" type="text" class="form-control" placeholder="Email" autofocus="autofocus" th:field="${userForm.username}"/>
+                    </div>
+
+                    <div class="form-group has-error">
+                        <input name="password" type="password" class="form-control" placeholder="Password" th:field="${userForm.password}"/>
+                        <span th:text="${error}"> </span>
+                    </div>
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="remember-me"/> keep me logged-in
+                        </label>
+                    </div>
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+                    <div class="help-block text-right"><a href="">Forget the password?</a></div>
+                    <div class="bottom text-center">
+                        <h4 class="text-center">New here? <a th:href="@{/registration}">Sign up</a></h4>
+                    </div>
+
+                </form>
+            </div>
+
         </div>
-    </form>
+    </div>
+   <!-- <div class="container container-fluid">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-8">
+                <h2>Habits</h2>
+                <h4>Create habits or choose from suggested. </h4>
+                <p>Complete them</p>
+            </div>
+        </div>
+    </div>-->
 </div>
+
 </body>
+
+<script type="text/javascript" src="libraries/js/jquery.min.js"></script>
+<script type="text/javascript" src="libraries/js/bootstrap.min.js"></script>
 </html>
