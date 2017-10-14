@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<script src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="js/tether.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" type="text/css" href="libraries/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="libraries/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="css/login.css"/>
 
 <head>
     <meta charset="utf-8"/>
@@ -25,56 +22,69 @@
     <![endif]-->
 </head>
 
-<body>
-
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="#">Discipline</a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/login}">Login</a>
-            </li>
-        </ul>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Discipline</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <!--<ul class="nav navbar-nav navbar-right">
+                <li><a href="/login">Log in</a></li>
+            </ul>-->
+        </div>
     </div>
 </nav>
 
+<body>
+
 <div class="container">
-    <!--/*@thymesVar id="userForm" type="com.disciplineapp.entity.User"*/-->
-    <form method="POST" class="form-signin" th:object="${userForm}">
-        <h2 class="form-signin-heading">Create your account</h2>
-        <div class="form-group has-error">
-            <input type="text" class="form-control" placeholder="Username" autofocus="autofocus"
-                   th:field="${userForm.username}"/>
-            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-        </div>
-        <div class="form-group has-error">
-            <input type="text" class="form-control" placeholder="First name" autofocus="autofocus"
-                   th:field="${userForm.firstName}"/>
-            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
-        </div>
-        <div class="form-group has-error">
-            <input type="text" class="form-control" placeholder="Second name" autofocus="autofocus"
-                   th:field="${userForm.secondName}"/>
-            <p th:if="${#fields.hasErrors('secondName')}" th:errors="*{secondName}"></p>
-        </div>
-        <div class="form-group has-error">
-            <input type="password" class="form-control" placeholder="Password" th:field="${userForm.password}"/>
-            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
-        </div>
-        <!--<div th:class="${#fields.hasErrors('passwordConfirm')} ? 'form-group has-error' : 'form-group'">-->
-        <div class="form-group has-error">
-            <input type="password" class="form-control" placeholder="Confirm your password"
-                   th:field="${userForm.passwordConfirm}"/>
-            <p th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></p>
-        </div>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-    </form>
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4 loginform">
+        <!--/*@thymesVar id="userForm" type="com.disciplineapp.entity.User"*/-->
+        <form method="POST" class="form-signin" th:object="${userForm}">
+            <h2 class="form-signin-heading text-center">Sign up</h2>
+            <div class="form-group has-error">
+                <input type="text" class="form-control" placeholder="Email" autofocus="autofocus"
+                       th:field="${userForm.username}"/>
+                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+            </div>
+            <div class="form-group has-error">
+                <input type="text" class="form-control" placeholder="First name" autofocus="autofocus"
+                       th:field="${userForm.firstName}"/>
+                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+            </div>
+            <div class="form-group has-error">
+                <input type="text" class="form-control" placeholder="Last name" autofocus="autofocus"
+                       th:field="${userForm.lastName}"/>
+                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+            </div>
+            <div class="form-group has-error">
+                <input type="password" class="form-control" placeholder="Password" th:field="${userForm.password}"/>
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+            </div>
+            <!--<div th:class="${#fields.hasErrors('passwordConfirm')} ? 'form-group has-error' : 'form-group'">-->
+            <div class="form-group has-error">
+                <input type="password" class="form-control" placeholder="Confirm your password"
+                       th:field="${userForm.passwordConfirm}"/>
+                <p th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></p>
+            </div>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+            <div class="bottom text-center">
+                <h4 class="text-center">Signed up? <a href="/login">Log in</a></h4>
+            </div>
+        </form>
+    </div>
 </div>
+
 </body>
+
+<script type="text/javascript" src="libraries/js/jquery.min.js"></script>
+<script type="text/javascript" src="libraries/js/bootstrap.min.js"></script>
+
 </html>

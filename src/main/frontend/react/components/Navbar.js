@@ -57,7 +57,7 @@ class UserDropdown extends React.Component {
         var fullName;
         if (this.props.user) {
             userName = this.props.user.username;
-            fullName = this.props.user.firstName + ' ' + this.props.user.secondName;
+            fullName = this.props.user.firstName + ' ' + this.props.user.lastName;
         }
         return (
             <li className="dropdown">
