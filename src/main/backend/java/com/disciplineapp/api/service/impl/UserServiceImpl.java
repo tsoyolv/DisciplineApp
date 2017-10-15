@@ -46,11 +46,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
 
+    /**
+     * get current logged user
+     * @return null if there is no logged users
+     * */
     @Override
     public User getCurrent() {
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userRepository.findByUsername(principal.getUsername());
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof org.springframework.security.core.userdetails.User) {
+            username = ((org.springframework.security.core.userdetails.User) principal).getUsername();
+        } else {
+            return null;
+        }
+        return userRepository.findByUsername(username);
     }
 
     @Override
